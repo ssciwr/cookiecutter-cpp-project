@@ -12,6 +12,15 @@ import subprocess
 if "{{ cookiecutter.license }}" == "None":
     os.remove("LICENSE.md")
 
+if "{{ cookiecutter.github_actions_ci }}" == "No":
+    os.remove(".github/workflows/ci.yml")
+
+if "{{ cookiecutter.gitlab_ci }}" == "No":
+    os.remove(".gitlab-ci.yml")
+
+if "{{ cookiecutter.travis_ci }}" == "No":
+    os.remove(".travis.yml")
+
 # If the TODO.md file is empty, we remove it
 if os.stat("TODO.md").st_size == 0:
     os.remove("TODO.md")
