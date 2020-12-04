@@ -39,6 +39,8 @@ This cookiecutter accepts the following configuration options:
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `travis_ci`: Whether to add a CI workflow for Travis CI
+* `doxygen`: Whether a Doxygen documentation should be extracted from the project
+* `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `11` (default), `14`, `17`, `20` and `03`.
 
 # Issues
 
