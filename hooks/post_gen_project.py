@@ -21,6 +21,9 @@ if "{{ cookiecutter.gitlab_ci }}" == "No":
 if "{{ cookiecutter.travis_ci }}" == "No":
     os.remove(".travis.yml")
 
+if "{{ cookiecutter.doxygen }}" == "No":
+    os.rmdir("doc")
+
 # If the TODO.md file is empty, we remove it
 if os.stat("TODO.md").st_size == 0:
     os.remove("TODO.md")
