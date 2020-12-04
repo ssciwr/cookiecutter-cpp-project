@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 
 import os
+import subprocess
 
 
 @contextmanager
@@ -23,3 +24,10 @@ def test_project_tree(cookies):
     assert result.exception is None
     assert result.project.basename == 'test_project'
     assert result.project.isdir()
+
+    with inside_dir(result.project.dirpath()):
+        os.makedirs("build")
+        os.chdir("build")
+        subprocess.call("cmake ..".split())
+        subprocess.call("cmake --build .".split())
+        subprocess.call("ctest".split())
