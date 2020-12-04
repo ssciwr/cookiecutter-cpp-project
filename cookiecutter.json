@@ -1,0 +1,6 @@
+{
+    "project_name": "My C++ Project",
+    "project_slug": "{% if cookiecutter.project_name == 'My C++ Project' %}my-cpp-project{% else %}{{ cookiecutter.project_name|slugify }}{% endif %}",
+    "full_name": "Your Name",
+    "license": ["MIT", "BSD-2", "GPL-3.0", "LGPL-3.0", "None"]
+}
