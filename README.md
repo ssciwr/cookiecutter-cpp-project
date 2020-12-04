@@ -1,13 +1,17 @@
 # Welcome to C++ Project Cookiecutter!
 
 This repository is a template repository (a cookiecutter) that allows you to quickly
-set up new projects.
+set up new CMake-based C++ projects. If you are new to C++ and CMake, you might want
+to checkout out our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
+
+#
 
 # Prerequisites
 
-In order to use, C++ Project Cookiecutter you need the following software installed:
+In order to use this C++ Project Cookiecutter you need the following software installed:
 
 * [Cookiecutter](https://github.com/cookiecutter/cookiecutter) e.g. by doing `pip install cookiecutter`.
+* `git >= 1.8.2`
 
 # Using C++ Project Cookiecutter
 
@@ -23,9 +27,15 @@ This will start an interactive prompt that will configure and generate your proj
 
 This cookiecutter accepts the following configuration options:
 
-* `project_name`: defaults to `My C++ Project`
-* `project_slug`: defaults to `my-cpp-project`
-* `full_name`: defaults to `Your Name`
+* `project_name`: The human-readable name of the project, defaults to `My C++ Project`
+* `project_slug`: This will be the name of the generated directorym, defaults to `my-cpp-project`
+* `full_name`: Author name, defaults to `Your Name`
+* `license` adds a license file to the repository. It can be chosen from this list:
+    * `MIT` (default)
+    * `BSD-2`
+    * `GPL-3.0`
+    * `LGPL-3.0`
+    * `None`
 
 # Issues
 
