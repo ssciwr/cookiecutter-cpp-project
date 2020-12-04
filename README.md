@@ -36,6 +36,9 @@ This cookiecutter accepts the following configuration options:
     * `GPL-3.0`
     * `LGPL-3.0`
     * `None`
+* `github_actions_ci`: Whether to add a CI workflow for Github Actions
+* `gitlab_ci`: Whether to add a CI workflow for GitLab CI
+* `travis_ci`: Whether to add a CI workflow for Travis CI
 
 # Issues
 
