@@ -6,6 +6,7 @@
 # directory tree based on some configuration values.
 
 import os
+import shutil
 import subprocess
 import sys
 
@@ -27,7 +28,7 @@ if "{{ cookiecutter.doxygen }}" == "No":
 
 if "{{ cookiecutter.python_bindings }}" == "No":
     os.remove("setup.py")
-    os.rmdir("python")
+    shutil.rmtree("python")
 
 # If the TODO.md file is empty, we remove it
 if os.stat("TODO.md").st_size == 0:
