@@ -4,14 +4,13 @@ This repository is a template repository (a cookiecutter) that allows you to qui
 set up new CMake-based C++ projects. If you are new to C++ and CMake, you might want
 to checkout out our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
 
-#
-
 # Prerequisites
 
 In order to use this C++ Project Cookiecutter you need the following software installed:
 
+* Python `>= 3.6`
 * [Cookiecutter](https://github.com/cookiecutter/cookiecutter) e.g. by doing `pip install cookiecutter`.
-* `git >= 1.8.2`
+* Git `>= 1.8.2`
 
 # Using C++ Project Cookiecutter
 
