@@ -50,3 +50,13 @@ def test_gitlabci(cookies):
             r = requests.post("https://gitlab.com/api/v4/ci/lint", json={'content': f.read()})
         assert r.status_code == requests.codes['OK']
         assert r.json()["status"] == "valid"
+
+
+def test_python(cookies, virtualenv):
+    bake = cookies.bake(extra_context={'project_slug': 'my-project', 'python_bindings': 'Yes'})
+    with inside_bake(bake):
+        # Make sure that our Python package can be installed and imported
+        assert subprocess.call([virtualenv.python, "-m", "pip", "install", "."]) == 0
+        assert subprocess.call([virtualenv.python, "-c", "'import myproject'"]) == 0
+        assert subprocess.call([virtualenv.python, "-m", "pip", "install", "pytest"]) == 0
+        assert subprocess.call([virtualenv.python, "-m", "pytest"], cwd=os.path.join(os.getcwd(), "python")) == 0
