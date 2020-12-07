@@ -60,3 +60,13 @@ def test_python(cookies, virtualenv):
         assert subprocess.call([virtualenv.python, "-c", "'import myproject'"]) == 0
         assert subprocess.call([virtualenv.python, "-m", "pip", "install", "pytest"]) == 0
         assert subprocess.call([virtualenv.python, "-m", "pytest"], cwd=os.path.join(os.getcwd(), "python")) == 0
+
+
+def test_pypi_without_python(cookies):
+    bake = cookies.bake(extra_context={'python_bindings': 'No', 'pypi_release': 'Yes'})
+    assert bake.exit_code != 0
+
+
+def test_pypi_without_github(cookies):
+    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'Yes'})
+    assert bake.exit_code != 0
