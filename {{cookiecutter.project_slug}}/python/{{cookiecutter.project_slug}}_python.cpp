@@ -7,7 +7,7 @@ namespace py = pybind11;
 
 namespace {{ cookiecutter.project_slug.replace("-", "") }} {
 
-PYBIND11_MODULE({{ cookiecutter.project_slug }}_python, m)
+PYBIND11_MODULE({{ cookiecutter.project_slug.replace("-", "") }}, m)
 {
   m.doc() = "Python Bindings for {{ cookiecutter.project_name }}";
   m.def("add_one", &add_one, "Increments an integer value");

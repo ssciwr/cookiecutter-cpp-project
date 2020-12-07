@@ -17,3 +17,7 @@ The following tasks need to be done to get a fully working project:
 * Make sure that doxygen is installed on your system, e.g. by doing `sudo apt install doxygen`
   on Debian or Ubuntu.
 {% endif -%}
+{% if cookiecutter.python_bindings -%}
+* Edit the parameters of `setup()` in `setup.py` file to contain the necessary information
+  about your project, such as your email adress, PyPI classifiers and a short project description.
+{%- endif %}
