@@ -16,6 +16,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: make build directory
       run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
