@@ -30,12 +30,7 @@ This cookiecutter accepts the following configuration options:
 * `project_name`: The human-readable name of the project, defaults to `My C++ Project`
 * `project_slug`: This will be the name of the generated directorym, defaults to `my-cpp-project`
 * `full_name`: Author name, defaults to `Your Name`
-* `license` adds a license file to the repository. It can be chosen from this list:
-    * `MIT` (default)
-    * `BSD-2`
-    * `GPL-3.0`
-    * `LGPL-3.0`
-    * `None`
+* `license` adds a license file to the repository. It can be chosen from [MIT](https://opensource.org/licenses/MIT) (default), [BSD-2](https://opensource.org/licenses/BSD-2-Clause), [GPL-3.0](https://opensource.org/licenses/GPL-3.0), [LGPL-3.0](https://opensource.org/licenses/LGPL-3.0) or it can be omitted.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `travis_ci`: Whether to add a CI workflow for Travis CI
@@ -47,6 +42,10 @@ This cookiecutter accepts the following configuration options:
   This is currently limited to Github Actions CI as it provides cloud-based runners all relevant
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
   generated in the Github UI.
+
+If you are using `cookiecutter-cpp-project` a lot, you can customize your default values
+by providing a `.cookiecutterrc` file in your home directory, for more details see the
+[cookiecutter documentation](https://cookiecutter.readthedocs.io/en/latest/advanced/user_config.html).
 
 # Issues
 
