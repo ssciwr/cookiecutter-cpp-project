@@ -87,3 +87,42 @@ jobs:
       shell: bash
       working-directory: ${{ "{{runner.workspace}}" }}/build
       run: ctest
+
+  coverage-test:
+    name: Coverage Testing
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Install LCov
+      run: |
+        sudo apt-get install -y lcov
+
+    - name: make build directory
+      run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
+
+    - name: configure cmake
+      shell: bash
+      working-directory: ${{ "{{runner.workspace}}" }}/build
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage"
+
+    - name: build
+      shell: bash
+      working-directory: ${{ "{{runner.workspace}}" }}/build
+      run: cmake --build .
+
+    - name: run tests
+      shell: bash
+      working-directory: ${{ "{{runner.workspace}}" }}/build
+      run: ctest
+
+    - name: collect coverage report
+      shell: bash
+      working-directory: ${{ "{{runner.workspace}}" }}/build
+      run: |
+        lcov --directory ./build/tests/CMakeFiles/tests.dir --capture --output-file coverage.info
+        lcov --remove coverage.info '/usr/*' '*/{{ cookiecutter.project_slug }}/tests/*' --output-file coverage.info
+        bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"

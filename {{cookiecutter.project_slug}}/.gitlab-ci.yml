@@ -36,3 +36,19 @@ build-and-test:gcc:
 build-and-test:clang:
   image: conanio/clang10
   <<: *template
+
+{% if cookiecutter.codecovio_username != "None" %}
+generate-coverage-report:
+  image: conanio/gcc9
+  before_script:
+    - apt-get install -yy lcov
+  script:
+    - cmake -E make_directory build
+    - cd build
+    - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="--coverage" ..
+    - cmake --build .
+    - ctest
+    - lcov --directory ./build/tests/CMakeFiles/tests.dir --capture --output-file coverage.info
+    - lcov --remove coverage.info '/usr/*' '*/{{ cookiecutter.project_slug }}/tests/*' --output-file coverage.info
+    - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+{% endif %}

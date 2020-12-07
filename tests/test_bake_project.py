@@ -141,6 +141,11 @@ def test_pypi_without_github(cookies):
     assert bake.exit_code != 0
 
 
+def test_codecov_without_license(cookies):
+    bake = cookies.bake(extra_context={'license': 'None', 'codecovio': 'Yes')
+    assert bake.exit_code != 0
+
+
 @pytest.mark.local
 @pytest.mark.parametrize(
     "remote_url",
