@@ -45,9 +45,9 @@ def test_project_tree(cookies):
     with inside_bake(bake):
         os.makedirs("build")
         os.chdir("build")
-        assert subprocess.call("cmake ..".split()) == 0
-        assert subprocess.call("cmake --build .".split()) == 0
-        assert subprocess.call("ctest".split()) == 0
+        subprocess.check_call("cmake ..".split())
+        subprocess.check_call("cmake --build .".split())
+        subprocess.check_call("ctest".split())
 
 
 def test_doxygen(cookies):
@@ -55,8 +55,8 @@ def test_doxygen(cookies):
     with inside_bake(bake):
         os.makedirs("build")
         os.chdir("build")
-        assert subprocess.call("cmake ..".split()) == 0
-        assert subprocess.call("cmake --build . --target doxygen".split()) == 0
+        subprocess.check_call("cmake ..".split())
+        subprocess.check_call("cmake --build . --target doxygen".split())
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "html", "index.html"))
 
 
@@ -83,10 +83,10 @@ def test_python(cookies, virtualenv):
     bake = cookies.bake(extra_context={'project_slug': 'my-project', 'python_bindings': 'Yes'})
     with inside_bake(bake):
         # Make sure that our Python package can be installed and imported
-        assert subprocess.call([virtualenv.python, "-m", "pip", "install", "."]) == 0
-        assert subprocess.call([virtualenv.python, "-c", "'import myproject'"]) == 0
-        assert subprocess.call([virtualenv.python, "-m", "pip", "install", "pytest"]) == 0
-        assert subprocess.call([virtualenv.python, "-m", "pytest"], cwd=os.path.join(os.getcwd(), "python")) == 0
+        subprocess.check_call([virtualenv.python, "-m", "pip", "install", "."])
+        subprocess.check_call([virtualenv.python, "-c", "'import myproject'"])
+        subprocess.check_call([virtualenv.python, "-m", "pip", "install", "pytest"])
+        subprocess.check_call([virtualenv.python, "-m", "pytest"], cwd=os.path.join(os.getcwd(), "python"))
 
 
 def test_pypi_without_python(cookies):
