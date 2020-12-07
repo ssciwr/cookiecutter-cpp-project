@@ -6,7 +6,9 @@
 # directory tree based on some configuration values.
 
 import os
+import shutil
 import subprocess
+import sys
 
 # Optionally remove files whose existence is tied to disabled features
 if "{{ cookiecutter.license }}" == "None":
@@ -24,6 +26,10 @@ if "{{ cookiecutter.travis_ci }}" == "No":
 if "{{ cookiecutter.doxygen }}" == "No":
     os.rmdir("doc")
 
+if "{{ cookiecutter.python_bindings }}" == "No":
+    os.remove("setup.py")
+    shutil.rmtree("python")
+
 # If the TODO.md file is empty, we remove it
 if os.stat("TODO.md").st_size == 0:
     os.remove("TODO.md")
@@ -32,7 +38,18 @@ if os.stat("TODO.md").st_size == 0:
 subprocess.call("git init".split())
 
 # Add submodules depending on features
-subprocess.call("git submodule add -b v2.x https://github.com/catchorg/Catch2.git ext/Catch2".split())
+def add_submodule(url, location, branch=None):
+    command = ["git", "submodule", "add"]
+    if branch is not None:
+        command = command + ["-b", branch]
+    command = command + [url, location]
+    ret = subprocess.call(command)
+    if ret != 0:
+        sys.exit(ret)
+
+add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", branch="v2.x")
+if "{{ cookiecutter.python_bindings }}" == "Yes":
+    add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", branch="stable")
 
 # Finalize by making an initial git commit
 subprocess.call("git add *".split())

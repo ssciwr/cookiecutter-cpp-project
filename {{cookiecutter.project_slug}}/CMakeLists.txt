@@ -6,6 +6,10 @@ project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
 # this needs to be in the top level CMakeLists.txt:
 include(CTest)
 
+{% if cookiecutter.python_bindings == "Yes" -%}
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+{%- endif %}
+
 # compile the library
 add_subdirectory(src)
 
@@ -16,7 +20,13 @@ add_subdirectory(app)
 add_subdirectory(ext/Catch2)
 add_subdirectory(tests)
 
-# Add the documentation
 {% if cookiecutter.doxygen == "Yes" -%}
+# Add the documentation
 add_subdirectory(doc)
+{%- endif %}
+
+{% if cookiecutter.python_bindings == "Yes" -%}
+# Add Python bindings
+add_subdirectory(ext/pybind11)
+add_subdirectory(python)
 {%- endif %}

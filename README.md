@@ -41,6 +41,11 @@ This cookiecutter accepts the following configuration options:
 * `travis_ci`: Whether to add a CI workflow for Travis CI
 * `doxygen`: Whether a Doxygen documentation should be extracted from the project
 * `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `11` (default), `14`, `17`, `20` and `03`.
+* `python_bindings`: Whether to automatically add a PyBind11-based Python binding package.
+* `pypi_release`: Whether to add an automatic PyPI deploy workflow to the CI system.
+  This is currently limited to Github Actions CI as it provides cloud-based runners all relevant
+  platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
+  generated in the Github UI.
 
 # Issues
 
