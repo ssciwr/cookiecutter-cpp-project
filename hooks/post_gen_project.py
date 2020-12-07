@@ -9,6 +9,28 @@ import os
 import shutil
 import subprocess
 import sys
+from contextlib import contextmanager
+
+
+class GitRepository(object):
+    """ A context for the setup of a Git repository """
+    def __enter__(self):
+        # Initialize the git repository
+        subprocess.check_call("git init".split())
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        # Finalize by making an initial git commit
+        subprocess.check_call("git add *".split())
+        subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
+
+    def add_submodule(self, url, location, branch=None):
+        command = ["git", "submodule", "add"]
+        if branch is not None:
+            command = command + ["-b", branch]
+        command = command + [url, location]
+        subprocess.check_call(command)
+
 
 # Optionally remove files whose existence is tied to disabled features
 if "{{ cookiecutter.license }}" == "None":
@@ -34,26 +56,13 @@ if "{{ cookiecutter.python_bindings }}" == "No":
 if os.stat("TODO.md").st_size == 0:
     os.remove("TODO.md")
 
-# Run 'git init' on the generated project
-subprocess.call("git init".split())
 
-# Add submodules depending on features
-def add_submodule(url, location, branch=None):
-    command = ["git", "submodule", "add"]
-    if branch is not None:
-        command = command + ["-b", branch]
-    command = command + [url, location]
-    ret = subprocess.call(command)
-    if ret != 0:
-        sys.exit(ret)
+# Set up a Git repository with submodules
+with GitRepository() as repo:
+    repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", branch="v2.x")
+    if "{{ cookiecutter.python_bindings }}" == "Yes":
+        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", branch="stable")
 
-add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", branch="v2.x")
-if "{{ cookiecutter.python_bindings }}" == "Yes":
-    add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", branch="stable")
-
-# Finalize by making an initial git commit
-subprocess.call("git add *".split())
-subprocess.call(["git", "commit", "-m", "Initial Commit"])
 
 # Print a message about success
 print("The project {{ cookiecutter.project_slug }} was successfully generated!")
