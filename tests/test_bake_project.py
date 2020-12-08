@@ -6,6 +6,7 @@ import os
 import pytest
 import requests
 import subprocess
+import time
 from ruamel.yaml import YAML
 
 
@@ -103,5 +104,31 @@ def test_pypi_without_github(cookies):
 def test_github_actions_ci_on_deployed_bake(cookies):
     bake = cookies.bake(extra_context={'github_actions_ci': 'Yes', 'project_slug': 'test-github-actions-cookiecutter-cpp-project'})
     with inside_bake(bake):
+        # Push to Github
         subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
+
+        # Find the Workflow ID of the triggered Workflow - after giving it 2 seconds to properly initiate
+        time.sleep(2)
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode()
+        req = requests.get("https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/workflows/ci.yml/runs")
+        workflow_id = None
+        for workflow in json.loads(req.text)['workflow_runs']:
+            print("Comparing '{}' to '{}'".format(workflow["head_sha"], bake_sha1.strip()))
+            if workflow['head_sha'] == bake_sha1.strip():
+                workflow_id = workflow['id']
+        assert workflow_id is not None
+
+        # Poll the Github API if the Workflow completed
+        req = None
+        def check_complete():
+            req = requests.get("https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/runs/{}".format(workflow_id))
+            print(json.loads(req.text))
+            status = json.loads(req.text)["status"]
+            return status == 'completed'
+
+        while not check_complete():
+            time.sleep(1)
+
+        # We require the CI run to be successful!
+        assert json.loads(req.text)["conclusion"] == 'success'
