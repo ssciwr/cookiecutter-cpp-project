@@ -5,13 +5,11 @@
 # An example of a post-hook would be to remove parts of the project
 # directory tree based on some configuration values.
 
-import logging
 import os
 import subprocess
 import sys
 from cookiecutter.utils import rmtree
 
-logger = logging.getLogger(__name__)
 
 class GitRepository(object):
     """ A context for the setup of a Git repository """
