@@ -122,7 +122,6 @@ def test_github_actions_ci_on_deployed_bake(cookies):
         assert workflow_id is not None
 
         # Poll the Github API if the Workflow completed
-        req = None
         def check_complete():
             req = requests.get(
                 "https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/runs/{}".format(workflow_id),
@@ -137,4 +136,8 @@ def test_github_actions_ci_on_deployed_bake(cookies):
             time.sleep(30)
 
         # We require the CI run to be successful!
+        req = requests.get(
+            "https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/runs/{}".format(workflow_id),
+            headers={'Authorization': os.getenv("GH_API_ACCESS_TOKEN")}
+        )
         assert json.loads(req.text)["conclusion"] == 'success'
