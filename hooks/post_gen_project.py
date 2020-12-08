@@ -5,12 +5,13 @@
 # An example of a post-hook would be to remove parts of the project
 # directory tree based on some configuration values.
 
+import logging
 import os
-import shutil
 import subprocess
 import sys
-from contextlib import contextmanager
+from cookiecutter.utils import rmtree
 
+logger = logging.getLogger(__name__)
 
 class GitRepository(object):
     """ A context for the setup of a Git repository """
@@ -35,28 +36,27 @@ class GitRepository(object):
 
 
 # Optionally remove files whose existence is tied to disabled features
-if "{{ cookiecutter.license }}" == "None":
-    os.remove("LICENSE.md")
+def conditional_remove(condition, path):
+    if condition:
+        try:
+            if os.path.isfile(path):
+                os.remove(path)
+            else:
+                rmtree(path)
+        except PermissionError:
+            # This sometimes happen on Windows and we have not fully figured out
+            # why and how this can be solved. For now, we issue a warning.
+            logger.warn("Tried to remove {}, but failed.".format(path))
 
-if "{{ cookiecutter.github_actions_ci }}" == "No":
-    os.remove(".github/workflows/ci.yml")
 
-if "{{ cookiecutter.gitlab_ci }}" == "No":
-    os.remove(".gitlab-ci.yml")
-
-if "{{ cookiecutter.travis_ci }}" == "No":
-    os.remove(".travis.yml")
-
-if "{{ cookiecutter.doxygen }}" == "No":
-    os.rmdir("doc")
-
-if "{{ cookiecutter.python_bindings }}" == "No":
-    os.remove("setup.py")
-    shutil.rmtree("python")
-
-# If the TODO.md file is empty, we remove it
-if os.stat("TODO.md").st_size == 0:
-    os.remove("TODO.md")
+conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
+conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github/workflows/ci.yml")
+conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
+conditional_remove("{{ cookiecutter.travis_ci }}" == "No", ".travis.yml")
+conditional_remove("{{ cookiecutter.doxygen }}" == "No", "doc")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "setup.py")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
+conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 
 # Set up a Git repository with submodules
