@@ -32,11 +32,15 @@ jobs:
       run: |
         python -m pip install -r requirements-dev.txt
 
-    - name: Install Doxygen
+    - name: Install Doxygen (Linux, MacOS)
       if: runner.os != "Windows"
       run: |
-        sudo apt-get install doxygen
+        sudo apt-get install -y doxygen
 
+    - name: Install Doxygen (Windows)
+      if: runner.os == "Windows"
+      run: |
+        choco install -y doxygen.install
 
     - name: Set up git identity
       run: |
