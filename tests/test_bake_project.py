@@ -132,7 +132,9 @@ def test_github_actions_ci_on_deployed_bake(cookies):
             return status == 'completed'
 
         while not check_complete():
-            time.sleep(1)
+            # We poll at a relatively large interval to avoid running against the Github API
+            # limitations in times of heavy development activities on the cookiecutter.
+            time.sleep(30)
 
         # We require the CI run to be successful!
         assert json.loads(req.text)["conclusion"] == 'success'
