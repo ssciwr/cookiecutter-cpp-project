@@ -141,3 +141,40 @@ def test_github_actions_ci_on_deployed_bake(cookies):
             headers={'Authorization': os.getenv("GH_API_ACCESS_TOKEN")}
         )
         assert json.loads(req.text)["conclusion"] == 'success'
+
+
+def test_gitlab_ci_on_deployed_bake(cookies):
+    bake = cookies.bake(extra_context={'gitlab_ci': 'Yes', 'project_slug': 'test-gitlab-ci-cookiecutter-cpp-project'})
+    with inside_bake(bake):
+        # Push to Gitlab.com
+        subprocess.check_call("git remote add origin git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
+        subprocess.check_call("git push -f origin main".split())
+
+        # Find the Workflow ID of the triggered Workflow - after giving it 2 seconds to properly initiate
+        time.sleep(2)
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode()
+        req = requests.get(
+            "https://gitlab.example.com/api/v4/projects/dokempf%2Ftest-gitlab-ci-cookiecutter-cpp-project/pipelines",
+            headers={'PRIVATE_TOKEN': os.getenv("GL_API_ACCESS_TOKEN")}
+        )
+        pipeline_id = None
+        for pipeline in json.loads(req.text):
+            if pipeline['sha'] == bake_sha1.strip():
+                pipeline_id = pipeline['id']
+        assert pipeline_id is not None
+
+        # Poll the Github API if the Workflow completed
+        def check_complete():
+            req = requests.get(
+                "https://gitlab.example.com/api/v4/projects/dokempf%2Ftest-gitlab-ci-cookiecutter-cpp-project/pipelines/{}".format(pipeline_id),
+                headers={'PRIVATE_TOKEN': os.getenv("GL_API_ACCESS_TOKEN")}
+            )
+            status = json.loads(req.text)["status"]
+            if status in ["failed", "cancelled", "skipped"]:
+                pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
+            return status == 'success'
+
+        while not check_complete():
+            # We poll at a relatively large interval to avoid running against the Github API
+            # limitations in times of heavy development activities on the cookiecutter.
+            time.sleep(30)

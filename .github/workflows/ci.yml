@@ -69,5 +69,6 @@ jobs:
       if: runner.os == 'Linux' && matrix.python-version == '3.8'
       env:
         GH_API_ACCESS_TOKEN: ${{ secrets.GH_API_ACCESS_TOKEN }}
+        GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
       run: |
         python -m pytest -k deploy
