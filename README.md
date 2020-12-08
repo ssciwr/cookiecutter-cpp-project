@@ -2,7 +2,7 @@
 
 This repository is a template repository (a cookiecutter) that allows you to quickly
 set up new CMake-based C++ projects. If you are new to C++ and CMake, you might want
-to checkout out our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
+to checkout our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
 
 # Prerequisites
 
@@ -50,4 +50,4 @@ by providing a `.cookiecutterrc` file in your home directory, for more details s
 # Issues
 
 Please report any issues you might have with template using [the Github issue
-tracker](https://githab.com/ssciwr/cookiecutter-cpp-project)
+tracker](https://github.com/ssciwr/cookiecutter-cpp-project/issues)
