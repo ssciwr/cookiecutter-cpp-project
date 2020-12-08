@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  # We run CI on pushes to the main branch
+  push:
+    branches: [ $default-branch ]
+  # and on all pull requests to the main branch
+  pull_request:
+    branches: [ $default-branch ]
+  # as well as upon manual triggers through the 'Actions' tab of the Github UI
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Testing on ${{ "{{matrix.os}}" }}
+    runs-on: ${{ "{{matrix.os}}" }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macos-10.15, windows-2019]
+        python-version: [3.6, 3.7, 3.8]
+
+    steps:
+    - name: Checking out the cookie cutter repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install test requirements
+      run: |
+        python -m pip install -r requirements-dev.txt
+
+    - name: Run test suite
+      run: |
+        python -m pytest
