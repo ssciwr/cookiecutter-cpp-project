@@ -98,3 +98,10 @@ def test_pypi_without_python(cookies):
 def test_pypi_without_github(cookies):
     bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'Yes'})
     assert bake.exit_code != 0
+
+
+def test_github_actions_ci_on_deployed_bake(cookies):
+    bake = cookies.bake(extra_context={'github_actions_ci': 'Yes', 'project_slug': 'test-github-actions-cookiecutter-cpp-project'})
+    with inside_bake(bake):
+        subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
+        subprocess.check_call("git push -f origin main".split())

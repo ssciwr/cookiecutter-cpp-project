@@ -30,6 +30,12 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Set up SSH Agent to deploy to test repositories
+      uses: webfactory/ssh-agent@v0.4.1
+      with:
+        ssh-private-key: |
+          ${{ secrets.GHA_TEST_PRIVATE_KEY }}
+
     - name: Install test requirements
       run: |
         python -m pip install -r requirements-dev.txt
