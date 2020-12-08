@@ -38,15 +38,10 @@ class GitRepository(object):
 # Optionally remove files whose existence is tied to disabled features
 def conditional_remove(condition, path):
     if condition:
-        try:
-            if os.path.isfile(path):
-                os.remove(path)
-            else:
-                rmtree(path)
-        except PermissionError:
-            # This sometimes happen on Windows and we have not fully figured out
-            # why and how this can be solved. For now, we issue a warning.
-            logger.warn("Tried to remove {}, but failed.".format(path))
+        if os.path.isfile(path):
+            os.remove(path)
+        else:
+            rmtree(path)
 
 
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")

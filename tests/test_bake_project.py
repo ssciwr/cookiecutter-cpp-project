@@ -28,7 +28,8 @@ def check_file_against_schemastore(filename, schema_url):
     """
     schema = json.loads(requests.get(schema_url).text)
     yaml = YAML(typ='safe')
-    config = yaml.load(open(filename))
+    with open(filename) as f:
+        config = yaml.load(f)
     try:
         jsonschema.validate(config, schema)
     except jsonschema.ValidationError:
