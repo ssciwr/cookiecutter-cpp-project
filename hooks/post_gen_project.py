@@ -24,12 +24,14 @@ class GitRepository(object):
         subprocess.check_call("git add *".split())
         subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
 
-    def add_submodule(self, url, location, branch=None):
+    def add_submodule(self, url, location, branch=None, tag=None):
         command = ["git", "submodule", "add"]
         if branch is not None:
             command = command + ["-b", branch]
         command = command + [url, location]
         subprocess.check_call(command)
+        if tag is not None:
+            subprocess.check_call(["git", "checkout", tag], cwd=os.path.join(os.getcwd(), *os.path.split(location)))
 
 
 # Optionally remove files whose existence is tied to disabled features
@@ -59,9 +61,9 @@ if os.stat("TODO.md").st_size == 0:
 
 # Set up a Git repository with submodules
 with GitRepository() as repo:
-    repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", branch="v2.x")
+    repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v2.13.3")
     if "{{ cookiecutter.python_bindings }}" == "Yes":
-        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", branch="stable")
+        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v2.6.1")
 
 
 # Print a message about success

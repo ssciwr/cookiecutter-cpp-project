@@ -1,10 +1,14 @@
 name: CI
 
 on:
+  # We run CI on pushes to the main branch
   push:
-    branches: [ main ]
+    branches: [ $default-branch ]
+  # and on all pull requests to the main branch
   pull_request:
-    branches: [ main ]
+    branches: [ $default-branch ]
+  # as well as upon manual triggers through the 'Actions' tab of the Github UI
+  workflow_dispatch:
 
 jobs:
   build-and-test:
@@ -16,6 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: make build directory
       run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
