@@ -1,10 +1,14 @@
 name: CI
 
 on:
+  # We run CI on pushes to the main branch
   push:
     branches: [ main ]
+  # and on all pull requests to the main branch
   pull_request:
     branches: [ main ]
+  # as well as upon manual triggers through the 'Actions' tab of the Github UI
+  workflow_dispatch:
 
 jobs:
   build-and-test:
