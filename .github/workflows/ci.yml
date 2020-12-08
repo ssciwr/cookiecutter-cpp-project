@@ -3,17 +3,19 @@ name: CI
 on:
   # We run CI on pushes to the main branch
   push:
-    branches: [ $default-branch ]
+    branches:
+      - main
   # and on all pull requests to the main branch
   pull_request:
-    branches: [ $default-branch ]
+    branches:
+      - main
   # as well as upon manual triggers through the 'Actions' tab of the Github UI
   workflow_dispatch:
 
 jobs:
   test:
-    name: Testing on ${{ "{{matrix.os}}" }}
-    runs-on: ${{ "{{matrix.os}}" }}
+    name: Testing on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-18.04, macos-10.15, windows-2019]
@@ -31,6 +33,26 @@ jobs:
     - name: Install test requirements
       run: |
         python -m pip install -r requirements-dev.txt
+
+    - name: Install Doxygen (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get install -y doxygen
+
+    - name: Install Doxygen (MacOS)
+      if: runner.os == 'macOS'
+      run: |
+        brew install doxygen
+
+    - name: Install Doxygen (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        choco install -y doxygen.install
+
+    - name: Set up git identity
+      run: |
+        git config --global user.email "ssc@citestuser.com"
+        git config --global user.name "SSC CI Test User"
 
     - name: Run test suite
       run: |

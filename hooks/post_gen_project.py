@@ -6,10 +6,9 @@
 # directory tree based on some configuration values.
 
 import os
-import shutil
 import subprocess
 import sys
-from contextlib import contextmanager
+from cookiecutter.utils import rmtree
 
 
 class GitRepository(object):
@@ -35,28 +34,22 @@ class GitRepository(object):
 
 
 # Optionally remove files whose existence is tied to disabled features
-if "{{ cookiecutter.license }}" == "None":
-    os.remove("LICENSE.md")
+def conditional_remove(condition, path):
+    if condition:
+        if os.path.isfile(path):
+            os.remove(path)
+        else:
+            rmtree(path)
 
-if "{{ cookiecutter.github_actions_ci }}" == "No":
-    os.remove(".github/workflows/ci.yml")
 
-if "{{ cookiecutter.gitlab_ci }}" == "No":
-    os.remove(".gitlab-ci.yml")
-
-if "{{ cookiecutter.travis_ci }}" == "No":
-    os.remove(".travis.yml")
-
-if "{{ cookiecutter.doxygen }}" == "No":
-    os.rmdir("doc")
-
-if "{{ cookiecutter.python_bindings }}" == "No":
-    os.remove("setup.py")
-    shutil.rmtree("python")
-
-# If the TODO.md file is empty, we remove it
-if os.stat("TODO.md").st_size == 0:
-    os.remove("TODO.md")
+conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
+conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github/workflows/ci.yml")
+conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
+conditional_remove("{{ cookiecutter.travis_ci }}" == "No", ".travis.yml")
+conditional_remove("{{ cookiecutter.doxygen }}" == "No", "doc")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "setup.py")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
+conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 
 # Set up a Git repository with submodules
