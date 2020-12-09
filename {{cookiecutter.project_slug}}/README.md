@@ -10,7 +10,7 @@
 
 Building {{ cookiecutter.project_name }} requires the following software installed:
 
-* A C++{{ cookiecutter.cxx_min_standard }}-compliant compiler
+* A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
 * CMake `>= 3.9`
 {% if cookiecutter.doxygen -%}* Doxygen (optional, documentation building is skipped if missing){% endif %}
 {% if cookiecutter.python_bindings -%}* Python `>= 3.6` for building Python bindings{% endif %}
