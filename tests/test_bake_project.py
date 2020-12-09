@@ -103,6 +103,7 @@ def test_pypi_without_github(cookies):
     assert bake.exit_code != 0
 
 
+@pytest.mark.deploy
 def test_github_actions_ci_on_deployed_bake(cookies):
     bake = cookies.bake(extra_context={'github_actions_ci': 'Yes', 'project_slug': 'test-github-actions-cookiecutter-cpp-project'})
     with inside_bake(bake):
@@ -130,6 +131,7 @@ def test_github_actions_ci_on_deployed_bake(cookies):
         assert workflow.conclusion == 'success'
 
 
+@pytest.mark.deploy
 def test_gitlab_ci_on_deployed_bake(cookies):
     bake = cookies.bake(extra_context={'gitlab_ci': 'Yes', 'project_slug': 'test-gitlab-ci-cookiecutter-cpp-project'})
     with inside_bake(bake):

@@ -56,7 +56,7 @@ jobs:
 
     - name: Run regular test suite
       run: |
-        python -m pytest -k 'not deploy'
+        python -m pytest -m 'not deploy'
 
   deploy-test:
     name: Deploying to hosters and run their CI
@@ -98,4 +98,4 @@ jobs:
         GH_API_ACCESS_TOKEN: ${{ secrets.GH_API_ACCESS_TOKEN }}
         GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
       run: |
-        python -m pytest -k deploy
+        python -m pytest -m deploy
