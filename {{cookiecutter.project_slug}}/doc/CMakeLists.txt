@@ -16,6 +16,7 @@ if(DOXYGEN_FOUND)
                     COMMAND
                     sphinx-build -b html
                     -Dbreathe_projects.{{ cookiecutter.project_slug }}="${CMAKE_CURRENT_BINARY_DIR}/xml"
+                    -c ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}/sphinx
                     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
