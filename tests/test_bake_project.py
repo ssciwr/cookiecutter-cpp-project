@@ -1,5 +1,3 @@
-from contextlib import contextmanager
-
 import json
 import jsonschema
 import os
@@ -7,6 +5,7 @@ import pytest
 import requests
 import subprocess
 from ruamel.yaml import YAML
+from contextlib import contextmanager
 
 
 @contextmanager

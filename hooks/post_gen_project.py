@@ -16,6 +16,7 @@ class GitRepository(object):
     def __enter__(self):
         # Initialize the git repository
         subprocess.check_call("git init".split())
+        subprocess.check_call("git checkout -b main".split())
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
