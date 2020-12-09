@@ -3,13 +3,15 @@ cmake_minimum_required(VERSION 3.9)
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
 
+# Define the minimum C++ standard that is required
+set(CMAKE_CXX_STANDARD {{ cookiecutter.cxx_minimum_standard }})
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # this needs to be in the top level CMakeLists.txt:
 include(CTest)
-
 {% if cookiecutter.python_bindings == "Yes" -%}
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 {%- endif %}
-
 # compile the library
 add_subdirectory(src)
 
@@ -24,7 +26,6 @@ add_subdirectory(tests)
 # Add the documentation
 add_subdirectory(doc)
 {%- endif %}
-
 {% if cookiecutter.python_bindings == "Yes" -%}
 # Add Python bindings
 add_subdirectory(ext/pybind11)

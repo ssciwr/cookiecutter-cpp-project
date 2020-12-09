@@ -4,6 +4,21 @@ This repository is a template repository (a cookiecutter) that allows you to qui
 set up new CMake-based C++ projects. If you are new to C++ and CMake, you might want
 to checkout our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
 
+# Features
+
+The core features of our C++ Cookiecutter in a nutshell:
+
+* Very simple, configurable setup of a fully functional C++ project
+* Choose and add a license and copyright statement to your project
+* Ready-to-use integration with the following CI providers:
+  * Github Actions
+  * Gitlab CI
+  * Travis CI
+* Generation of Doxygen documentation
+* Setup of Python bindings with Pybind11
+* CI-based deployment of Python bindings to PyPI
+* Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
+
 # Prerequisites
 
 In order to use this C++ Project Cookiecutter you need the following software installed:
@@ -11,6 +26,12 @@ In order to use this C++ Project Cookiecutter you need the following software in
 * Python `>= 3.6`
 * [Cookiecutter](https://github.com/cookiecutter/cookiecutter) e.g. by doing `pip install cookiecutter`.
 * Git `>= 1.8.2`
+
+In addition, the project that is generated from this cookiecutter will require the following software:
+
+* A C++ compiler, e.g. `g++` or `clang++`
+* CMake `>= 3.9`
+* Doxygen (optional, but recommended)
 
 # Using C++ Project Cookiecutter
 
@@ -39,7 +60,7 @@ This cookiecutter accepts the following configuration options:
   for testing and [pybind11](https://github.com/pybind/pybind11) for potential Python bindings).
 * `python_bindings`: Whether to automatically add a PyBind11-based Python binding package.
 * `pypi_release`: Whether to add an automatic PyPI deploy workflow to the CI system.
-  This is currently limited to Github Actions CI as it provides cloud-based runners all relevant
+  This is currently limited to Github Actions CI as it provides cloud-based runners for all relevant
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
   generated in the Github UI.
 

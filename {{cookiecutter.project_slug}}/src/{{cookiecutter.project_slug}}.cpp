@@ -1,4 +1,3 @@
-
 #include "{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp"
 
 namespace {{ cookiecutter.project_slug.replace("-", "") }} {

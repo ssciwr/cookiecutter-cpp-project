@@ -43,13 +43,15 @@ def conditional_remove(condition, path):
             rmtree(path)
 
 
+conditional_remove(True, "ext/.keep")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
-conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github/workflows/ci.yml")
 conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
 conditional_remove("{{ cookiecutter.travis_ci }}" == "No", ".travis.yml")
 conditional_remove("{{ cookiecutter.doxygen }}" == "No", "doc")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "setup.py")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
+conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
+conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 

@@ -31,10 +31,10 @@ def test_github_actions_ci_on_deployed_bake(cookies):
 
         # Authenticate with the Github API
         gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
-        repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
 
         # Find the workflow of the triggered Workflow - after giving it 2 seconds to properly initiate
         time.sleep(2)
+        repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
         workflow = repo.get_workflow("ci.yml").get_runs()[0]
         assert workflow.head_sha == bake_sha1
 
@@ -68,9 +68,7 @@ def test_gitlab_ci_on_deployed_bake(cookies):
 
         # Poll the pipeline status
         while pipeline.status != 'success':
-            # We poll at a relatively large interval to avoid running against the Github API
-            # limitations in times of heavy development activities on the cookiecutter.
-            time.sleep(30)
+            time.sleep(5)
             pipeline.refresh()
             if pipeline.status in ["failed", "cancelled", "skipped"]:
                 pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))

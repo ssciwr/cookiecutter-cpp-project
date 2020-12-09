@@ -2,7 +2,7 @@
 
 namespace {{ cookiecutter.project_slug.replace("-", "") }} {
 
-{%- if cookiecutter.doxygen == "Yes" -%}
+{% if cookiecutter.doxygen == "Yes" -%}
 /** @brief A very interesting function!
  *
  * This function is of course just a self-explanatory placeholder,
@@ -12,7 +12,7 @@ namespace {{ cookiecutter.project_slug.replace("-", "") }} {
  * @param x The number to increase
  * @returns the successor of x
  */
-{%- endif -%}
+{%- endif %}
 int add_one(int x);
 
 } // namespace {{ cookiecutter.project_slug.replace("-", "") }}
