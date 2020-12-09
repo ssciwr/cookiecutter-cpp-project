@@ -88,6 +88,7 @@ jobs:
       with:
         ssh-private-key: |
           ${{ secrets.GHA_TEST_PRIVATE_KEY }}
+          ${{ secrets.RTD_TEST_PRIVATE_KEY }}
 
     - name: Add gitlab.com to the list of known hosts
       run: |
@@ -97,5 +98,6 @@ jobs:
       env:
         GH_API_ACCESS_TOKEN: ${{ secrets.GH_API_ACCESS_TOKEN }}
         GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
+        RTD_API_ACCESS_TOKEN: ${{ secrets.RTD_API_ACCESS_TOKEN }}
       run: |
         python -m pytest -m deploy

@@ -2,6 +2,7 @@ import github
 import gitlab
 import os
 import pytest
+import requests
 import subprocess
 import time
 from contextlib import contextmanager
@@ -22,7 +23,7 @@ def inside_bake(bake):
 
 @pytest.mark.deploy
 def test_github_actions_ci_on_deployed_bake(cookies):
-    bake = cookies.bake(extra_context={'github_actions_ci': 'Yes', 'project_slug': 'test-github-actions-cookiecutter-cpp-project'})
+    bake = cookies.bake(extra_context={'github_actions_ci': 'Yes'})
     with inside_bake(bake):
         # Push to Github
         subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
@@ -50,7 +51,7 @@ def test_github_actions_ci_on_deployed_bake(cookies):
 
 @pytest.mark.deploy
 def test_gitlab_ci_on_deployed_bake(cookies):
-    bake = cookies.bake(extra_context={'gitlab_ci': 'Yes', 'project_slug': 'test-gitlab-ci-cookiecutter-cpp-project'})
+    bake = cookies.bake(extra_context={'gitlab_ci': 'Yes'})
     with inside_bake(bake):
         # Push to Gitlab.com
         subprocess.check_call("git remote add origin git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
@@ -72,3 +73,34 @@ def test_gitlab_ci_on_deployed_bake(cookies):
             pipeline.refresh()
             if pipeline.status in ["failed", "cancelled", "skipped"]:
                 pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
+
+
+@pytest.mark.deploy
+def test_readthedocs_deploy(cookies):
+    bake = cookies.bake(extra_context={'readthedocs': 'Yes'})
+    with inside_bake(bake):
+        # Push to Github
+        subprocess.check_call("git remote add origin git@github.com:dokempf/test-rtd-github-cookiecutter-cpp-project.git".split())
+        subprocess.check_call("git push -f origin main".split())
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
+
+        def rtd_api_request(endpoint):
+            response = requests.get(
+                'https://readthedocs.org/api/v3/projects/test-rtd-github-cookiecutter-cpp-project/{}'.format(endpoint),
+                headers={'Authorization': 'token {}'.format(os.getenv('RTD_API_ACCESS_TOKEN'))}
+            )
+            return response.json()
+
+        # Wait for the webhook to trigger
+        time.sleep(2)
+        last_build_id = rtd_api_request("versions/latest/builds")["results"][0]["id"]
+
+        # Check that the build has the correct commit
+        build = rtd_api_request('builds/{}'.format(last_build_id))
+        assert build["commit"] == bake_sha1
+
+        while build['state']['code'] != 'finished':
+            time.sleep(5)
+            build = rtd_api_request('builds/{}'.format(last_build_id))
+
+        assert build['success']
