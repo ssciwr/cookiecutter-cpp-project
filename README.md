@@ -15,8 +15,8 @@ The core features of our C++ Cookiecutter in a nutshell:
   * Gitlab CI
   * Travis CI
 * Generation of Doxygen documentation
-* Set up of Python bindings with Pybind11
-* CI-based deploymeny of Python bindings to PyPI
+* Setup of Python bindings with Pybind11
+* CI-based deployment of Python bindings to PyPI
 * Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
 
 # Prerequisites
@@ -60,7 +60,7 @@ This cookiecutter accepts the following configuration options:
   for testing and [pybind11](https://github.com/pybind/pybind11) for potential Python bindings).
 * `python_bindings`: Whether to automatically add a PyBind11-based Python binding package.
 * `pypi_release`: Whether to add an automatic PyPI deploy workflow to the CI system.
-  This is currently limited to Github Actions CI as it provides cloud-based runners all relevant
+  This is currently limited to Github Actions CI as it provides cloud-based runners for all relevant
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
   generated in the Github UI.
 
