@@ -4,6 +4,21 @@ This repository is a template repository (a cookiecutter) that allows you to qui
 set up new CMake-based C++ projects. If you are new to C++ and CMake, you might want
 to checkout our simpler [C++ template repository](https://github.com/ssciwr/cpp-project-template).
 
+# Features
+
+The core features of our C++ Cookiecutter in a nutshell:
+
+* Very simple, configurable setup of a fully functional C++ project
+* Choose and add a license and copyright statement to your project
+* Ready-to-use integration with the following CI providers:
+  * Github Actions
+  * Gitlab CI
+  * Travis CI
+* Generation of Doxygen documentation
+* Set up of Python bindings with Pybind11
+* CI-based deploymeny of Python bindings to PyPI
+* Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
+
 # Prerequisites
 
 In order to use this C++ Project Cookiecutter you need the following software installed:
