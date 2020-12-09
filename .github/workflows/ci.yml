@@ -17,7 +17,7 @@ on:
 
 jobs:
   test:
-    name: Testing on ${{ matrix.os }}
+    name: Testing on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
