@@ -43,6 +43,7 @@ def conditional_remove(condition, path):
             rmtree(path)
 
 
+conditional_remove(True, "ext/.keep")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github/workflows/ci.yml")
 conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
