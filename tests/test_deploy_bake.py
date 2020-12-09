@@ -80,13 +80,13 @@ def test_readthedocs_deploy(cookies):
     bake = cookies.bake(extra_context={'readthedocs': 'Yes'})
     with inside_bake(bake):
         # Push to Github
-        subprocess.check_call("git remote add origin git@github.com:dokempf/test-rtd-github-cookiecutter-cpp-project.git".split())
+        subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
         bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
 
         def rtd_api_request(endpoint):
             response = requests.get(
-                'https://readthedocs.org/api/v3/projects/test-rtd-github-cookiecutter-cpp-project/{}'.format(endpoint),
+                'https://readthedocs.org/api/v3/projects/test-github-actions-cookiecutter-cpp-project/{}'.format(endpoint),
                 headers={'Authorization': 'token {}'.format(os.getenv('RTD_API_ACCESS_TOKEN'))}
             )
             return response.json()

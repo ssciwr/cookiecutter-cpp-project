@@ -88,7 +88,6 @@ jobs:
       with:
         ssh-private-key: |
           ${{ secrets.GHA_TEST_PRIVATE_KEY }}
-          ${{ secrets.RTD_TEST_PRIVATE_KEY }}
 
     - name: Add gitlab.com to the list of known hosts
       run: |
