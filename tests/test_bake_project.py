@@ -53,6 +53,17 @@ def test_project_tree(cookies):
         subprocess.check_call("ctest".split())
 
 
+def test_readthedocs(cookies):
+    bake = cookies.bake(extra_context={'readthedocs': 'Yes'})
+    check_bake(bake)
+    with inside_bake(bake):
+        os.makedirs("build")
+        os.chdir("build")
+        subprocess.check_call("cmake ..".split())
+        subprocess.check_call("cmake --build . --target sphinx-doc".split())
+        assert os.path.exists(os.path.join(os.getcwd(), "doc", "sphinx", "index.html"))
+
+
 def test_doxygen(cookies):
     bake = cookies.bake(extra_context={'doxygen': 'Yes'})
     check_bake(bake)
