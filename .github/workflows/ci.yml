@@ -81,19 +81,16 @@ jobs:
         git config --global user.name "SSC CI Test User"
 
     - name: Set up SSH Agent to deploy to test repositories
-      if: runner.os == 'Linux' && matrix.python-version == '3.8'
       uses: webfactory/ssh-agent@v0.4.1
       with:
         ssh-private-key: |
           ${{ secrets.GHA_TEST_PRIVATE_KEY }}
 
     - name: Add gitlab.com to the list of known hosts
-      if: runner.os == 'Linux' && matrix.python-version == '3.8'
       run: |
         echo "gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9" >> ~/.ssh/known_hosts
 
     - name: Run deploy tests
-      if: runner.os == 'Linux' && matrix.python-version == '3.8'
       env:
         GH_API_ACCESS_TOKEN: ${{ secrets.GH_API_ACCESS_TOKEN }}
         GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
