@@ -150,31 +150,23 @@ def test_gitlab_ci_on_deployed_bake(cookies):
         subprocess.check_call("git remote add origin git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
 
-        # Find the Workflow ID of the triggered Workflow - after giving it 2 seconds to properly initiate
+        # Authenticate with Gitlab API
+        gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
+        gl.auth()
+
+        # Find the correct Gitlab pipeline - after giving it 2 seconds to properly initiate
         time.sleep(2)
-        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode()
-        req = requests.get(
-            "https://gitlab.example.com/api/v4/projects/dokempf%2Ftest-gitlab-ci-cookiecutter-cpp-project/pipelines",
-            headers={'PRIVATE_TOKEN': os.getenv("GL_API_ACCESS_TOKEN")}
-        )
-        pipeline_id = None
-        for pipeline in json.loads(req.text):
-            if pipeline['sha'] == bake_sha1.strip():
-                pipeline_id = pipeline['id']
-        assert pipeline_id is not None
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
+        pipeline = None
+        for pl in gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project').pipelines.list():
+            if pl.sha == bake_sha1:
+                pipeline = pl
+        assert pipeline is not None
 
-        # Poll the Github API if the Workflow completed
-        def check_complete():
-            req = requests.get(
-                "https://gitlab.example.com/api/v4/projects/dokempf%2Ftest-gitlab-ci-cookiecutter-cpp-project/pipelines/{}".format(pipeline_id),
-                headers={'PRIVATE_TOKEN': os.getenv("GL_API_ACCESS_TOKEN")}
-            )
-            status = json.loads(req.text)["status"]
-            if status in ["failed", "cancelled", "skipped"]:
-                pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
-            return status == 'success'
-
-        while not check_complete():
+        while pipeline.status == 'success':
             # We poll at a relatively large interval to avoid running against the Github API
             # limitations in times of heavy development activities on the cookiecutter.
             time.sleep(30)
+            pipeline.refresh()
+            if pipeline.status in ["failed", "cancelled", "skipped"]:
+                pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
