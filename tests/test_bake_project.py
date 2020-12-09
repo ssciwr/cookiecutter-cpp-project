@@ -112,7 +112,7 @@ def test_github_actions_ci_on_deployed_bake(cookies):
         bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
 
         # Authenticate with the Github API
-        gh = github.GitHub(os.getenv("GH_API_ACCESS_TOKEN"))
+        gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
         repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
 
         # Find the workflow of the triggered Workflow - after giving it 2 seconds to properly initiate
