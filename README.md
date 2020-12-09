@@ -12,6 +12,12 @@ In order to use this C++ Project Cookiecutter you need the following software in
 * [Cookiecutter](https://github.com/cookiecutter/cookiecutter) e.g. by doing `pip install cookiecutter`.
 * Git `>= 1.8.2`
 
+In addition, the project that is generated from this cookiecutter will require the following software:
+
+* A C++ compiler, e.g. `g++` or `clang++`
+* CMake `>= 3.9`
+* Doxygen (optional, but recommended)
+
 # Using C++ Project Cookiecutter
 
 Simply run the cookiecutter command line interface:
