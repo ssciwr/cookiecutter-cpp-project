@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 
+import github
 import gitlab
 import json
 import jsonschema
@@ -108,40 +109,25 @@ def test_github_actions_ci_on_deployed_bake(cookies):
         # Push to Github
         subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
 
-        # Find the Workflow ID of the triggered Workflow - after giving it 2 seconds to properly initiate
+        # Authenticate with the Github API
+        gh = github.GitHub(os.getenv("GH_API_ACCESS_TOKEN"))
+        repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+
+        # Find the workflow of the triggered Workflow - after giving it 2 seconds to properly initiate
         time.sleep(2)
-        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode()
-        req = requests.get(
-            "https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/workflows/ci.yml/runs",
-            headers={'Authorization': os.getenv("GH_API_ACCESS_TOKEN")}
-        )
-        workflow_id = None
-        for workflow in json.loads(req.text)['workflow_runs']:
-            if workflow['head_sha'] == bake_sha1.strip():
-                workflow_id = workflow['id']
-        assert workflow_id is not None
+        workflow = repo.get_workflow("ci.yml").get_runs()[0]
+        assert workflow.head_sha == bake_sha1
 
-        # Poll the Github API if the Workflow completed
-        def check_complete():
-            req = requests.get(
-                "https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/runs/{}".format(workflow_id),
-                headers={'Authorization': os.getenv("GH_API_ACCESS_TOKEN")}
-            )
-            status = json.loads(req.text)["status"]
-            return status == 'completed'
-
-        while not check_complete():
+        # Poll the workflow status
+        while workflow.status != 'completed':
             # We poll at a relatively large interval to avoid running against the Github API
             # limitations in times of heavy development activities on the cookiecutter.
             time.sleep(30)
+            workflow = repo.get_workflow("ci.yml").get_runs()[0]
 
-        # We require the CI run to be successful!
-        req = requests.get(
-            "https://api.github.com/repos/dokempf/test-github-actions-cookiecutter-cpp-project/actions/runs/{}".format(workflow_id),
-            headers={'Authorization': os.getenv("GH_API_ACCESS_TOKEN")}
-        )
-        assert json.loads(req.text)["conclusion"] == 'success'
+        assert workflow.conclusion == 'success'
 
 
 def test_gitlab_ci_on_deployed_bake(cookies):
@@ -150,6 +136,7 @@ def test_gitlab_ci_on_deployed_bake(cookies):
         # Push to Gitlab.com
         subprocess.check_call("git remote add origin git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
+        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
 
         # Authenticate with Gitlab API
         gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
@@ -157,14 +144,11 @@ def test_gitlab_ci_on_deployed_bake(cookies):
 
         # Find the correct Gitlab pipeline - after giving it 2 seconds to properly initiate
         time.sleep(2)
-        bake_sha1 = subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
-        pipeline = None
-        for pl in gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project').pipelines.list():
-            if pl.sha == bake_sha1:
-                pipeline = pl
-        assert pipeline is not None
+        pipeline = gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project').pipelines.list()[0]
+        assert pipeline.sha == bake_sha1
 
-        while pipeline.status == 'success':
+        # Poll the pipeline status
+        while pipeline.status != 'success':
             # We poll at a relatively large interval to avoid running against the Github API
             # limitations in times of heavy development activities on the cookiecutter.
             time.sleep(30)
