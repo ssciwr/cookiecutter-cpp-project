@@ -35,13 +35,16 @@ def check_file_against_schemastore(filename, schema_url):
         pytest.fail("{} validation check failed!".format(filename))
 
 
-def test_project_tree(cookies):
-    bake = cookies.bake(extra_context={'project_slug': 'test_project'})
+def check_bake(bake):
+    if bake.exception:
+        raise bake.exception
     assert bake.exit_code == 0
-    assert bake.exception is None
-    assert bake.project.basename == 'test_project'
     assert bake.project.isdir()
 
+
+def test_project_tree(cookies):
+    bake = cookies.bake(extra_context={'project_slug': 'test_project'})
+    check_bake(bake)
     with inside_bake(bake):
         os.makedirs("build")
         os.chdir("build")
@@ -52,6 +55,7 @@ def test_project_tree(cookies):
 
 def test_doxygen(cookies):
     bake = cookies.bake(extra_context={'doxygen': 'Yes'})
+    check_bake(bake)
     with inside_bake(bake):
         os.makedirs("build")
         os.chdir("build")
@@ -62,6 +66,7 @@ def test_doxygen(cookies):
 
 def test_github_actions_ci(cookies):
     bake = cookies.bake(extra_context={'github_actions_ci': 'Yes', 'python_bindings': 'Yes', 'pypi_release': 'Yes'})
+    check_bake(bake)
     with inside_bake(bake):
         check_file_against_schemastore(".github/workflows/ci.yml", "https://json.schemastore.org/github-workflow")
         check_file_against_schemastore(".github/workflows/pypi.yml", "https://json.schemastore.org/github-workflow")
@@ -69,18 +74,21 @@ def test_github_actions_ci(cookies):
 
 def test_gitlabci(cookies):
     bake = cookies.bake(extra_context={'gitlab_ci': 'Yes'})
+    check_bake(bake)
     with inside_bake(bake):
         check_file_against_schemastore(".gitlab-ci.yml", "https://json.schemastore.org/gitlab-ci")
 
 
 def test_travisci(cookies):
     bake = cookies.bake(extra_context={'travis_ci': 'Yes'})
+    check_bake(bake)
     with inside_bake(bake):
         check_file_against_schemastore(".travis.yml", "https://json.schemastore.org/travis")
 
 
 def test_python(cookies, virtualenv):
     bake = cookies.bake(extra_context={'project_slug': 'my-project', 'python_bindings': 'Yes'})
+    check_bake(bake)
     with inside_bake(bake):
         # Make sure that our Python package can be installed and imported
         subprocess.check_call([virtualenv.python, "-m", "pip", "install", "."])
