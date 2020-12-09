@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.9)
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
 
+# Define the minimum C++ standard that is required
+set(CMAKE_CXX_STANDARD {{ cookiecutter.cxx_minimum_standard }})
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # this needs to be in the top level CMakeLists.txt:
 include(CTest)
 {% if cookiecutter.python_bindings == "Yes" -%}
