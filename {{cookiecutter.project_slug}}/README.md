@@ -12,8 +12,8 @@ Building {{ cookiecutter.project_name }} requires the following software install
 
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
 * CMake `>= 3.9`
-{% if cookiecutter.doxygen -%}* Doxygen (optional, documentation building is skipped if missing){% endif %}
-{% if cookiecutter.python_bindings -%}* Python `>= 3.6` for building Python bindings{% endif %}
+{% if cookiecutter.doxygen == "Yes" -%}* Doxygen (optional, documentation building is skipped if missing){% endif %}
+{% if cookiecutter.python_bindings == "Yes" -%}* Python `>= 3.6` for building Python bindings{% endif %}
 
 # Building {{ cookiecutter.project_name }}
 
@@ -27,7 +27,7 @@ cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
-{% if cookiecutter.doxygen %}
+{% if cookiecutter.doxygen == "Yes" %}
 # Documentation
 
 {{ cookiecutter.project_name }} provides a Doxygen documentation. You can build
@@ -35,7 +35,7 @@ the documentation locally by making sure that `Doxygen` is installed on your sys
 and running this command from the top-level build directory:
 
 ```
-cmake -- build . --target doxygen
+cmake --build . --target doxygen
 ```
 
 The web documentation can then be browsed by opening `doc/html/index.html` in your browser.
