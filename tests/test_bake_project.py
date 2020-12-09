@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 
+import gitlab
 import json
 import jsonschema
 import os
