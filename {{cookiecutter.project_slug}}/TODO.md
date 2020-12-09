@@ -13,6 +13,11 @@ The following tasks need to be done to get a fully working project:
 * Enable your Travis CI integration by logging into travis-ci.org and enabling the
   relevant repository from e.g. your public Github repositories.
 {% endif -%}
+{% if cookiecutter.readthedocs == "Yes" -%}
+* Enable the integration of Readthedocs with your Git hoster. In the case of Github, this means
+  that you need to login at [Read the Docs](https://readthedocs.org) and click the button
+  *Import a Project*.
+{%- endif %}
 {% if cookiecutter.doxygen -%}
 * Make sure that doxygen is installed on your system, e.g. by doing `sudo apt install doxygen`
   on Debian or Ubuntu.

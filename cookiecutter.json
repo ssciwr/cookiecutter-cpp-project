@@ -6,6 +6,7 @@
     "github_actions_ci": ["Yes", "No"],
     "gitlab_ci": ["No", "Yes"],
     "travis_ci": ["No", "Yes"],
+    "readthedocs": ["Yes", "No"],
     "doxygen": ["Yes", "No"],
     "cxx_minimum_standard": ["11", "14", "17", "20"],
     "python_bindings": ["No", "Yes"],
