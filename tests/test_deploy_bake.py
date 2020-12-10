@@ -66,7 +66,7 @@ def test_github_actions_ci_on_deployed_bake():
     assert workflow.conclusion == 'success'
 
 
-@pytest.mark.deploy
+@pytest.mark.integrations
 def test_gitlab_ci_on_deployed_bake():
     # Authenticate with Gitlab API
     gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
@@ -86,7 +86,7 @@ def test_gitlab_ci_on_deployed_bake():
             pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
 
 
-@pytest.mark.deploy
+@pytest.mark.integrations
 def test_readthedocs_deploy():
     # Authenticate with the Github API to get the upstream commit
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
