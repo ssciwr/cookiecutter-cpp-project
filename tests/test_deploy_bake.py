@@ -27,6 +27,8 @@ def remote_deploy_sha(c):
     # We configure one project that has all implemented integrations enabled.
     bake = c.bake(
         extra_context={
+            'project_name': 'My C++ Project',
+            'project_slug': 'test-github-actions-cookiecutter-cpp-project',
             'github_actions_ci': 'Yes',
             'gitlab_ci': 'Yes',
             'travis_ci': 'Yes',
