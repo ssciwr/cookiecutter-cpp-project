@@ -169,8 +169,8 @@ def test_pypi_deploy(virtualenv):
     assert workflow.conclusion == 'success'
 
     # Check the current versions on PyPI
-    assert upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == str(next_version)
-    assert upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == str(next_version)
+    assert upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
+    assert upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
 
     # Install the package into a virtualenv and load it
     virtualenv.install_package('testgithubactionscookiecuttercppproject')
