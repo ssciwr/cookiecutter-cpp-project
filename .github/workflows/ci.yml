@@ -59,7 +59,7 @@ jobs:
 
     - name: Run regular test suite
       run: |
-        python -m pytest -m 'not deploy'
+        python -m pytest -m local
 
   deploy-test:
     name: Deploying to hosters and run their CI
