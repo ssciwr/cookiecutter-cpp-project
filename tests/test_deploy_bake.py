@@ -30,7 +30,7 @@ def remote_deploy_sha(c):
         subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
         # Push to Gitlab
-        subprocess.check_call("git remote add gitlab git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
+        subprocess.check_call("git remote add gitlab git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f gitlab main".split())
         # Wait for any integrations to trigger
         time.sleep(2)
