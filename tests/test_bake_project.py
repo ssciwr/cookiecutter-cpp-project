@@ -55,6 +55,15 @@ def test_project_tree(cookies):
 
 
 @pytest.mark.local
+def test_with_remote(cookies):
+    bake = cookies.bake(extra_context={'remote_url': 'https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git'})
+    check_bake(bake)
+    assert bake.basename == 'test-github-actions-cookiecutter-cpp-project'
+    with inside_bake(bake):
+        assert len(subprocess.check_output("git remote -vv")) > 0
+
+
+@pytest.mark.local
 def test_readthedocs(cookies):
     bake = cookies.bake(extra_context={'readthedocs': 'Yes'})
     check_bake(bake)

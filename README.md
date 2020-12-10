@@ -43,13 +43,19 @@ cookiecutter gh:ssciwr/cookiecutter-cpp-project
 ```
 
 This will start an interactive prompt that will configure and generate your project.
+One of the prompts will ask you for a remote repository URL, so you should head to
+the Git hosting service of your choice (e.g. `github.com`) and add a new repository.
 
 # Configuration
 
 This cookiecutter accepts the following configuration options:
 
 * `project_name`: The human-readable name of the project, defaults to `My C++ Project`
-* `project_slug`: This will be the name of the generated directorym, defaults to `my-cpp-project`
+* `remote_url`: The remote URL for the newly created repository. This is not only used
+  to add it as a remote to the Git repository, but also to enable integration with some
+  services. Defaults to `None` although we strongly advise you to specify it.
+* `project_slug`: This will be the name of the generated directory. By default, it is deduced
+  from the specified remote URL and the given project name.
 * `full_name`: Author name, defaults to `Your Name`
 * `license` adds a license file to the repository. It can be chosen from [MIT](https://opensource.org/licenses/MIT) (default), [BSD-2](https://opensource.org/licenses/BSD-2-Clause), [GPL-3.0](https://opensource.org/licenses/GPL-3.0), [LGPL-3.0](https://opensource.org/licenses/LGPL-3.0) or it can be omitted.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions

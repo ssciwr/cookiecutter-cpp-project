@@ -32,6 +32,9 @@ class GitRepository(object):
         subprocess.check_call(command)
         if tag is not None:
             subprocess.check_call(["git", "checkout", tag], cwd=os.path.join(os.getcwd(), *os.path.split(location)))
+        {% if cookiecutter.remote_url != 'None' %}
+            subprocess.check_call("git remote add origin {{ cookiecutter.remote_url }}".split())
+        {% endif %}
 
 
 # Optionally remove files whose existence is tied to disabled features
