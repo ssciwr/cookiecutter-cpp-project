@@ -91,7 +91,7 @@ def test_readthedocs_deploy():
     # Authenticate with the Github API to get the upstream commit
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
     repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
-    sha = repo.get_branch('main').commit.bake_sha1
+    sha = repo.get_branch('main').commit.sha
 
     def rtd_api_request(endpoint):
         response = requests.get(
