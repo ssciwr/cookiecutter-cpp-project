@@ -131,6 +131,7 @@ def test_pypi_deploy():
 
     # Modify the version in setup.py and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
+    os.chdir("test-github-actions-cookiecutter-cpp-project")
     with open("setup.py", "r") as source:
         lines = source.readlines()
     with open("setup.py", "w") as source:
