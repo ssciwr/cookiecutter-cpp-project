@@ -32,7 +32,7 @@ cmake --build .
 # Documentation
 {% if cookiecutter.readthedocs == "Yes" %}
 {{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can
-be browsed [online at readthedocs.org](https://readthedocs.org).
+be browsed [online at readthedocs.org](https://{{ cookiecutter.project_slug }}.readthedocs.io/en/latest/).
 {% elif cookiecutter.doxygen == "Yes" %}
 {{ cookiecutter.project_name }} provides a Doxygen documentation. You can build
 the documentation locally by making sure that `Doxygen` is installed on your system
