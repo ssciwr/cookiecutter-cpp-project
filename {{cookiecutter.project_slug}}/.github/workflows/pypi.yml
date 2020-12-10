@@ -41,7 +41,7 @@ jobs:
         CIBW_BEFORE_BUILD: python -m pip install cmake
         CIBW_SKIP: "*-win32"
         CIBW_TEST_COMMAND: pytest {package}/python/tests
-        CIBW_TEST_REQUIRES: pytest==6.1.2
+        CIBW_TEST_REQUIRES: pytest
       run: |
         python -m cibuildwheel --output-dir wheelhouse
 
