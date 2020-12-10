@@ -158,7 +158,6 @@ def test_pypi_deploy(virtualenv):
     # Identify the PyPI release workflow
     branch = repo.get_branch('pypi_release')
     workflow = repo.get_workflow("pypi.yml").get_runs()[0]
-    assert workflow.head_sha == branch.commit.sha
 
     # Poll the workflow status
     while workflow.status != 'completed':
