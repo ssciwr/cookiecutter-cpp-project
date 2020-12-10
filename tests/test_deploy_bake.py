@@ -2,7 +2,6 @@ import github
 import gitlab
 import os
 import pytest
-import pytools
 import requests
 import subprocess
 import time
@@ -22,10 +21,10 @@ def inside_bake(bake):
         os.chdir(old_path)
 
 
-@pytools.memoize
-def remote_deploy_sha(c):
+@pytest.mark.deploy
+def test_push_remote(cookies):
     # We configure one project that has all implemented integrations enabled.
-    bake = c.bake(
+    bake = cookies.bake(
         extra_context={
             'project_name': 'My C++ Project',
             'project_slug': 'test-github-actions-cookiecutter-cpp-project',
@@ -44,23 +43,18 @@ def remote_deploy_sha(c):
         # Push to Gitlab
         subprocess.check_call("git remote add gitlab git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f gitlab main".split())
-        # Wait for any integrations to trigger
-        time.sleep(2)
-        return subprocess.run("git rev-parse HEAD".split(), capture_output=True).stdout.decode().strip()
 
 
-@pytest.mark.deploy
-def test_github_actions_ci_on_deployed_bake(cookies):
-    # Make sure that we have pushed a revision to our test repository
-    bake_sha1 = remote_deploy_sha(cookies)
-
+@pytest.mark.integrations
+def test_github_actions_ci_on_deployed_bake():
     # Authenticate with the Github API
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
 
     # Identify the correct workflow
     repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    branch = repo.get_branch('main')
     workflow = repo.get_workflow("ci.yml").get_runs()[0]
-    assert workflow.head_sha == bake_sha1
+    assert workflow.head_sha == branch.commit.sha
 
     # Poll the workflow status
     while workflow.status != 'completed':
@@ -73,17 +67,16 @@ def test_github_actions_ci_on_deployed_bake(cookies):
 
 
 @pytest.mark.deploy
-def test_gitlab_ci_on_deployed_bake(cookies):
-    # Make sure that we have pushed a revision to our test repository
-    bake_sha1 = remote_deploy_sha(cookies)
-
+def test_gitlab_ci_on_deployed_bake():
     # Authenticate with Gitlab API
     gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
     gl.auth()
 
     # Find the correct Gitlab pipeline - after giving it 2 seconds to properly initiate
-    pipeline = gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project').pipelines.list()[0]
-    assert pipeline.sha == bake_sha1
+    project = gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project')
+    pipeline = project.pipelines.list()[0]
+    branch = project.branches.get('main')
+    assert pipeline.sha == branch.commit['id']
 
     # Poll the pipeline status
     while pipeline.status != 'success':
@@ -94,9 +87,11 @@ def test_gitlab_ci_on_deployed_bake(cookies):
 
 
 @pytest.mark.deploy
-def test_readthedocs_deploy(cookies):
-    # Make sure that we have pushed a revision to our test repository
-    bake_sha1 = remote_deploy_sha(cookies)
+def test_readthedocs_deploy():
+    # Authenticate with the Github API to get the upstream commit
+    gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
+    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    sha = repo.get_branch('main').commit.bake_sha1
 
     def rtd_api_request(endpoint):
         response = requests.get(
@@ -115,4 +110,4 @@ def test_readthedocs_deploy(cookies):
         build = rtd_api_request('builds/{}'.format(last_build_id))
 
     assert build['success']
-    assert build["commit"] == bake_sha1
+    assert build["commit"] == sha
