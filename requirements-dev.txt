@@ -6,6 +6,7 @@ pytest==5.4.3
 pytest-cookies==0.5.1
 pytest-virtualenv==1.7.0
 python-gitlab==2.5.0
+pytools==2020.4.3
 requests==2.24.0
 ruamel.yaml==0.16.12
 sphinx==3.3.1
