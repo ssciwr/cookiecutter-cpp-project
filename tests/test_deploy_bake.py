@@ -173,5 +173,5 @@ def test_pypi_deploy(virtualenv):
 
     # Install the package into a virtualenv and load it
     time.sleep(2)
-    virtualenv.install_package('testgithubactionscookiecuttercppproject')
+    virtualenv.install_package('testgithubactionscookiecuttercppproject=={}'.format(str(next_version)))
     subprocess.check_call([virtualenv.python, "-c", "'import testgithubactionscookiecuttercppproject'"])
