@@ -127,7 +127,7 @@ def test_pypi_deploy():
         upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
         upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json')
     )
-    next_version = version.Version('{}.{}.{}'.format(version.major, version.minor, version.micro + 1))
+    next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
     # Modify the version in setup.py and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
