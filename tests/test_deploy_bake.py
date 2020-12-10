@@ -116,7 +116,7 @@ def test_readthedocs_deploy():
 
 
 @pytest.mark.integrations
-def test_pypi_deploy():
+def test_pypi_deploy(virtualenv):
     # Find out the current version of the PyPI package
     def upstream_version(url):
         response = requests.get(url)
@@ -149,3 +149,26 @@ def test_pypi_deploy():
         "Test Release",
         target_commitish='pypi_release'
     )
+
+    # Identify the PyPI release workflow
+    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    branch = repo.get_branch('pypi_release')
+    workflow = repo.get_workflow("pypi.yml").get_runs()[0]
+    assert workflow.head_sha == branch.commit.sha
+
+    # Poll the workflow status
+    while workflow.status != 'completed':
+        # We poll at a relatively large interval to avoid running against the Github API
+        # limitations in times of heavy development activities on the cookiecutter.
+        time.sleep(30)
+        workflow = repo.get_workflow("pypi.yml").get_runs()[0]
+
+    assert workflow.conclusion == 'success'
+
+    # Check the current versions on PyPI
+    assert upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == str(next_version)
+    assert upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == str(next_version)
+
+    # Install the package into a virtualenv and load it
+    virtualenv.install_package('testgithubactionscookiecuttercppproject')
+    subprocess.check_call([virtualenv.python, "-c", "'import testgithubactionscookiecuttercppproject'"])
