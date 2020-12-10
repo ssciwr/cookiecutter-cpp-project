@@ -146,7 +146,7 @@ def test_pypi_deploy(virtualenv):
     subprocess.check_call("git add setup.py".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in setup.py"])
     subprocess.check_call("git push -f origin main:pypi_release".split())
-    time.sleep(5)
+    time.sleep(2)
 
     # Create the release - this will trigger the PyPI release workflow
     repo.create_git_release(
@@ -155,7 +155,7 @@ def test_pypi_deploy(virtualenv):
         "Test Release",
         target_commitish='pypi_release'
     )
-    time.sleep(5)
+    time.sleep(2)
 
     # Identify the PyPI release workflow
     branch = repo.get_branch('pypi_release')
@@ -171,11 +171,7 @@ def test_pypi_deploy(virtualenv):
 
     assert workflow.conclusion == 'success'
 
-    # Check the current versions on PyPI
-    time.sleep(5)
-    assert upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
-    assert upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
-
     # Install the package into a virtualenv and load it
+    time.sleep(2)
     virtualenv.install_package('testgithubactionscookiecuttercppproject')
     subprocess.check_call([virtualenv.python, "-c", "'import testgithubactionscookiecuttercppproject'"])
