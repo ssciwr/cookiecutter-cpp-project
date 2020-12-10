@@ -13,10 +13,10 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif -%}
 {% if cookiecutter.pypi_release != "No" -%}
-[![PyPI version](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }})
+[![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://pypi.org/project/{{ cookiecutter.project_slug.replace("-", "") }})
 {% endif -%}
 {% if cookiecutter.readthedocs == "Yes" -%}
-[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter.project_slug }}/badge/?version=latest)](https://{{ cookiecutter.project_slug }}.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter.project_slug }}/badge/)](https://{{ cookiecutter.project_slug }}.readthedocs.io/)
 {% endif -%}
 {{ "\n" -}}
 # Prerequisites
