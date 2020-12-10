@@ -131,7 +131,7 @@ def test_pypi_deploy(virtualenv):
     current_version = max([
         upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
         upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
-        version.parse(repo.get_latest_release().title[1:]
+        version.parse(repo.get_latest_release().title[1:])
     ])
     next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
