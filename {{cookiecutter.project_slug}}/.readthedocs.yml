@@ -11,4 +11,4 @@ submodules:
 
 python:
   install:
-    - requirements: doc/requirements.txt
+    - requirements: doc/requirements-rtd.txt
