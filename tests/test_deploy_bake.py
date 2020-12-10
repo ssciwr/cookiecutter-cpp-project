@@ -143,6 +143,8 @@ def test_pypi_deploy(virtualenv):
     with open("setup.py", "w") as source:
         for line in lines:
             source.write(re.sub(r'version=.*$', 'version={}'.format(str(next_version)), line))
+    subprocess.check_call("git add setup.py".split())
+    subprocess.check_call(["git", "commit", "-m", "Bump version in setup.py"])
     subprocess.check_call("git push -f origin main:pypi_release".split())
 
     # Create the release - this will trigger the PyPI release workflow
