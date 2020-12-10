@@ -1,12 +1,24 @@
 # Welcome to {{ cookiecutter.project_name }}
 
-{% if cookiecutter.license == "MIT" %}[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT){% endif %}
-{% if cookiecutter.license == "BSD-2" %}[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause){% endif %}
-{% if cookiecutter.license == "GPL-3.0" %}[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0){% endif %}
-{% if cookiecutter.license == "LGPL-3.0" %}[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0){% endif %}
-{% if cookiecutter.pypi_release != "No" %}[![PyPI version](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}){% endif %}
-{% if cookiecutter.readthedocs == "Yes" %}[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter.project_slug }}/badge/?version=latest)](https://{{ cookiecutter.project_slug }}.readthedocs.io/en/latest/?badge=latest){% endif %}
-
+{# The white-space control of the below template is quite delicate - if you add one, do it exactly like this (mind the -'s) -#}
+{% if cookiecutter.license == "MIT" -%}
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+{% endif -%}
+{%- if cookiecutter.license == "BSD-2" -%}[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+{% endif -%}
+{% if cookiecutter.license == "GPL-3.0" -%}
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+{% endif -%}
+{% if cookiecutter.license == "LGPL-3.0" -%}
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+{% endif -%}
+{% if cookiecutter.pypi_release != "No" -%}
+[![PyPI version](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }})
+{% endif -%}
+{% if cookiecutter.readthedocs == "Yes" -%}
+[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter.project_slug }}/badge/?version=latest)](https://{{ cookiecutter.project_slug }}.readthedocs.io/en/latest/?badge=latest)
+{% endif -%}
+{{ "\n" -}}
 # Prerequisites
 
 Building {{ cookiecutter.project_name }} requires the following software installed:
