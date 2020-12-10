@@ -146,6 +146,7 @@ def test_pypi_deploy(virtualenv):
     subprocess.check_call("git add setup.py".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in setup.py"])
     subprocess.check_call("git push -f origin main:pypi_release".split())
+    time.sleep(2)
 
     # Create the release - this will trigger the PyPI release workflow
     repo.create_git_release(
@@ -154,10 +155,12 @@ def test_pypi_deploy(virtualenv):
         "Test Release",
         target_commitish='pypi_release'
     )
+    time.sleep(2)
 
     # Identify the PyPI release workflow
     branch = repo.get_branch('pypi_release')
     workflow = repo.get_workflow("pypi.yml").get_runs()[0]
+    assert workflow.head_sha == branch.commit.sha
 
     # Poll the workflow status
     while workflow.status != 'completed':
