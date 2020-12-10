@@ -106,7 +106,6 @@ def test_readthedocs_deploy(cookies):
     # Check that the build has the correct commit
     last_build_id = rtd_api_request("versions/latest/builds")["results"][0]["id"]
     build = rtd_api_request('builds/{}'.format(last_build_id))
-    assert build["commit"] == bake_sha1
 
     # Wait until the build has finished
     while build['state']['code'] != 'finished':
@@ -114,3 +113,4 @@ def test_readthedocs_deploy(cookies):
         build = rtd_api_request('builds/{}'.format(last_build_id))
 
     assert build['success']
+    assert build["commit"] == bake_sha1
