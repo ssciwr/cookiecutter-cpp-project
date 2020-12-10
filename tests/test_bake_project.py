@@ -58,7 +58,7 @@ def test_project_tree(cookies):
 def test_with_remote(cookies):
     bake = cookies.bake(extra_context={'remote_url': 'https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git'})
     check_bake(bake)
-    assert bake.basename == 'test-github-actions-cookiecutter-cpp-project'
+    assert bake.project.basename == 'test-github-actions-cookiecutter-cpp-project'
     with inside_bake(bake):
         assert len(subprocess.check_output("git remote -vv")) > 0
 
