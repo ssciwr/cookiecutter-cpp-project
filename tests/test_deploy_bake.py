@@ -172,6 +172,7 @@ def test_pypi_deploy(virtualenv):
     assert workflow.conclusion == 'success'
 
     # Check the current versions on PyPI
+    time.sleep(5)
     assert upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
     assert upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json') == next_version
 
