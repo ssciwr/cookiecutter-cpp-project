@@ -6,6 +6,7 @@ import requests
 import subprocess
 import time
 from contextlib import contextmanager
+from packaging import version
 
 
 @contextmanager
@@ -111,3 +112,31 @@ def test_readthedocs_deploy():
 
     assert build['success']
     assert build["commit"] == sha
+
+
+@pytest.mark.integrations
+def test_pypi_deploy():
+    # Find out the current version of the PyPI package
+    pypi_version = requests.get('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json').json()['version']
+    testpypi_version = requests.get('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json').json['version']
+    version = max(version.parse(pypi_version), version.parse(testpypi_version))
+    next_version = version.Version('{}.{}.{}'.format(version.major, version.minor, version.micro + 1))
+
+    # Modify the version in setup.py and commit the change
+    subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
+    with open("setup.py", "r") as source:
+        lines = source.readlines()
+    with open("setup.py", "w") as source:
+        for line in lines:
+            source.write(re.sub(r'version=.*$', 'version={}'.format(str(next_version)), line))
+    subprocess.check_call("git push origin main:pypi_release".split())
+
+    # Authenticate with the Github API to create a release
+    gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
+    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo.create_git_release(
+        'v{}'.format(str(next_version)),
+        'v{}'.format(str(next_version)),
+        "Test Release",
+        target_commitish='pypi_release'
+    )
