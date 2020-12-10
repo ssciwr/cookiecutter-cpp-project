@@ -121,7 +121,7 @@ def test_pypi_deploy(virtualenv):
     def upstream_version(url):
         response = requests.get(url)
         if response.status_code == 200:
-            return version.parse(response.json()['version'])
+            return version.parse(response.json()['info']['version'])
         else:
             return version.parse('0.0.0')
 
