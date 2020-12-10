@@ -14,7 +14,8 @@ The core features of our C++ Cookiecutter in a nutshell:
   * Github Actions
   * Gitlab CI
   * Travis CI
-* Generation of Doxygen documentation
+* Generation and deployment of Sphinx-based documentation for [Read the Docs](https://readthedocs.org)
+* Building a Doxygen documentation
 * Setup of Python bindings with Pybind11
 * CI-based deployment of Python bindings to PyPI
 * Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
@@ -54,6 +55,7 @@ This cookiecutter accepts the following configuration options:
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `travis_ci`: Whether to add a CI workflow for Travis CI
+* `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org
 * `doxygen`: Whether a Doxygen documentation should be extracted from the project
 * `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `11` (default), `14`, `17` and `20`.
   `C++03` and earlier are not supported, because the generated project will depend on libraries that require `C++11` ([Catch2](https://github.com/catchorg/Catch2)

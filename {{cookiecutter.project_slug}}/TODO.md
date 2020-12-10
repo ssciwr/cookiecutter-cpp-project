@@ -2,8 +2,8 @@ This TODO list is automatically generated from the cookiecutter-cpp-project temp
 The following tasks need to be done to get a fully working project:
 
 * Set up a remote repository. You can e.g. create a project in GitHub or GitLab and run
-  the following commands in your locally generated project folder:
-  `git remote add origin <Remote-URL>`
+  the following commands in your locally generated project folder: `git remote add origin <Remote-URL>`
+  For a seamless integration, the name of the project should also be `{{ cookiecutter.project_slug }}`.
 {% if cookiecutter.gitlab_ci == "Yes" -%}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that
   there is a suitable Runner available. If you are using the cloud-hosted gitlab.com,
@@ -13,6 +13,12 @@ The following tasks need to be done to get a fully working project:
 * Enable your Travis CI integration by logging into travis-ci.org and enabling the
   relevant repository from e.g. your public Github repositories.
 {% endif -%}
+{% if cookiecutter.readthedocs == "Yes" -%}
+* Enable the integration of Readthedocs with your Git hoster. In the case of Github, this means
+  that you need to login at [Read the Docs](https://readthedocs.org) and click the button
+  *Import a Project*. Currently, it is necessary to manually switch the default branch to `main`
+  under *Settings*/*Advanced Settings*/*Standard Branch*.
+{%- endif %}
 {% if cookiecutter.doxygen -%}
 * Make sure that doxygen is installed on your system, e.g. by doing `sudo apt install doxygen`
   on Debian or Ubuntu.

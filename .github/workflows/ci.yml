@@ -17,7 +17,7 @@ on:
 
 jobs:
   test:
-    name: Testing on ${{ matrix.os }}
+    name: Testing on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -59,7 +59,7 @@ jobs:
 
     - name: Run regular test suite
       run: |
-        python -m pytest -m 'not deploy'
+        python -m pytest -m local
 
   deploy-test:
     name: Deploying to hosters and run their CI
@@ -93,9 +93,14 @@ jobs:
       run: |
         echo "gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9" >> ~/.ssh/known_hosts
 
-    - name: Run deploy tests
+    - name: Test deploying the baked project to Github + Gitlab.com
+      run: |
+        python -m pytest -m deploy
+
+    - name: Run tests for upstream integrations
       env:
         GH_API_ACCESS_TOKEN: ${{ secrets.GH_API_ACCESS_TOKEN }}
         GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
+        RTD_API_ACCESS_TOKEN: ${{ secrets.RTD_API_ACCESS_TOKEN }}
       run: |
-        python -m pytest -m deploy
+        python -m pytest -m integrations
