@@ -117,9 +117,16 @@ def test_readthedocs_deploy():
 @pytest.mark.integrations
 def test_pypi_deploy():
     # Find out the current version of the PyPI package
-    pypi_version = requests.get('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json').json()['version']
-    testpypi_version = requests.get('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json').json['version']
-    version = max(version.parse(pypi_version), version.parse(testpypi_version))
+    def upstream_version(url):
+        response = requests.get(url)
+        if response.status_code == 200:
+            return version.parse(response.json()['version'])
+        else:
+            return version.parse('0.0.0')
+    current_version = max(
+        upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
+        upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json')
+    )
     next_version = version.Version('{}.{}.{}'.format(version.major, version.minor, version.micro + 1))
 
     # Modify the version in setup.py and commit the change
@@ -129,7 +136,7 @@ def test_pypi_deploy():
     with open("setup.py", "w") as source:
         for line in lines:
             source.write(re.sub(r'version=.*$', 'version={}'.format(str(next_version)), line))
-    subprocess.check_call("git push origin main:pypi_release".split())
+    subprocess.check_call("git push -f origin main:pypi_release".split())
 
     # Authenticate with the Github API to create a release
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
