@@ -128,11 +128,11 @@ def test_pypi_deploy(virtualenv):
     # Construct a version, by finding the maximum version across Github, PyPI and TestPyPI and increasing that
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
     repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
-    current_version = max(
+    current_version = [
         upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
         upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
         version.parse(repo.get_latest_release().title[1:]
-    )
+    ].max()
     next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
     # Modify the version in setup.py and commit the change
