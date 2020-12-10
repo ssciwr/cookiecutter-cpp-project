@@ -24,7 +24,17 @@ def inside_bake(bake):
 
 @pytools.memoize
 def remote_deploy_sha(c):
-    bake = c.bake(extra_context={'github_actions_ci': 'Yes'})
+    # We configure one project that has all implemented integrations enabled.
+    bake = c.bake(
+        extra_context={
+            'github_actions_ci': 'Yes',
+            'gitlab_ci': 'Yes',
+            'travis_ci': 'Yes',
+            'readthedocs': 'Yes',
+            'python_bindings': 'Yes',
+            'pypi_release': 'Yes',
+        }
+    )
     with inside_bake(bake):
         # Push to Github
         subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
