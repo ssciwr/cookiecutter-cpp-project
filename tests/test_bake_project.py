@@ -60,7 +60,7 @@ def test_with_remote(cookies):
     check_bake(bake)
     assert bake.project.basename == 'test-github-actions-cookiecutter-cpp-project'
     with inside_bake(bake):
-        assert len(subprocess.check_output("git remote -vv")) > 0
+        assert len(subprocess.check_output("git remote -vv".split())) > 0
 
 
 @pytest.mark.local
