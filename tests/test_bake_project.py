@@ -105,14 +105,6 @@ def test_gitlabci(cookies):
 
 
 @pytest.mark.local
-def test_travisci(cookies):
-    bake = cookies.bake(extra_context={'travis_ci': 'Yes'})
-    check_bake(bake)
-    with inside_bake(bake):
-        check_file_against_schemastore(".travis.yml", "https://json.schemastore.org/travis")
-
-
-@pytest.mark.local
 def test_python(cookies, virtualenv):
     bake = cookies.bake(extra_context={'project_slug': 'my-project', 'python_bindings': 'Yes'})
     check_bake(bake)

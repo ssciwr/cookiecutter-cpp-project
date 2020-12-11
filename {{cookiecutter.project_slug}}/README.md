@@ -30,9 +30,6 @@
 {%- endif -%}
 )]({{ gitlab_instance }}/{{ username }}/{{ remote_slug }}/-/pipelines)
 {% endif -%}
-{% if cookiecutter.travis_ci == "Yes" -%}
-[![Travis CI](https://img.shields.io/travis/org/{{ username }}/{{ remote_slug }})](https://travis-ci.org/{{ username }}/{{ remote_slug }})
-{% endif -%}
 {% endif -%}
 {% if cookiecutter.pypi_release != "No" -%}
 [![PyPI Release](https://img.shields.io/pypi/v/{{ python_package }}.svg)](https://pypi.org/project/{{ python_package }})
