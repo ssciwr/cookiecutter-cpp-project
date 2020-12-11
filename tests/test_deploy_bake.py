@@ -27,7 +27,7 @@ def test_push_remote(cookies):
     bake = cookies.bake(
         extra_context={
             'project_name': 'My C++ Project',
-            'project_slug': 'test-github-actions-cookiecutter-cpp-project',
+            'remote_url': 'git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git',
             'github_actions_ci': 'Yes',
             'gitlab_ci': 'Yes',
             'travis_ci': 'Yes',
