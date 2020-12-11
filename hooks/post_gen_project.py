@@ -23,6 +23,9 @@ class GitRepository(object):
         # Finalize by making an initial git commit
         subprocess.check_call("git add *".split())
         subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
+        {% if cookiecutter.remote_url != 'None' %}
+        subprocess.check_call("git remote add origin {{ cookiecutter.remote_url }}".split())
+        {% endif %}
 
     def add_submodule(self, url, location, branch=None, tag=None):
         command = ["git", "submodule", "add"]

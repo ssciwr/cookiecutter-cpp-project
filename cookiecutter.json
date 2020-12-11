@@ -1,6 +1,7 @@
 {
     "project_name": "My C++ Project",
-    "project_slug": "{{ cookiecutter.project_name|replace('+', 'p')|slugify }}",
+    "remote_url": "None",
+    "project_slug": "{%- if cookiecutter.remote_url == 'None' -%}{{ cookiecutter.project_name|replace('+', 'p')|slugify }}{% else %}{{ cookiecutter.remote_url.split('/')[-1]|replace('.git', '')}}{%- endif -%}",
     "full_name": "Your Name",
     "license": ["MIT", "BSD-2", "GPL-3.0", "LGPL-3.0", "None"],
     "github_actions_ci": ["Yes", "No"],
