@@ -4,7 +4,8 @@
 {% if cookiecutter.license == "MIT" -%}
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 {% endif -%}
-{%- if cookiecutter.license == "BSD-2" -%}[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+{% if cookiecutter.license == "BSD-2" -%}
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 {% endif -%}
 {% if cookiecutter.license == "GPL-3.0" -%}
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -12,6 +13,17 @@
 {% if cookiecutter.license == "LGPL-3.0" -%}
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif -%}
+{% if cookiecutter.remote_url != "None" %}
+{% if cookiecutter.github_actions_ci == "Yes" -%}
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/CI)
+{% endif -%}
+{% if cookiecutter.gitlab_ci == "Yes" -%}
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/main?gitlab_url=https%3A%2F%2F{{ cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0] }})
+{% endif -%}
+{% if cookiecutter.travis_ci == "Yes" -%}
+![Travis CI](https://img.shields.io/travis/com/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})
+{% endif -%}
+{% endif %}
 {% if cookiecutter.pypi_release != "No" -%}
 [![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://pypi.org/project/{{ cookiecutter.project_slug.replace("-", "") }})
 {% endif -%}
