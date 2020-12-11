@@ -43,7 +43,7 @@ jobs:
         arch: ${{ "{{ matrix.platform }}" }}
 
     - name: Build 64-bit wheels
-      if: ${{ "{{ matrix.platform }}" }} == 'x64'
+      if: matrix.platform == 'x64'
       env:
         # These variables allow you to customize the process how the wheels
         # for the Python packages are built. For a list of options, see this
@@ -56,7 +56,7 @@ jobs:
         python -m cibuildwheel --output-dir wheelhouse
 
     - name: Build 32-bit wheels
-      if: ${{ "{{ matrix.platform }}" }} == 'x86'
+      if: matrix.platform == 'x86'
       env:
         # These variables allow you to customize the process how the wheels
         # for the Python packages are built. For a list of options, see this
