@@ -141,8 +141,9 @@ def test_pypi_without_github(cookies):
     assert bake.exit_code != 0
 
 
+@pytest.mark.local
 def test_codecov_without_license(cookies):
-    bake = cookies.bake(extra_context={'license': 'None', 'codecovio': 'Yes')
+    bake = cookies.bake(extra_context={'license': 'None', 'codecovio': 'Yes'})
     assert bake.exit_code != 0
 
 
