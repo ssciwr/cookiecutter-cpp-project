@@ -44,7 +44,7 @@ cookiecutter gh:ssciwr/cookiecutter-cpp-project
 
 This will start an interactive prompt that will configure and generate your project.
 One of the prompts will ask you for a remote repository URL, so you should head to
-the Git hosting service of your choice (e.g. `github.com`) and add a new repository.
+the Git hosting service of your choice and add a new empty repository e.g. [on Github](https://github.com/new).
 
 # Configuration
 
