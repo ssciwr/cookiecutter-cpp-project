@@ -14,10 +14,10 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif -%}
 {% if cookiecutter.remote_url != "None" -%}
-{% if cookiecutter.github_actions_ci == "Yes" -%}
+{% if cookiecutter.github_actions_ci == "Yes" and "github.com" in cookiecutter.remote_url -%}
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/CI)](https://github.com/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/actions?query=workflow%3ACI)
 {% endif -%}
-{% if cookiecutter.gitlab_ci == "Yes" -%}
+{% if cookiecutter.gitlab_ci == "Yes" and "gitlab" in cookiecutter.remote_url -%}
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/main
 {%- if "gitlab.com" not in cookiecutter.gitlab_ci -%}
 ?gitlab_url=https%3A%2F%2F{{ cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] }}
