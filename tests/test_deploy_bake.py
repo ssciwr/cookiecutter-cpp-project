@@ -38,7 +38,6 @@ def test_push_remote(cookies):
     )
     with inside_bake(bake):
         # Push to Github
-        subprocess.check_call("git remote add origin git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
         subprocess.check_call("git push -f origin main".split())
         # Push to Gitlab
         subprocess.check_call("git remote add gitlab git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git".split())
