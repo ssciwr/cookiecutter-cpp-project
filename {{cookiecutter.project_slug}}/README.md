@@ -25,7 +25,7 @@
 )](https://{{ cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] }}/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/-/pipelines)
 {% endif -%}
 {% if cookiecutter.travis_ci == "Yes" -%}
-[![Travis CI](https://img.shields.io/travis/com/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})](https://travis-ci.com/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})
+[![Travis CI](https://img.shields.io/travis/org/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})](https://travis-ci.org/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})
 {% endif -%}
 {% endif -%}
 {% if cookiecutter.pypi_release != "No" -%}
