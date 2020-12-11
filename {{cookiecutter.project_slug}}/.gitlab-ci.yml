@@ -37,7 +37,7 @@ build-and-test:clang:
   image: conanio/clang10
   <<: *template
 
-{% if cookiecutter.codecovio_username != "None" %}
+{% if cookiecutter.codecovio == "Yes" %}
 generate-coverage-report:
   image: conanio/gcc9
   before_script:
