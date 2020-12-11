@@ -13,17 +13,21 @@
 {% if cookiecutter.license == "LGPL-3.0" -%}
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif -%}
-{% if cookiecutter.remote_url != "None" %}
+{% if cookiecutter.remote_url != "None" -%}
 {% if cookiecutter.github_actions_ci == "Yes" -%}
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/CI)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/CI)
 {% endif -%}
 {% if cookiecutter.gitlab_ci == "Yes" -%}
-![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/main?gitlab_url=https%3A%2F%2F{{ cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0] }})
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}}/main
+{%- if "gitlab.com" not in cookiecutter.gitlab_ci -%}
+?gitlab_url=https%3A%2F%2F{{ cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] }}
+{%- endif -%}
+)
 {% endif -%}
 {% if cookiecutter.travis_ci == "Yes" -%}
-![Travis CI](https://img.shields.io/travis/com/{{ cookiecutter.remote_url.split("/")[-2]}}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})
+![Travis CI](https://img.shields.io/travis/com/{{ cookiecutter.remote_url.split("/")[-2].split(":")[-1] }}/{{ cookiecutter.remote_url.replace(".git", "").split("/")[-1]}})
 {% endif -%}
-{% endif %}
+{% endif -%}
 {% if cookiecutter.pypi_release != "No" -%}
 [![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://pypi.org/project/{{ cookiecutter.project_slug.replace("-", "") }})
 {% endif -%}
