@@ -12,7 +12,15 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-18.04, macos-10.15, windows-2019]
+        include:
+        - os: ubuntu-18.04
+          platform: x64
+        - os: macos-10.15
+          platform: x64
+        - os: windows-2019
+          platform: x64
+        - os: windows-2019
+          platform: x86
 
     steps:
     - uses: actions/checkout@v2
@@ -23,31 +31,42 @@ jobs:
       name: Install Python
       with:
         python-version: '3.7'
+        architecture: ${{ "{{ matrix.platform }}" }}
 
     - name: Install cibuildwheel
       run: |
         python -m pip install cibuildwheel==1.6.4
 
-    - name: Install Visual C++ for Python 2.7
-      if: runner.os == 'Windows'
-      run: |
-        choco install vcpython27 -f -y
+    - name: Prepare MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ "{{ matrix.platform }}" }}
 
-    - name: Build wheels
+    - name: Build 64-bit wheels
+      if: matrix.platform == 'x64'
       env:
         # These variables allow you to customize the process how the wheels
         # for the Python packages are built. For a list of options, see this
         # page: https://cibuildwheel.readthedocs.io/en/stable/options/
         CIBW_BEFORE_BUILD: python -m pip install cmake
-        CIBW_SKIP: "*-win32"
+        CIBW_SKIP: "*-win32 cp27-* cp35-*"
+        CIBW_TEST_COMMAND: pytest {package}/python/tests
+        CIBW_TEST_REQUIRES: pytest
       run: |
         python -m cibuildwheel --output-dir wheelhouse
-    
-    - name: Run Pytest on built wheels
-      working-directory: ./python
+
+    - name: Build 32-bit wheels
+      if: matrix.platform == 'x86'
+      env:
+        # These variables allow you to customize the process how the wheels
+        # for the Python packages are built. For a list of options, see this
+        # page: https://cibuildwheel.readthedocs.io/en/stable/options/
+        CIBW_BEFORE_BUILD: python -m pip install cmake
+        CIBW_SKIP: "*-win_amd64 cp27-* cp35-*"
+        CIBW_TEST_COMMAND: pytest {package}/python/tests
+        CIBW_TEST_REQUIRES: pytest
       run: |
-        python -m pip install -r requirements-dev.txt
-        python -m pytest
+        python -m cibuildwheel --output-dir wheelhouse
 
     - uses: actions/upload-artifact@v2
       with:
