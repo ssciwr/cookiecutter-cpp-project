@@ -116,7 +116,7 @@ def test_readthedocs_deploy():
 
 
 @pytest.mark.integrations
-def test_pypi_deploy(virtualenv):
+def test_pypi_deploy():
     # Find out the current version of the PyPI package
     def upstream_version(url):
         response = requests.get(url)
@@ -170,8 +170,3 @@ def test_pypi_deploy(virtualenv):
         workflow = repo.get_workflow("pypi.yml").get_runs()[0]
 
     assert workflow.conclusion == 'success'
-
-    # Install the package into a virtualenv and load it
-    time.sleep(2)
-    virtualenv.install_package('testgithubactionscookiecuttercppproject=={}'.format(str(next_version)))
-    subprocess.check_call([virtualenv.python, "-c", "'import testgithubactionscookiecuttercppproject'"])
