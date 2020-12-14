@@ -37,11 +37,12 @@ build-and-test:clang:
   image: conanio/clang10
   <<: *template
 
-{% if cookiecutter.codecovio == "Yes" %}
+{% if cookiecutter.codecovio == "Yes" -%}
 generate-coverage-report:
-  image: conanio/gcc9
+  image: gcc:9
   before_script:
-    - sudo apt-get install -yy lcov
+    - apt-get update
+    - apt-get install -yy cmake lcov
   script:
     - cmake -E make_directory build
     - cd build
@@ -51,4 +52,4 @@ generate-coverage-report:
     - cd ..
     - lcov --directory ./build/src --capture --output-file coverage.info
     - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
-{% endif %}
+{%- endif %}
