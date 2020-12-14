@@ -52,10 +52,14 @@ jobs:
       run: |
         choco install -y doxygen.install
 
-    - name: Set up git identity and configuration
+    - name: Set up git identity
       run: |
         git config --global user.email "ssc@citestuser.com"
         git config --global user.name "SSC CI Test User"
+
+    - name: Set up Windows git configuration
+      if: runner.os == 'Windows'
+      run: |
         git config --system core.longpaths true
 
     - name: Run regular test suite
