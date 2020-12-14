@@ -10,10 +10,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 
 * Very simple, configurable setup of a fully functional C++ project
 * Choose and add a license and copyright statement to your project
-* Ready-to-use integration with the following CI providers:
-  * Github Actions
-  * Gitlab CI
-  * Travis CI
+* Ready-to-use integration with the Github Actions and Gitlab CI
 * Generation and deployment of Sphinx-based documentation for [Read the Docs](https://readthedocs.org)
 * Building a Doxygen documentation
 * Setup of Python bindings with Pybind11
@@ -60,7 +57,6 @@ This cookiecutter accepts the following configuration options:
 * `license` adds a license file to the repository. It can be chosen from [MIT](https://opensource.org/licenses/MIT) (default), [BSD-2](https://opensource.org/licenses/BSD-2-Clause), [GPL-3.0](https://opensource.org/licenses/GPL-3.0), [LGPL-3.0](https://opensource.org/licenses/LGPL-3.0) or it can be omitted.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
-* `travis_ci`: Whether to add a CI workflow for Travis CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org
 * `doxygen`: Whether a Doxygen documentation should be extracted from the project
 * `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `11` (default), `14`, `17` and `20`.

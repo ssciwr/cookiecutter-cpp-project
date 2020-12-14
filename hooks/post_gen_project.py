@@ -49,7 +49,6 @@ def conditional_remove(condition, path):
 conditional_remove(True, "ext/.keep")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
 conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
-conditional_remove("{{ cookiecutter.travis_ci }}" == "No", ".travis.yml")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", ".readthedocs.yml")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/conf.py")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/index.rst")
