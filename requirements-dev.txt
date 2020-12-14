@@ -2,6 +2,7 @@ breathe==4.24.1
 cookiecutter==1.7.2
 jsonschema==3.2.0
 packaging==20.4
+pybind11==2.6.1
 PyGithub==1.54
 pytest==5.4.3
 pytest-cookies==0.5.1

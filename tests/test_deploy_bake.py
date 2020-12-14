@@ -33,6 +33,7 @@ def test_push_remote(cookies):
             'readthedocs': 'Yes',
             'python_bindings': 'Yes',
             'pypi_release': 'Yes',
+            'use_submodules': 'No',
         }
     )
     with inside_bake(bake):
@@ -83,7 +84,7 @@ def test_gitlab_ci_on_deployed_bake():
         time.sleep(5)
         pipeline.refresh()
         if pipeline.status in ["failed", "canceled", "skipped"]:
-            pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
+            pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(pipeline.status))
 
 
 @pytest.mark.integrations

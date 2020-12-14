@@ -8,6 +8,12 @@ The following tasks need to be done to get a fully working project:
 {%- else -%}
 * Push to your remote repository for the first time by doing `git push origin main`.
 {%- endif %}
+* Make sure that the following software is installed on your computer:
+  * A C++-{{ cookiecutter.cxx_minimum_standard}}-compliant C++ compiler
+  * CMake `>= 3.9`
+{% if cookiecutter.use_submodules == "No" %}  * The testing framework [Catch2](https://github.com/catchorg/Catch2)
+{% if cookiecutter.python_bindings == "Yes" -%}  * The [PyBind11](https://github.com/pybind/pybind11) library{% endif %}
+{%- endif %}
 {% if cookiecutter.gitlab_ci == "Yes" -%}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that
   there is a suitable Runner available. If you are using the cloud-hosted gitlab.com,
