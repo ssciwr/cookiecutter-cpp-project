@@ -57,6 +57,11 @@ jobs:
         git config --global user.email "ssc@citestuser.com"
         git config --global user.name "SSC CI Test User"
 
+    - name: Set up Windows git configuration
+      if: runner.os == 'Windows'
+      run: |
+        git config --system core.longpaths true
+
     - name: Run regular test suite
       run: |
         python -m pytest -m local

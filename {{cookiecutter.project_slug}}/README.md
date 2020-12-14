@@ -1,12 +1,46 @@
 # Welcome to {{ cookiecutter.project_name }}
 
-{% if cookiecutter.license == "MIT" %}[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT){% endif %}
-{% if cookiecutter.license == "BSD-2" %}[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause){% endif %}
-{% if cookiecutter.license == "GPL-3.0" %}[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0){% endif %}
-{% if cookiecutter.license == "LGPL-3.0" %}[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0){% endif %}
-{% if cookiecutter.pypi_release != "No" %}[![PyPI version](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}.svg)](https://badge.fury.io/py/{{ cookiecutter.project_slug.replace("-", "") }}){% endif %}
-{% if cookiecutter.readthedocs == "Yes" %}[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter.project_slug }}/badge/?version=latest)](https://{{ cookiecutter.project_slug }}.readthedocs.io/en/latest/?badge=latest){% endif %}
-
+{# The white-space control of the below template is quite delicate - if you add one, do it exactly like this (mind the -'s) -#}
+{%- set is_github = "github.com" in cookiecutter.remote_url -%}
+{%- set is_gitlab = "gitlab" in cookiecutter.remote_url -%}
+{%- set username = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.split("/")[-2].split(":")[-1] -%}
+{%- set remote_slug = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.replace(".git", "").split("/")[-1] -%}
+{%- set gitlab_instance = "None" if cookiecutter.remote_url == "None" else "https%3A%2F%2F" + cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] -%}
+{%- set python_package = cookiecutter.project_slug.replace("-", "") -%}
+{% if cookiecutter.license == "MIT" -%}
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+{% endif -%}
+{% if cookiecutter.license == "BSD-2" -%}
+[![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
+{% endif -%}
+{% if cookiecutter.license == "GPL-3.0" -%}
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+{% endif -%}
+{% if cookiecutter.license == "LGPL-3.0" -%}
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+{% endif -%}
+{% if cookiecutter.remote_url != "None" -%}
+{% if cookiecutter.github_actions_ci == "Yes" and is_github -%}
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ username }}/{{ remote_slug }}/CI)](https://github.com/{{ username }}/{{ remote_slug }}/actions?query=workflow%3ACI)
+{% endif -%}
+{% if cookiecutter.gitlab_ci == "Yes" and is_gitlab -%}
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ username }}/{{ remote_slug }}/main
+{%- if "gitlab.com" not in cookiecutter.remote_url -%}
+?gitlab_url={{ gitlab_instance }}
+{%- endif -%}
+)]({{ gitlab_instance }}/{{ username }}/{{ remote_slug }}/-/pipelines)
+{% endif -%}
+{% if cookiecutter.travis_ci == "Yes" -%}
+[![Travis CI](https://img.shields.io/travis/org/{{ username }}/{{ remote_slug }})](https://travis-ci.org/{{ username }}/{{ remote_slug }})
+{% endif -%}
+{% endif -%}
+{% if cookiecutter.pypi_release != "No" -%}
+[![PyPI Release](https://img.shields.io/pypi/v/{{ python_package }}.svg)](https://pypi.org/project/{{ python_package }})
+{% endif -%}
+{% if cookiecutter.readthedocs == "Yes" -%}
+[![Documentation Status](https://readthedocs.org/projects/{{ remote_slug }}/badge/)](https://{{ remote_slug }}.readthedocs.io/)
+{% endif -%}
+{{ "\n" -}}
 # Prerequisites
 
 Building {{ cookiecutter.project_name }} requires the following software installed:

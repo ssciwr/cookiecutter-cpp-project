@@ -134,3 +134,19 @@ def test_pypi_without_python(cookies):
 def test_pypi_without_github(cookies):
     bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'Yes'})
     assert bake.exit_code != 0
+
+
+@pytest.mark.local
+@pytest.mark.parametrize(
+    "remote_url",
+    [
+        "git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git",
+        "https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git",
+        "git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git",
+        "https://gitlab.com/dokempf/test-gitlab-ci-cookiecutter-cpp-project.git",
+        "ssh://git@gitlab.dune-project.org:22022/dominic/test-gitlab-ci-cookiecutter-cpp-project.git",
+        "https://gitlab.dune-project.org/dominic/test-gitlab-ci-cookiecutter-cpp-project.git"
+    ])
+def test_remote_urls(cookies, remote_url):
+    bake = cookies.bake(extra_context={"github_actions_ci": "Yes", "gitlab_ci": "Yes", "remote_url": remote_url})
+    check_bake(bake)
