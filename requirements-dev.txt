@@ -5,6 +5,7 @@ packaging==20.4
 PyGithub==1.54
 pytest==5.4.3
 pytest-cookies==0.5.1
+pytest-timeout==1.4.2
 pytest-virtualenv==1.7.0
 python-gitlab==2.5.0
 requests==2.24.0

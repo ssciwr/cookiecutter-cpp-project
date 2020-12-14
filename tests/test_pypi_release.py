@@ -9,6 +9,7 @@ from packaging import version
 
 
 @pytest.mark.pypi
+@pytest.mark.timeout(1800)
 def test_pypi_deploy():
     # Find out the current version of the PyPI package
     def upstream_version(url):
