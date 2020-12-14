@@ -80,7 +80,7 @@ def test_gitlab_ci_on_deployed_bake():
     while pipeline.status != 'success':
         time.sleep(5)
         pipeline.refresh()
-        if pipeline.status in ["failed", "cancelled", "skipped"]:
+        if pipeline.status in ["failed", "canceled", "skipped"]:
             pytest.fail("The Gitlab API reported Status '{}' while we were waiting for 'success'".format(status))
 
 
