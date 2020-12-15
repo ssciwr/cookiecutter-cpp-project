@@ -12,5 +12,6 @@
     "cxx_minimum_standard": ["11", "14", "17", "20"],
     "python_bindings": ["No", "Yes"],
     "pypi_release": "{{ cookiecutter.python_bindings }}",
-    "codecovio": ["Yes", "No"]
+    "codecovio": ["Yes", "No"],
+    "sonarcloud": ["Yes", "No"]
 }

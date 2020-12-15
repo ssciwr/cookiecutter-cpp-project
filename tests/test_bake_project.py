@@ -148,6 +148,18 @@ def test_codecov_without_license(cookies):
 
 
 @pytest.mark.local
+def test_sonarcloud_without_license(cookies):
+    bake = cookies.bake(extra_context={'license': 'None', 'sonarcloud': 'Yes'})
+    assert bake.exit_code != 0
+
+
+@pytest.mark.local
+def test_sonarcloud_without_github(cookies):
+    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'sonarcloud': 'Yes'})
+    assert bake.exit_code != 0
+
+
+@pytest.mark.local
 @pytest.mark.parametrize(
     "remote_url",
     [
