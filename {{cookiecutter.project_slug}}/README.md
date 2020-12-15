@@ -37,6 +37,9 @@
 {% if cookiecutter.readthedocs == "Yes" -%}
 [![Documentation Status](https://readthedocs.org/projects/{{ remote_slug }}/badge/)](https://{{ remote_slug }}.readthedocs.io/)
 {% endif -%}
+{% if cookiecutter.codecovio == "Yes" -%}
+[![codecov](https://codecov.io/{% if is_github %}gh{% endif %}{% if is_gitlab %}gl{% endif %}/{{ username }}/{{ remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{% if is_github %}gh{% endif %}{% if is_gitlab %}gl{% endif %}/{{ username }}/{{ remote_slug }})
+{%- endif %}
 {{ "\n" -}}
 # Prerequisites
 
