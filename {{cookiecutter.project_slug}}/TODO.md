@@ -48,5 +48,7 @@ The following tasks need to be done to get a fully working project:
 * Enable the integration with `sonarcloud.io` by heading to the [Sonarcloud.io Website](https://sonarcloud.io),
   log in (e.g. with your Github credentials), add the repository and select *Github Actions* as the
   preferred method of integration. Follow step 1 and set up the secret variable `SONAR_TOKEN`. Step 2
-  and 3 are already taken care of by this cookiecutter.
+  and 3 are already taken care of by this cookiecutter. In order to have the SonarCloud badge in the
+  README show something meaningful, a *New Code Definition* needs to be configured in Sonarcloud under
+  *Administration/New Code*.
 {%- endif %}

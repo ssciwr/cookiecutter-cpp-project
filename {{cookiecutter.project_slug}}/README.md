@@ -41,6 +41,9 @@
 {% if cookiecutter.codecovio == "Yes" -%}
 [![codecov](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }})
 {%- endif %}
+{% if cookiecutter.sonarcloud == "Yes" -%}
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project={{ username }}_{{ remote_slug }}&metric=alert_status)](https://sonarcloud.io/dashboard?id={{ username }}_{{ remote_slug }})
+{%- endif %}
 {{ "\n" -}}
 # Prerequisites
 
