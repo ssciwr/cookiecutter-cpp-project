@@ -3,6 +3,7 @@
 {# The white-space control of the below template is quite delicate - if you add one, do it exactly like this (mind the -'s) -#}
 {%- set is_github = "github.com" in cookiecutter.remote_url -%}
 {%- set is_gitlab = "gitlab" in cookiecutter.remote_url -%}
+{%- set provider_acronym = "gh" if is_github else "gl" if is_gitlab else "none" %}
 {%- set username = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.split("/")[-2].split(":")[-1] -%}
 {%- set remote_slug = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.replace(".git", "").split("/")[-1] -%}
 {%- set gitlab_instance = "None" if cookiecutter.remote_url == "None" else "https%3A%2F%2F" + cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] -%}
@@ -38,7 +39,7 @@
 [![Documentation Status](https://readthedocs.org/projects/{{ remote_slug }}/badge/)](https://{{ remote_slug }}.readthedocs.io/)
 {% endif -%}
 {% if cookiecutter.codecovio == "Yes" -%}
-[![codecov](https://codecov.io/{% if is_github %}gh{% endif %}{% if is_gitlab %}gl{% endif %}/{{ username }}/{{ remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{% if is_github %}gh{% endif %}{% if is_gitlab %}gl{% endif %}/{{ username }}/{{ remote_slug }})
+[![codecov](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }})
 {%- endif %}
 {{ "\n" -}}
 # Prerequisites
