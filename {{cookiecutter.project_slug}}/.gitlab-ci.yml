@@ -39,7 +39,7 @@ build-and-test:clang:
 
 {% if cookiecutter.codecovio == "Yes" -%}
 generate-coverage-report:
-  image: gcc:9
+  image: gcc:7
   before_script:
     - apt-get update
     - apt-get install -yy cmake lcov
