@@ -4,7 +4,8 @@ variables:
 {%- endif %}
 
 .template: &template
-  script:
+  before_script:
+    - echo "Installing potential dependencies..."
 {% if cookiecutter.python_bindings == "Yes" and cookiecutter.use_submodules == "No" %}
     - git clone -b v2.6.1 https://github.com/pybind/pybind11.git
     - cd pybind11
@@ -12,7 +13,7 @@ variables:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - sudo make install
-    - cd ..
+    - cd ../..
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
     - git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
@@ -21,8 +22,9 @@ variables:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - sudo make install
-    - cd ..
+    - cd ../..
 {%- endif %}
+  script:
     - cmake -E make_directory build
     - cd build
     - cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -36,3 +38,20 @@ build-and-test:gcc:
 build-and-test:clang:
   image: conanio/clang10
   <<: *template
+
+{% if cookiecutter.codecovio == "Yes" -%}
+generate-coverage-report:
+  image: conanio/gcc7
+  <<: *template
+  script:
+    - sudo apt-get update
+    - sudo apt-get install -yy lcov
+    - cmake -E make_directory build
+    - cd build
+    - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="--coverage" ..
+    - cmake --build .
+    - ctest
+    - cd ..
+    - lcov --directory ./build/src --capture --output-file coverage.info
+    - bash <(curl --connect-timeout 10 --retry 5 -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+{%- endif %}

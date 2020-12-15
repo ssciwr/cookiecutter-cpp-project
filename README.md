@@ -15,6 +15,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 * Building a Doxygen documentation
 * Setup of Python bindings with Pybind11
 * CI-based deployment of Python bindings to PyPI
+* Integration with coverage testing from [codecov.io](https://codecov.io)
 * Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
 
 # Prerequisites
@@ -70,6 +71,8 @@ This cookiecutter accepts the following configuration options:
   This is currently limited to Github Actions CI as it provides cloud-based runners for all relevant
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
   generated in the Github UI.
+* `codecovio`: Whether an automatic integration with coverage checking from [codecov.io](https://codecov.io)
+  should be set up. This requires an Open Source license.
 
 If you are using `cookiecutter-cpp-project` a lot, you can customize your default values
 by providing a `.cookiecutterrc` file in your home directory, for more details see the

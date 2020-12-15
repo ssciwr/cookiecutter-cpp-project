@@ -59,6 +59,7 @@ conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "setup.py")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
 conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
+conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 

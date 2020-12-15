@@ -14,3 +14,7 @@ if "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_binding
 if "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.github_actions_ci }}" == "No":
     sys.stderr.write("Automatic PyPI releases are currently only supported in combination with Github Actions CI")
     sys.exit(1)
+
+if "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None":
+    sys.stderr.write("Coverage reports for codecov.io require an open source license for your project")
+    sys.exit(1)
