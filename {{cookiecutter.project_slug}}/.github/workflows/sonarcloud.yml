@@ -23,6 +23,26 @@ jobs:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           submodules: 'recursive'
 
+{% if cookiecutter.use_submodules == "No" %}
+      - name: Install Catch2
+        run: |
+          git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+          cd Catch2
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo cmake --build . --target install
+{% if cookiecutter.python_bindings == "Yes" %}
+      - name: Install Pybind11
+        run: |
+          git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+          cd pybind11
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo cmake --build . --target install
+{%- endif %}
+{%- endif %}
       - name: Install the SonarCloud Client + build wrapper
         run: |
           curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
