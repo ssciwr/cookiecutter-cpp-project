@@ -129,7 +129,7 @@ def codecov_api_verification(remote_url, token, sha):
         commit = codecov_api_request('commit/{}'.format(sha))['commit']
 
     # Assert 100% coverage
-    assert commit['totals']['c'] == 100
+    assert commit['totals']['c'] == '100'
 
 
 @pytest.mark.integrations
@@ -149,7 +149,7 @@ def test_codecovio_github_deploy():
 
 @pytest.mark.integrations
 @pytest.mark.timeout(60)
-def test_codecovio_github_deploy():
+def test_codecovio_gitlab_deploy():
     # Authenticate with Gitlab API
     gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
     gl.auth()
