@@ -12,7 +12,7 @@ variables:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - sudo make install
-    - cd ..
+    - cd ../..
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
     - git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
@@ -21,7 +21,7 @@ variables:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - sudo make install
-    - cd ..
+    - cd ../..
 {%- endif %}
     - cmake -E make_directory build
     - cd build
@@ -51,7 +51,7 @@ generate-coverage-report:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - make install
-    - cd ..
+    - cd ../..
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
     - git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
@@ -60,7 +60,7 @@ generate-coverage-report:
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
     - make install
-    - cd ..
+    - cd ../..
 {%- endif %}
     - cmake -E make_directory build
     - cd build
