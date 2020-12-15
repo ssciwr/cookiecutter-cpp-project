@@ -50,7 +50,7 @@ generate-coverage-report:
     - mkdir build
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
-    - sudo make install
+    - make install
     - cd ..
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
@@ -59,7 +59,7 @@ generate-coverage-report:
     - mkdir build
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
-    - sudo make install
+    - make install
     - cd ..
 {%- endif %}
     - cmake -E make_directory build
