@@ -88,6 +88,7 @@ jobs:
       working-directory: ${{ "{{runner.workspace}}" }}/build
       run: ctest
 
+{% if cookiecutter.codecovio == "Yes" %}
   coverage-test:
     name: Coverage Testing
     runs-on: ubuntu-18.04
@@ -125,3 +126,4 @@ jobs:
       run: |
         lcov --directory ./build/src --capture --output-file coverage.info
         bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+{% endif %}
