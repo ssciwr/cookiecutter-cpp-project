@@ -47,6 +47,7 @@ def conditional_remove(condition, path):
 
 
 conditional_remove(True, "ext/.keep")
+conditional_remove("{{ cookiecutter.use_submodules }}" == "No", "ext")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
 conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", ".readthedocs.yml")
@@ -63,9 +64,13 @@ conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 # Set up a Git repository with submodules
 with GitRepository() as repo:
+{% if cookiecutter.use_submodules == "Yes" %}
     repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v2.13.3")
     if "{{ cookiecutter.python_bindings }}" == "Yes":
         repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v2.6.1")
+{% else %}
+    pass
+{% endif %}
 
 
 # Print a message about success

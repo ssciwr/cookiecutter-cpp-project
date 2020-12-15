@@ -4,6 +4,7 @@
     "project_slug": "{%- if cookiecutter.remote_url == 'None' -%}{{ cookiecutter.project_name|replace('+', 'p')|slugify }}{% else %}{{ cookiecutter.remote_url.split('/')[-1]|replace('.git', '')}}{%- endif -%}",
     "full_name": "Your Name",
     "license": ["MIT", "BSD-2", "GPL-3.0", "LGPL-3.0", "None"],
+    "use_submodules": ["Yes", "No"],
     "github_actions_ci": ["Yes", "No"],
     "gitlab_ci": ["No", "Yes"],
     "readthedocs": ["Yes", "No"],

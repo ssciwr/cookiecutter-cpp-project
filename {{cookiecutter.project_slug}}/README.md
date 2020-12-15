@@ -45,7 +45,9 @@ Building {{ cookiecutter.project_name }} requires the following software install
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
 * CMake `>= 3.9`
 {% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" -%}* Doxygen (optional, documentation building is skipped if missing){% endif %}
+{% if cookiecutter.use_submodules == "No" -%}* The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite{%- endif %}
 {% if cookiecutter.python_bindings == "Yes" -%}* Python `>= 3.6` for building Python bindings{% endif %}
+{% if cookiecutter.use_submodules == "No" and cookiecutter.python_bindings == "Yes" -%}* The [PyBind11](https://github.com/pybind/pybind11) library for building Python bindings{%- endif %}
 
 # Building {{ cookiecutter.project_name }}
 

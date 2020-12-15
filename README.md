@@ -55,6 +55,9 @@ This cookiecutter accepts the following configuration options:
   from the specified remote URL and the given project name.
 * `full_name`: Author name, defaults to `Your Name`
 * `license` adds a license file to the repository. It can be chosen from [MIT](https://opensource.org/licenses/MIT) (default), [BSD-2](https://opensource.org/licenses/BSD-2-Clause), [GPL-3.0](https://opensource.org/licenses/GPL-3.0), [LGPL-3.0](https://opensource.org/licenses/LGPL-3.0) or it can be omitted.
+* `use_submodules`: Whether `git submodule` should be used to add version-pinned external
+  dependencies (like e.g. the testing framework `Catch2`). If you do not know what git submodules
+  are, you should select `No`.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org

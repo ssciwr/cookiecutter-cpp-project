@@ -1,8 +1,28 @@
+{% if cookiecutter.use_submodules == "Yes" -%}
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
+{%- endif %}
 
 .template: &template
   script:
+{% if cookiecutter.python_bindings == "Yes" and cookiecutter.use_submodules == "No" %}
+    - git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+    - cd pybind11
+    - mkdir build
+    - cd build
+    - cmake -DBUILD_TESTING=OFF ..
+    - sudo make install
+    - cd ..
+{%- endif %}
+{% if cookiecutter.use_submodules == "No" %}
+    - git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+    - cd Catch2
+    - mkdir build
+    - cd build
+    - cmake -DBUILD_TESTING=OFF ..
+    - sudo make install
+    - cd ..
+{%- endif %}
     - cmake -E make_directory build
     - cd build
     - cmake -DCMAKE_BUILD_TYPE=Debug ..

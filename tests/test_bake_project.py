@@ -43,8 +43,14 @@ def check_bake(bake):
 
 
 @pytest.mark.local
-def test_project_tree(cookies):
-    bake = cookies.bake(extra_context={'project_slug': 'test_project'})
+@pytest.mark.parametrize("submodules", ("Yes", "No"))
+def test_ctest_run(cookies, submodules):
+    bake = cookies.bake(
+        extra_context={
+            'project_slug': 'test_project',
+            'use_submodules': submodules,
+        }
+    )
     check_bake(bake)
     with inside_bake(bake):
         os.makedirs("build")
@@ -105,8 +111,15 @@ def test_gitlabci(cookies):
 
 
 @pytest.mark.local
-def test_python(cookies, virtualenv):
-    bake = cookies.bake(extra_context={'project_slug': 'my-project', 'python_bindings': 'Yes'})
+@pytest.mark.parametrize("submodules", ("Yes", "No"))
+def test_python(cookies, virtualenv, submodules):
+    bake = cookies.bake(
+        extra_context={
+            'project_slug': 'my-project',
+            'python_bindings': 'Yes',
+            'submodules': submodules,
+        }
+    )
     check_bake(bake)
     with inside_bake(bake):
         # Make sure that our Python package can be installed and imported
