@@ -34,6 +34,8 @@ def test_push_remote(cookies):
             'python_bindings': 'Yes',
             'pypi_release': 'Yes',
             'use_submodules': 'No',
+            'codecovio': 'Yes',
+            'sonarcloud': 'Yes',
         }
     )
     with inside_bake(bake):
@@ -56,14 +58,19 @@ def test_github_actions_ci_on_deployed_bake():
     workflow = repo.get_workflow("ci.yml").get_runs()[0]
     assert workflow.head_sha == branch.commit.sha
 
-    # Poll the workflow status
-    while workflow.status != 'completed':
-        # We poll at a relatively large interval to avoid running against the Github API
-        # limitations in times of heavy development activities on the cookiecutter.
-        time.sleep(30)
-        workflow = repo.get_workflow("ci.yml").get_runs()[0]
+    def check_workflow(name):
+        # Poll the workflow status
+        workflow = repo.get_workflow(name).get_runs()[0]
+        while workflow.status != 'completed':
+            # We poll at a relatively large interval to avoid running against the Github API
+            # limitations in times of heavy development activities on the cookiecutter.
+            time.sleep(30)
+            workflow = repo.get_workflow(name).get_runs()[0]
 
-    assert workflow.conclusion == 'success'
+        assert workflow.conclusion == 'success'
+
+    check_workflow("ci.yml")
+    check_workflow("sonarcloud.yml")
 
 
 @pytest.mark.integrations

@@ -16,6 +16,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 * Setup of Python bindings with Pybind11
 * CI-based deployment of Python bindings to PyPI
 * Integration with coverage testing from [codecov.io](https://codecov.io)
+* Integration with code quality analysis from [sonarcloud.io](https://sonarcloud.io/)
 * Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
 
 # Prerequisites
@@ -72,7 +73,12 @@ This cookiecutter accepts the following configuration options:
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is
   generated in the Github UI.
 * `codecovio`: Whether an automatic integration with coverage checking from [codecov.io](https://codecov.io)
-  should be set up. This requires an Open Source license.
+  should be set up. This requires an Open Source license in order to be free to use.
+* `sonarcloud`: Whether an automatic integration with code quality analysis from [sonarcloud.io](https://sonarcloud.io/)
+  should be set up. Sonarcloud requires an Open Source license in order to be free to use.
+  This feature requires a bit of setup, but will give you access to a very powerful code
+  analysis tool. Currently, we only support SonarCloud analysis in combination with Github
+  Actions CI and a Github remote repository.
 
 If you are using `cookiecutter-cpp-project` a lot, you can customize your default values
 by providing a `.cookiecutterrc` file in your home directory, for more details see the
