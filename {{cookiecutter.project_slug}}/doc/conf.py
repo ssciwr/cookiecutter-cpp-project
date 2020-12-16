@@ -71,6 +71,6 @@ if read_the_docs_build:
     cwd = os.getcwd()
     os.makedirs("build-cmake", exist_ok=True)
     builddir = os.path.join(cwd, "build-cmake")
-    subprocess.call("cmake ../..".split(), cwd=builddir)
-    subprocess.call("cmake --build . --target doxygen".split(), cwd=builddir)
+    subprocess.check_call("cmake -DBUILD_DOCS=ON -DBUILD_TESTING=OFF {% if cookiecutter.python_bindings == 'Yes' %}-DBUILD_PYTHON=OFF{% endif %} ../..".split(), cwd=builddir)
+    subprocess.check_call("cmake --build . --target doxygen".split(), cwd=builddir)
     breathe_projects["{{ cookiecutter.project_slug }}"] = os.path.join(builddir, "doc", "xml")
