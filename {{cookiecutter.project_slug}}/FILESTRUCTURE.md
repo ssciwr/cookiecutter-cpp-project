@@ -3,7 +3,7 @@ generated for you:
 
 * C++ source files:
   * `include/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp` is the main
-    C++ header that declares the interface of your project.
+    C++ header that declares the interface of your library.
   * `src/{{ cookiecutter.project_slug }}.cpp` is the main file that implements this interface.
     It is built into a library.
   * `app/{{ cookiecutter.project_slug }}_app.cpp` is an executable that uses the library.
