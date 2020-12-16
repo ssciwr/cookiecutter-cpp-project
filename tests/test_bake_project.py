@@ -42,17 +42,17 @@ def check_bake(bake):
     assert bake.project.isdir()
 
 
-def build_targets(targets=["all", "test"], **cmake_args):
+def build_cmake(target=None, ctest=False, install=False, **cmake_args):
     os.makedirs("build")
     os.chdir("build")
     optstr = " ".join("-D{}={}".format(k, v) for k, v in cmake_args.items())
+    targetstr = "--target {}".format(target) if target is not None else ""
     subprocess.check_call("cmake {} ..".format(optstr).split())
-    for target in targets:
-        # On Windows, the "all" target does not exist
-        if target == "all":
-            subprocess.check_call("cmake --build .".format(target).split())
-        else:
-            subprocess.check_call("cmake --build . --target {}".format(target).split())
+    subprocess.check_call("cmake --build . {}".format(targetstr).split())
+    if ctest:
+        subprocess.check_call("ctest".split())
+    if install:
+        subprocess.check_call("cmake --build . --target install".split())
 
 
 @pytest.mark.local
@@ -67,7 +67,7 @@ def test_ctest_run(cookies, submodules):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_targets()
+        build_cmake(ctest=True)
 
 
 @pytest.mark.local
@@ -86,8 +86,8 @@ def test_cmake_installation(cookies):
     )
     with inside_bake(upstream_bake):
         install_path = os.path.join(os.getcwd(), "inst")
-        build_targets(
-            targets=["all", "install"],
+        build_cmake(
+            install=True,
             CMAKE_INSTALL_PREFIX=install_path
         )
 
@@ -112,7 +112,7 @@ def test_cmake_installation(cookies):
                 f.write(line.replace("x + 1", "upstream::add_one(x)"))
 
         # Finally test the result
-        build_targets(CMAKE_PREFIX_PATH=install_path)
+        build_cmake(ctest=True, CMAKE_PREFIX_PATH=install_path)
 
 
 @pytest.mark.local
@@ -134,7 +134,7 @@ def test_readthedocs(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_targets(targets=['sphinx-doc'])
+        build_cmake(target='sphinx-doc')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "sphinx", "index.html"))
 
 
@@ -148,7 +148,7 @@ def test_doxygen(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_targets(targets=['doxygen'])
+        build_cmake(target='doxygen')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "html", "index.html"))
 
 
