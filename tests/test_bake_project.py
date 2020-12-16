@@ -48,7 +48,11 @@ def build_targets(targets=["all", "test"], **cmake_args):
     optstr = " ".join("-D{}={}".format(k, v) for k, v in cmake_args.items())
     subprocess.check_call("cmake {} ..".format(optstr).split())
     for target in targets:
-        subprocess.check_call("cmake --build . --target {}".format(target).split())
+        # On Windows, the "all" target does not exist
+        if "all":
+            subprocess.check_call("cmake --build .".format(target).split())
+        else:
+            subprocess.check_call("cmake --build . --target {}".format(target).split())
 
 
 @pytest.mark.local
