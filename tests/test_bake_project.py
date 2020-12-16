@@ -42,14 +42,13 @@ def check_bake(bake):
     assert bake.project.isdir()
 
 
-def build_and_test(targets=["all"], **cmake_args):
+def build_targets(targets=["all", "test"], **cmake_args):
     os.makedirs("build")
     os.chdir("build")
     optstr = " ".join("-D{}={}".format(k, v) for k, v in cmake_args.items())
     subprocess.check_call("cmake {} ..".format(optstr).split())
     for target in targets:
         subprocess.check_call("cmake --build . --target {}".format(target).split())
-    subprocess.check_call("ctest".split())
 
 
 @pytest.mark.local
@@ -64,7 +63,7 @@ def test_ctest_run(cookies, submodules):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_and_test()
+        build_targets()
 
 
 @pytest.mark.local
@@ -83,7 +82,7 @@ def test_cmake_installation(cookies):
     )
     with inside_bake(upstream_bake):
         install_path = os.path.join(os.getcwd(), "inst")
-        build_and_test(
+        build_targets(
             targets=["all", "install"],
             CMAKE_INSTALL_PREFIX=install_path
         )
@@ -109,7 +108,7 @@ def test_cmake_installation(cookies):
                 f.write(line.replace("x + 1", "upstream::add_one(x)"))
 
         # Finally test the result
-        build_and_test(CMAKE_PREFIX_PATH=install_path)
+        build_targets(CMAKE_PREFIX_PATH=install_path)
 
 
 @pytest.mark.local
@@ -131,7 +130,7 @@ def test_readthedocs(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_and_test(targets=['sphinx-doc'])
+        build_targets(targets=['sphinx-doc'])
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "sphinx", "index.html"))
 
 
@@ -145,7 +144,7 @@ def test_doxygen(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_and_test(targets=['doxygen'])
+        build_targets(targets=['doxygen'])
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "html", "index.html"))
 
 
