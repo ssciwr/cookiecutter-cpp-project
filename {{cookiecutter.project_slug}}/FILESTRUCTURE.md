@@ -8,12 +8,12 @@ generated for you:
     It is built into a library.
   * `app/{{ cookiecutter.project_slug }}_app.cpp` is an executable that uses the library.
     This can e.g. be used to provide a command line interface for your project.
-  * `tests/{{ cookiecutter.project_slug }}_t.cpp` contains the unit test for the library.
+  * `tests/{{ cookiecutter.project_slug }}_t.cpp` contains the unit tests for the library.
     The unit tests are written using Catch2. For further reading on what can be achieved
     with Catch2, we recommend [their tutorial](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md).
   * `tests/tests.cpp` is the Catch2 testing driver. You do not need to change
     this. Placing this in a separate compilation unit than the unit test
-    implementation increases the compilation time of the test suite.
+    implementation decreases the compilation time of the test suite.
 {%- if cookiecutter.python_bindings == "Yes" %}
   * `python/{{ cookiecutter.project_slug }}_python.cpp` is the source file
     that contains the Pybind11 code to generate the Python package.
@@ -22,9 +22,9 @@ generated for you:
   * `CMakeLists.txt` describes the CMake configuration script. You can find such files
     in many directories. When CMake runs, the `CMakeLists.txt` from the top-level directory
     executes top to bottom. Whenever a command `add_subdirectory(<dir>)` is executed,
-    the `CMakeLists.txt` file form that directory is immediately executed. A comprehensive
-    reference of CMake's capabilities can be found in the [official CMake docs](https://cmake.org/documentation/),
-    a well-written, opinionated book for beginners and experts is [Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
+    the `CMakeLists.txt` file from the directory `<dir>` is immediately executed. A comprehensive
+    reference of CMake's capabilities can be found in the [official CMake docs](https://cmake.org/documentation/).
+    A well-written, opinionated book for beginners and experts is [Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
 {%- if cookiecutter.use_submodules == "Yes" %}
 * The `ext` directory contains any submodules that were added by the cookiecutter.
 {%- endif %}
