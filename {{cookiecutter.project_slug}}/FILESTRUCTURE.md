@@ -5,7 +5,6 @@ generated for you:
   * `include/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp` is the main
     C++ header that declares the interface of your library.
   * `src/{{ cookiecutter.project_slug }}.cpp` is the main file that implements this interface.
-    It is built into a library.
   * `app/{{ cookiecutter.project_slug }}_app.cpp` is an executable that uses the library.
     This can e.g. be used to provide a command line interface for your project.
   * `tests/{{ cookiecutter.project_slug }}_t.cpp` contains the unit tests for the library.
