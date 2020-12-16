@@ -13,6 +13,9 @@ from cookiecutter.utils import rmtree
 
 class GitRepository(object):
     """ A context for the setup of a Git repository """
+    def __init__(self):
+        self.remotes = {}
+
     def __enter__(self):
         # Initialize the git repository
         subprocess.check_call("git init".split())
@@ -23,9 +26,15 @@ class GitRepository(object):
         # Finalize by making an initial git commit
         subprocess.check_call("git add *".split())
         subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
-        {% if cookiecutter.remote_url != 'None' %}
-        subprocess.check_call("git remote add origin {{ cookiecutter.remote_url }}".split())
-        {% endif %}
+
+    def add_remote(self, name, url):
+        if self.remotes.get(name, url) != url:
+            sys.stderr.write("Trying to add a remote repository twice with differing URL!")
+            sys.exit(1)
+
+        if name not in self.remotes:
+            self.remotes[name] = url
+            subprocess.check_call(["git", "remote", "add", name, url])
 
     def add_submodule(self, url, location, branch=None, tag=None):
         command = ["git", "submodule", "add"]
@@ -67,6 +76,9 @@ conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 # Set up a Git repository with submodules
 with GitRepository() as repo:
+{% if cookiecutter.remote_url != 'None' %}
+    repo.add_remote("origin", "{{ cookiecutter.remote_url }}")
+{% endif %}
 {% if cookiecutter.use_submodules == "Yes" %}
     repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v2.13.3")
     if "{{ cookiecutter.python_bindings }}" == "Yes":
