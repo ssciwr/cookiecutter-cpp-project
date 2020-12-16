@@ -7,26 +7,39 @@
 
 import sys
 
-if "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "No":
-    sys.stderr.write("Can't do PyPI release without building Python bindings")
-    sys.exit(1)
 
-if "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.github_actions_ci }}" == "No":
-    sys.stderr.write("Automatic PyPI releases are currently only supported in combination with Github Actions CI")
-    sys.exit(1)
+def fail_if(condition, message):
+    if condition:
+        sys.stderr.write(message)
+        sys.exit(1)
 
-if "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None":
-    sys.stderr.write("Coverage reports for codecov.io require an open source license for your project")
-    sys.exit(1)
 
-if "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.license }}" == "None":
-    sys.stderr.write("Code quality analysis from sonarcloud.io requires an open source license for your project")
-    sys.exit(1)
+fail_if(
+    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "No",
+    "Can't do PyPI release without building Python bindings"
+)
 
-if "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.github_actions_ci }}" == "No":
-    sys.stderr.write("Code quality analysis from sonarcloud.io is currently only supported in combination with Github Actions CI")
-    sys.exit(1)
+fail_if(
+    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.github_actions_ci }}" == "No",
+    "Automatic PyPI releases are currently only supported in combination with Github Actions CI"
+)
 
-if "{{ cookiecutter.sonarcloud }}" == "Yes" and "github.com" not in "{{ cookiecutter.remote_url }}":
-    sys.stderr.write("Code quality analysis from sonarcloud.io is currently only supported in combination with a Github remote repository")
-    sys.exit(1)
+fail_if(
+    "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
+    "Coverage reports for codecov.io require an open source license for your project"
+)
+
+fail_if(
+    "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
+    "Code quality analysis from sonarcloud.io requires an open source license for your project"
+)
+
+fail_if(
+    "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.github_actions_ci }}" == "No",
+    "Code quality analysis from sonarcloud.io is currently only supported in combination with Github Actions CI"
+)
+
+fail_if(
+    "{{ cookiecutter.sonarcloud }}" == "Yes" and "github.com" not in "{{ cookiecutter.remote_url }}",
+    "Code quality analysis from sonarcloud.io is currently only supported in combination with a Github remote repository"
+)
