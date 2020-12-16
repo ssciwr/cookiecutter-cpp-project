@@ -86,7 +86,7 @@ generated for you:
 {%- endif %}
   * `TODO.md` contains a list of TODOs after running the cookiecutter. Following the
     instructions in that file will give you a fully functional repository with a lot
-    of integration into interesting web services activated and running.
+    of integration into useful web services activated and running.
   * `FILESTRUCTURE.md` describes the generated files. Feel free to remove this from the
     repository if you do not need it.
 * Other files
