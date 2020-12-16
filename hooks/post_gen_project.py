@@ -78,5 +78,6 @@ with GitRepository() as repo:
 
 # Print a message about success
 print("The project {{ cookiecutter.project_slug }} was successfully generated!")
+print("The file FILESTRUCTURE.md describes the purpose and content of all the generated files.")
 if os.path.exists("TODO.md"):
-    print("A TODO list for you to finalize the generation process was also generated, see TODO.md")
+    print("A TODO list for you to finalize the generation process was also generated, see TODO.md.")
