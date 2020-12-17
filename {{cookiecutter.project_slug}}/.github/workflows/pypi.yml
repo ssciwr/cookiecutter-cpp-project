@@ -5,6 +5,9 @@ on:
     types:
       - published
 
+env:
+  CIBUILDWHEEL_VERSION: 1.6.4
+
 jobs:
   build-wheels:
     name: Build wheels on ${{ "{{ matrix.os }}" }}
@@ -35,7 +38,7 @@ jobs:
 
     - name: Install cibuildwheel
       run: |
-        python -m pip install cibuildwheel==1.6.4
+        python -m pip install cibuildwheel==$CIBUILDWHEEL_VERSION
 
     - name: Prepare MSVC
       uses: ilammy/msvc-dev-cmd@v1

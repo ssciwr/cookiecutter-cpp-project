@@ -11,6 +11,8 @@ on:
       - reopened
 
 env:
+  CATCH2_VERSION: 2.13.3
+  PYBIND11_VERSION: 2.6.1
   SONAR_SCANNER_VERSION: 4.4.0.2170
 
 jobs:
@@ -26,7 +28,7 @@ jobs:
 {% if cookiecutter.use_submodules == "No" %}
       - name: Install Catch2
         run: |
-          git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+          git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
           cd Catch2
           mkdir build
           cd build
@@ -35,7 +37,7 @@ jobs:
 {% if cookiecutter.python_bindings == "Yes" %}
       - name: Install Pybind11
         run: |
-          git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+          git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
           cd pybind11
           mkdir build
           cd build

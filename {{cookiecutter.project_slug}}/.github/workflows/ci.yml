@@ -12,6 +12,10 @@ on:
   # as well as upon manual triggers through the 'Actions' tab of the Github UI
   workflow_dispatch:
 
+env:
+  CATCH2_VERSION: 2.13.3
+  PYBIND11_VERSION: 2.6.1
+
 jobs:
   build-and-test:
     name: Testing on ${{ "{{matrix.os}}" }}
@@ -31,7 +35,7 @@ jobs:
     - name: Install Catch2 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
-        git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
         cd Catch2
         mkdir build
         cd build
@@ -41,7 +45,7 @@ jobs:
     - name: Install Catch2 (Windows)
       if: runner.os == 'Windows'
       run: |
-        git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
         cd Catch2
         mkdir build
         cd build
@@ -51,7 +55,7 @@ jobs:
     - name: Install Pybind11 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
-        git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
         cd pybind11
         mkdir build
         cd build
@@ -61,7 +65,7 @@ jobs:
     - name: Install Pybind11 (Windows)
       if: runner.os == 'Windows'
       run: |
-        git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
         cd pybind11
         mkdir build
         cd build
@@ -106,7 +110,7 @@ jobs:
     - name: Install Catch2 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
-        git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
         cd Catch2
         mkdir build
         cd build
@@ -116,7 +120,7 @@ jobs:
     - name: Install Catch2 (Windows)
       if: runner.os == 'Windows'
       run: |
-        git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
         cd Catch2
         mkdir build
         cd build
@@ -126,7 +130,7 @@ jobs:
     - name: Install Pybind11 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
-        git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
         cd pybind11
         mkdir build
         cd build
@@ -136,7 +140,7 @@ jobs:
     - name: Install Pybind11 (Windows)
       if: runner.os == 'Windows'
       run: |
-        git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
         cd pybind11
         mkdir build
         cd build
