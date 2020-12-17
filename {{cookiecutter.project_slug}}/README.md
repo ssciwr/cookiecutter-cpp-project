@@ -69,6 +69,17 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build .
 ```
 
+The build process can be customized with the following CMake variables,
+which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
+
+* `BUILD_TESTING`: Enable building of the test suite (default: `ON`)
+{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+* `BUILD_DOCS`: Enable building the documentation (default: `ON`)
+{%- endif %}
+{%- if cookiecutter.python_bindings == "Yes" %}
+* `BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
+{%- endif %}
+
 # Documentation
 {% if cookiecutter.readthedocs == "Yes" %}
 {{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can

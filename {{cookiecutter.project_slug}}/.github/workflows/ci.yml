@@ -76,7 +76,7 @@ jobs:
     - name: configure cmake
       shell: bash
       working-directory: ${{ "{{runner.workspace}}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOCS=OFF
 
     - name: build
       shell: bash
@@ -151,7 +151,7 @@ jobs:
     - name: configure cmake
       shell: bash
       working-directory: ${{ "{{runner.workspace}}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage"
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -DBUILD_DOCS=OFF
 
     - name: build
       shell: bash
