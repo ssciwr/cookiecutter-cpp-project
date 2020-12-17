@@ -1,13 +1,15 @@
-{% if cookiecutter.use_submodules == "Yes" -%}
 variables:
+{%- if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
 {%- endif %}
+  CATCH2_VERSION: 2.13.3
+  PYBIND11_VERSION: 2.6.1
 
 .template: &template
   before_script:
     - echo "Installing potential dependencies..."
 {% if cookiecutter.python_bindings == "Yes" and cookiecutter.use_submodules == "No" %}
-    - git clone -b v2.6.1 https://github.com/pybind/pybind11.git
+    - git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
     - cd pybind11
     - mkdir build
     - cd build
@@ -16,7 +18,7 @@ variables:
     - cd ../..
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
-    - git clone -b v2.13.3 https://github.com/catchorg/Catch2.git
+    - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
     - cd Catch2
     - mkdir build
     - cd build
