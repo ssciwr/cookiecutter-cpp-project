@@ -42,6 +42,19 @@ def check_bake(bake):
     assert bake.project.isdir()
 
 
+def build_cmake(target=None, ctest=False, install=False, **cmake_args):
+    os.makedirs("build")
+    os.chdir("build")
+    optstr = " ".join("-D{}={}".format(k, v) for k, v in cmake_args.items())
+    targetstr = "--target {}".format(target) if target is not None else ""
+    subprocess.check_call("cmake {} ..".format(optstr).split())
+    subprocess.check_call("cmake --build . {}".format(targetstr).split())
+    if ctest:
+        subprocess.check_call("ctest".split())
+    if install:
+        subprocess.check_call("cmake --build . --target install".split())
+
+
 @pytest.mark.local
 @pytest.mark.parametrize("submodules", ("Yes", "No"))
 def test_ctest_run(cookies, submodules):
@@ -54,11 +67,52 @@ def test_ctest_run(cookies, submodules):
     )
     check_bake(bake)
     with inside_bake(bake):
-        os.makedirs("build")
-        os.chdir("build")
-        subprocess.check_call("cmake ..".split())
-        subprocess.check_call("cmake --build .".split())
-        subprocess.check_call("ctest".split())
+        build_cmake(ctest=True)
+
+
+@pytest.mark.local
+def test_cmake_installation(cookies):
+    downstream_bake = cookies.bake(
+        extra_context={
+            'project_slug': 'downstream',
+            'sonarcloud': 'No',
+        }
+    )
+    upstream_bake = cookies.bake(
+        extra_context={
+            'project_slug': 'upstream',
+            'sonarcloud': 'No',
+        }
+    )
+    with inside_bake(upstream_bake):
+        install_path = os.path.join(os.getcwd(), "inst")
+        build_cmake(
+            install=True,
+            CMAKE_INSTALL_PREFIX=install_path
+        )
+
+    with inside_bake(downstream_bake):
+        # Inject a find_package call
+        with open("CMakeLists.txt", "r") as f:
+            lines = f.readlines()
+        with open("CMakeLists.txt", "w") as f:
+            for line in lines:
+                f.write(line)
+                if line.startswith("project"):
+                    f.write("find_package(upstream REQUIRED)\n")
+
+        # Have the library depend on the upstream library
+        with open("src/CMakeLists.txt", "a") as f:
+            f.write("target_link_libraries(downstream PUBLIC upstream::upstream)\n")
+        with open("src/downstream.cpp", "r") as f:
+            lines = f.readlines()
+        with open("src/downstream.cpp", "w") as f:
+            f.write('#include "upstream/upstream.hpp"\n')
+            for line in lines:
+                f.write(line.replace("x + 1", "upstream::add_one(x)"))
+
+        # Finally test the result
+        build_cmake(ctest=True, CMAKE_PREFIX_PATH=install_path)
 
 
 @pytest.mark.local
@@ -80,10 +134,7 @@ def test_readthedocs(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        os.makedirs("build")
-        os.chdir("build")
-        subprocess.check_call("cmake ..".split())
-        subprocess.check_call("cmake --build . --target sphinx-doc".split())
+        build_cmake(target='sphinx-doc')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "sphinx", "index.html"))
 
 
@@ -97,10 +148,7 @@ def test_doxygen(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        os.makedirs("build")
-        os.chdir("build")
-        subprocess.check_call("cmake ..".split())
-        subprocess.check_call("cmake --build . --target doxygen".split())
+        build_cmake(target='doxygen')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "html", "index.html"))
 
 

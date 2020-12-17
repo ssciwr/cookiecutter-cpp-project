@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.9)
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
 
+# Initialize some default paths
+include(GNUInstallDirs)
+
 # Define the minimum C++ standard that is required
 set(CMAKE_CXX_STANDARD {{ cookiecutter.cxx_minimum_standard }})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -55,6 +58,26 @@ if(BUILD_PYTHON)
   add_subdirectory(python)
 endif()
 {%- endif %}
+
+# Install targets and configuration
+install(
+  TARGETS {{ cookiecutter.project_slug }}
+  EXPORT {{ cookiecutter.project_slug }}-config
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+install(
+  EXPORT {{ cookiecutter.project_slug }}-config
+  NAMESPACE {{ cookiecutter.project_slug }}::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
+)
+
+install(
+  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
 
 # This prints a summary of found dependencies
 include(FeatureSummary)
