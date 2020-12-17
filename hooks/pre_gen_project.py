@@ -10,7 +10,7 @@ import sys
 
 def fail_if(condition, message):
     if condition:
-        sys.stderr.write(message)
+        sys.stderr.write(message + "\n")
         sys.exit(1)
 
 
