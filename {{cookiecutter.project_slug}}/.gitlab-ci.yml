@@ -1,5 +1,5 @@
 variables:
-{% if cookiecutter.use_submodules == "Yes" -%}
+{%- if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
 {%- endif %}
   CATCH2_VERSION: 2.13.3
