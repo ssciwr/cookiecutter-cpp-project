@@ -33,9 +33,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install test requirements
+    - name: Install dependencies
       run: |
-        python -m pip install -r requirements-dev.txt
+        python -m pip install tox tox-gh-actions
 
     - name: Install Doxygen (Linux)
       if: runner.os == 'Linux'
@@ -82,9 +82,9 @@ jobs:
       run: |
         git config --system core.longpaths true
 
-    - name: Run regular test suite
+    - name: Test with tox
       run: |
-        python -m pytest -m local
+        tox "-m local"
 
   deploy-test:
     name: Deploying to hosters and run their CI
@@ -99,9 +99,9 @@ jobs:
       with:
         python-version: 3.8
 
-    - name: Install test requirements
+    - name: Install test dependencies
       run: |
-        python -m pip install -r requirements-dev.txt
+        pip install tox tox-gh-actions
 
     - name: Set up git identity
       run: |
@@ -120,7 +120,7 @@ jobs:
 
     - name: Test deploying the baked project to Github + Gitlab.com
       run: |
-        python -m pytest -m deploy
+        tox "-m deploy"
 
     - name: Run tests for upstream integrations
       env:
@@ -130,4 +130,4 @@ jobs:
         GL_API_ACCESS_TOKEN: ${{ secrets.GL_API_ACCESS_TOKEN }}
         RTD_API_ACCESS_TOKEN: ${{ secrets.RTD_API_ACCESS_TOKEN }}
       run: |
-        python -m pytest -m integrations
+        tox "-m -m integrations"
