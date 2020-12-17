@@ -139,8 +139,14 @@ def codecov_api_verification(remote_url, token, sha):
     assert commit['totals']['c'] == '100'
 
 
+def wait_five_seconds(*args):
+    time.sleep(5)
+    return True
+
+
 @pytest.mark.integrations
-@pytest.mark.timeout(60)
+@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
+@pytest.mark.timeout(120)
 def test_codecovio_github_deploy():
     # Authenticate with the Github API to get the upstream commit
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
