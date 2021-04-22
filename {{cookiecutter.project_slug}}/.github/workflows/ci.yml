@@ -14,7 +14,9 @@ on:
 
 env:
   CATCH2_VERSION: 2.13.3
+{%- if cookiecutter.python_bindings == "Yes" %}
   PYBIND11_VERSION: 2.6.1
+{%- endif %}
 
 jobs:
   build-and-test:
