@@ -171,6 +171,6 @@ jobs:
       shell: bash
       working-directory: ${{ "{{runner.workspace}}" }}
       run: |
-        lcov --directory ./build/src --capture --output-file coverage.info
+        lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info
         bash <(curl --connect-timeout 10 --retry 5 -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
 {% endif %}
