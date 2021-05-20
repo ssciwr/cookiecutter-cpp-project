@@ -60,6 +60,9 @@ This cookiecutter accepts the following configuration options:
 * `use_submodules`: Whether `git submodule` should be used to add version-pinned external
   dependencies (like e.g. the testing framework `Catch2`). If you do not know what git submodules
   are, you should select `No`.
+* `header_only`: Whether the C++ project is header-only. If `No` is selected, a library will
+  be added to the project. In both cases, a target is exported that dependent projects can
+  link against.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org
