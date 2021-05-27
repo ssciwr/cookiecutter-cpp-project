@@ -66,6 +66,7 @@ def test_cmake_installation(cookies, header_only):
     downstream_bake = cookies.bake(
         extra_context={
             'project_slug': 'downstream',
+            'header_only': 'No',
             'sonarcloud': 'No',
         }
     )
