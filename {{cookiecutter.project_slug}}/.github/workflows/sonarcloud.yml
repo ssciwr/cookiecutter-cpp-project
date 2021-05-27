@@ -68,7 +68,11 @@ jobs:
           ctest
           mkdir gcov
           cd gcov
-          gcov -p ../{% if cookiecutter.header_only == "Yes" %}tests{% else %}src{% endif %}/CMakeFiles/{{ cookiecutter.project_slug }}.dir/*.cpp.gcno > /dev/null
+{%- if cookiecutter.header_only == "Yes" %}
+          gcov -p ../tests/CMakeFiles/tests.dir/*.cpp.gcno > /dev/null
+{%- else %}
+          gcov -p ../tests//CMakeFiles/{{ cookiecutter.project_slug }}.dir/*.cpp.gcno > /dev/null
+{%- endif %}
           cd ../..
           $HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux/bin/sonar-scanner
         env:
