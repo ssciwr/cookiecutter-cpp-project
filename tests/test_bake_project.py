@@ -45,11 +45,13 @@ def build_cmake(target=None, ctest=False, install=False, **cmake_args):
 
 @pytest.mark.local
 @pytest.mark.parametrize("submodules", ("Yes", "No"))
-def test_ctest_run(cookies, submodules):
+@pytest.mark.parametrize("header_only", ("Yes", "No"))
+def test_ctest_run(cookies, submodules, header_only):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'test_project',
             'use_submodules': submodules,
+            'header_only': header_only,
             'sonarcloud': 'No',
         }
     )
@@ -59,16 +61,19 @@ def test_ctest_run(cookies, submodules):
 
 
 @pytest.mark.local
-def test_cmake_installation(cookies):
+@pytest.mark.parametrize("header_only", ("Yes", "No"))
+def test_cmake_installation(cookies, header_only):
     downstream_bake = cookies.bake(
         extra_context={
             'project_slug': 'downstream',
+            'header_only': 'No',
             'sonarcloud': 'No',
         }
     )
     upstream_bake = cookies.bake(
         extra_context={
             'project_slug': 'upstream',
+            'header_only': header_only,
             'sonarcloud': 'No',
         }
     )

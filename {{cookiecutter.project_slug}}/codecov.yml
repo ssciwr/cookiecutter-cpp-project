@@ -20,5 +20,5 @@ comment:
   require_changes: no
 
 ignore:
-  - "**/tests/*.cpp"
-  - "**/ext/**/*" # external library code
+  - "**/tests"
+  - "**/Catch2"
