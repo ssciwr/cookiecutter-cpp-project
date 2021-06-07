@@ -11,9 +11,13 @@ on:
       - reopened
 
 env:
-  CATCH2_VERSION: 2.13.3
-  PYBIND11_VERSION: 2.6.1
-  SONAR_SCANNER_VERSION: 4.4.0.2170
+{%- if cookiecutter.use_submodules == "No" %}
+  CATCH2_VERSION: {{ cookiecutter._catch_version }}
+{%- if cookiecutter.python_bindings == "Yes" %}
+  PYBIND11_VERSION: {{ cookiecutter._pybind_version }}
+{%- endif %}
+{%- endif %}
+  SONAR_SCANNER_VERSION: {{ cookiecutter._sonarscanner_version }}
 
 jobs:
   sonarcloud:
