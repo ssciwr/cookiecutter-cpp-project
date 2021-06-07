@@ -23,6 +23,7 @@ set(BUILD_DOCS ON CACHE BOOL "Enable building of documentation")
 {%- endif %}
 
 {%- if cookiecutter.header_only == "No" %}
+
 # compile the library
 add_subdirectory(src)
 {% else %}
