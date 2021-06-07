@@ -5,7 +5,6 @@ import subprocess
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
-from distutils.version import LooseVersion
 
 
 class CMakeExtension(Extension):
@@ -70,13 +69,13 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
-{% if cookiecutter.license == "MIT" %}
+{%- if cookiecutter.license == "MIT" %}
         "License :: OSI Approved :: MIT License",
-{% elif cookiecutter.license == "BSD-2" %}
+{%- elif cookiecutter.license == "BSD-2" %}
         "License :: OSI Approved :: BSD License",
-{% elif cookiecutter.license == "GPL-3.0" %}
+{%- elif cookiecutter.license == "GPL-3.0" %}
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-{% elif cookiecutter.license == "LGPL-3.0" %}
+{%- elif cookiecutter.license == "LGPL-3.0" %}
         "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
 {%- endif %}
     ],
