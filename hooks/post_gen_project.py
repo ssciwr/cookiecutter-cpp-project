@@ -81,9 +81,9 @@ with GitRepository() as repo:
     repo.add_remote("origin", "{{ cookiecutter.remote_url }}")
 {% endif %}
 {% if cookiecutter.use_submodules == "Yes" %}
-    repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v2.13.3")
+    repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v{{ cookiecutter._catch_version }}")
     if "{{ cookiecutter.python_bindings }}" == "Yes":
-        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v2.6.1")
+        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v{{ cookiecutter._pybind_version }}")
 {% else %}
     pass
 {% endif %}

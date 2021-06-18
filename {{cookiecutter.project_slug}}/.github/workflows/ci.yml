@@ -12,10 +12,12 @@ on:
   # as well as upon manual triggers through the 'Actions' tab of the Github UI
   workflow_dispatch:
 
+{%- if cookiecutter.use_submodules == "No" %}
 env:
-  CATCH2_VERSION: 2.13.3
+  CATCH2_VERSION: {{ cookiecutter._catch_version }}
 {%- if cookiecutter.python_bindings == "Yes" %}
-  PYBIND11_VERSION: 2.6.1
+  PYBIND11_VERSION: {{ cookiecutter._pybind_version }}
+{%- endif %}
 {%- endif %}
 
 jobs:
