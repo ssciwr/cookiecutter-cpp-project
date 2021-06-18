@@ -25,8 +25,7 @@ The following tasks need to be done to get a fully working project:
 {%- if cookiecutter.readthedocs == "Yes" %}
 * Enable the integration of Readthedocs with your Git hoster. In the case of Github, this means
   that you need to login at [Read the Docs](https://readthedocs.org) and click the button
-  *Import a Project*. Currently, it is necessary to manually switch the default branch to `main`
-  under *Settings*/*Advanced Settings*/*Standard Branch*.
+  *Import a Project*.
 {%- endif %}
 {%- if cookiecutter.doxygen == "Yes" %}
 * Make sure that doxygen is installed on your system, e.g. by doing `sudo apt install doxygen`
