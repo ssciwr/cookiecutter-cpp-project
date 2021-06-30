@@ -6,7 +6,7 @@ on:
   # triggers and cron jobs.
   workflow_dispatch:
   schedule:
-  - cron: "0 5 * * 1"
+  - cron: "0 5 1 * *"
 
 jobs:
   test-pypi-release:
