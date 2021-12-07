@@ -16,7 +16,7 @@
     "codecovio": ["Yes", "No"],
     "sonarcloud": ["No", "Yes"],
     "_catch_version": "2.13.7",
-    "_cibuildwheel_version": "1.11.1",
+    "_cibuildwheel_version": "2.3.0",
     "_pybind_version": "2.8.1",
     "_sonarscanner_version": "4.6.2.2472"
 }
