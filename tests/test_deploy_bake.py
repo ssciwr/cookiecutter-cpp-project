@@ -6,7 +6,7 @@ import requests
 import subprocess
 import time
 
-from . import inside_bake
+from . import inside_bake, wait_five_seconds
 
 
 @pytest.mark.deploy
@@ -35,6 +35,7 @@ def test_push_remote(cookies):
 
 
 @pytest.mark.integrations
+@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(300)
 def test_github_actions_ci_on_deployed_bake():
     # Authenticate with the Github API
@@ -62,6 +63,7 @@ def test_github_actions_ci_on_deployed_bake():
 
 
 @pytest.mark.integrations
+@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(300)
 def test_gitlab_ci_on_deployed_bake():
     # Authenticate with Gitlab API
@@ -83,6 +85,7 @@ def test_gitlab_ci_on_deployed_bake():
 
 
 @pytest.mark.integrations
+@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(300)
 def test_readthedocs_deploy():
     # Authenticate with the Github API to get the upstream commit
@@ -127,11 +130,6 @@ def codecov_api_verification(remote_url, token, sha):
     assert commit['totals']['c'] == '100'
 
 
-def wait_five_seconds(*args):
-    time.sleep(5)
-    return True
-
-
 @pytest.mark.integrations
 @pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(120)
@@ -149,6 +147,7 @@ def test_codecovio_github_deploy():
 
 
 @pytest.mark.integrations
+@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(60)
 def test_codecovio_gitlab_deploy():
     # Authenticate with Gitlab API
