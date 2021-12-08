@@ -1,4 +1,5 @@
 import os
+import time
 from contextlib import contextmanager
 
 
@@ -13,3 +14,8 @@ def inside_bake(bake):
         yield
     finally:
         os.chdir(old_path)
+
+
+def wait_five_seconds(*args):
+    time.sleep(5)
+    return True
