@@ -173,7 +173,7 @@ def test_gitlabci(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        check_file_against_schemastore(".gitlab-ci.yml", "https://json.schemastore.org/gitlab-ci")
+        check_file_against_schemastore(".gitlab-ci.yml", "https://gitlab.com/gitlab-org/gitlab/-/raw/master/app/assets/javascripts/editor/schema/ci.json")
 
 
 @pytest.mark.local
