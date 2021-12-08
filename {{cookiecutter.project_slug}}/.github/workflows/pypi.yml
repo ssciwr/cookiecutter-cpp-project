@@ -34,8 +34,6 @@ jobs:
         CIBW_BEFORE_BUILD: python -m pip install cmake{% if cookiecutter.use_submodules == "No" %} pybind11[global]{% endif %}
         CIBW_TEST_COMMAND: pytest {package}/python/tests
         CIBW_TEST_REQUIRES: pytest
-      run: |
-        python -m cibuildwheel --output-dir wheelhouse
 
     - uses: actions/upload-artifact@v2
       with:
