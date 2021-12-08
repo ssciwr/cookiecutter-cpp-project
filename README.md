@@ -9,15 +9,16 @@ to checkout our simpler [C++ template repository](https://github.com/ssciwr/cpp-
 The core features of our C++ Cookiecutter in a nutshell:
 
 * Very simple, configurable setup of a fully functional C++ project
+* Modern CMake implementation based on targets
 * Choose and add a license and copyright statement to your project
 * Ready-to-use integration with the Github Actions and Gitlab CI
 * Generation and deployment of Sphinx-based documentation for [Read the Docs](https://readthedocs.org)
 * Building a Doxygen documentation
 * Setup of Python bindings with Pybind11
-* CI-based deployment of Python bindings to PyPI
+* CI-based deployment of Python wheels to PyPI
 * Integration with coverage testing from [codecov.io](https://codecov.io)
 * Integration with code quality analysis from [sonarcloud.io](https://sonarcloud.io/)
-* Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >13k stars on Github!
+* Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >15k stars on Github!
 
 # Prerequisites
 
