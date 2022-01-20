@@ -92,6 +92,19 @@ which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 {% if cookiecutter.readthedocs == "Yes" %}
 {{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can
 be browsed [online at readthedocs.org](https://{{ cookiecutter.project_slug }}.readthedocs.io).
+To build it locally, first ensure the requirements are installed by running this command from the top-level source directory:
+
+```
+pip install -r doc/requirements.txt
+```
+
+Then build the sphinx documentation from the top-level build directory:
+
+```
+cmake --build . --target sphinx-doc
+```
+
+The web documentation can then be browsed by opening `doc/sphinx/index.html` in your browser.
 {% elif cookiecutter.doxygen == "Yes" %}
 {{ cookiecutter.project_name }} provides a Doxygen documentation. You can build
 the documentation locally by making sure that `Doxygen` is installed on your system
