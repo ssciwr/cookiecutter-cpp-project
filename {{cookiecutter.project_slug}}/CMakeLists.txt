@@ -16,10 +16,10 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Compilation options
 {%- if cookiecutter.python_bindings == "Yes" %}
-set(BUILD_PYTHON ON CACHE BOOL "Enable building of Python bindings")
+option(BUILD_PYTHON "Enable building of Python bindings" ON)
 {%- endif %}
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
-set(BUILD_DOCS ON CACHE BOOL "Enable building of documentation")
+option(BUILD_DOCS "Enable building of documentation" ON)
 {%- endif %}
 
 {%- if cookiecutter.header_only == "No" %}
