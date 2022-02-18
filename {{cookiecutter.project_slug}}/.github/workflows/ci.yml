@@ -95,8 +95,7 @@ jobs:
       shell: bash
       working-directory: ${{ "{{runner.workspace}}" }}/build
       run: ctest
-
-{% if cookiecutter.python_bindings == "Yes" -%}
+{%- if cookiecutter.python_bindings == "Yes" %}
     - name: Run Python tests
       shell: bash
       run: |
