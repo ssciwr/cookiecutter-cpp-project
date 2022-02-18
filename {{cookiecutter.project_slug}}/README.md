@@ -85,6 +85,36 @@ which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 * `BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
 {%- endif %}
 
+{% if cookiecutter.python_bindings == "Yes" %}
+If you wish to build and install the project as a Python project without
+having access to C++ build artifacts like libraries and executables, you
+can do so using `pip` from the root directory:
+
+```
+python -m pip install .
+```
+{%- endif %}
+
+# Testing {{ cookiecutter.project_name }}
+
+When built according to the above explanation (with `-DBUILD_TESTING=ON`),
+the C++ test suite of `{{ cookiecutter.project_name }}` can be run using
+`ctest` from the build directory:
+
+```
+cd build
+ctest
+```
+{% if cookiecutter.python_bindings == "Yes" %}
+The Python test suite can be run by first `pip`-installing the Python package
+and then running `pytest` from the top-level directory:
+
+```
+python -m pip install .
+pytest
+```
+{%- endif %}
+
 # Documentation
 {% if cookiecutter.readthedocs == "Yes" %}
 {{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can
