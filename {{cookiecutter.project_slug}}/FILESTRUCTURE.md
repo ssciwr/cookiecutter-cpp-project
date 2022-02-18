@@ -98,12 +98,17 @@ generated for you:
 {%- if cookiecutter.python_bindings == "Yes" %}
   * `setup.py` describes the Python package build process. This file enables you to also
     install your software using e.g. `pip`.
+  * `pyproject.toml` provides information about the Python project and its toolchain.
+    `pip` uses this file before even executing `setup.py` to determine dependencies
+    of the build process itself. Additionally, it can be used to configure tools like `pytest`.
 {%- if cookiecutter.pypi_release == "Yes" -%}
     Additionally, this file is needed for the automated release process to PyPI.
-  * `.github/workflows/pypi.yml` defines the workflow that deploys to PyPI.
+  * `.github/workflows/pypi.yml` defines the workflow that deploys to PyPI. The
+    configuration of this workflow is done in `pyproject.toml`.
 {%- endif %}
-  * `python/tests/test_python_bindings.py` and `python/pytest.ini` define a simple
-    unit test suite for the Python bindings that is based on [Pytest](https://docs.pytest.org/en/stable/contents.html).
+  * `python/tests/test_python_bindings.py` defines a simple unit test suite for the Python
+    bindings that is based on [Pytest](https://docs.pytest.org/en/stable/contents.html).
     `requirements-dev.txt` collects the required Python packages for running this
     test suite, they can be installed with `python -m pip install -r requirements-dev.txt`.
+    The `pytest` run is configured in the `tools.pytest` section of `pyproject.toml`.
 {%- endif %}
