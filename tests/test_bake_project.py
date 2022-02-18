@@ -192,8 +192,8 @@ def test_python(cookies, virtualenv, submodules):
         # Make sure that our Python package can be installed and imported
         subprocess.check_call([virtualenv.python, "-m", "pip", "install", "."])
         subprocess.check_call([virtualenv.python, "-c", "'import myproject'"])
-        subprocess.check_call([virtualenv.python, "-m", "pip", "install", "pytest"])
-        subprocess.check_call([virtualenv.python, "-m", "pytest"], cwd=os.path.join(os.getcwd(), "python"))
+        subprocess.check_call([virtualenv.python, "-m", "pip", "install", "-r", "requirements-dev.txt"])
+        subprocess.check_call([virtualenv.python, "-m", "pytest"])
 
 
 @pytest.mark.local
