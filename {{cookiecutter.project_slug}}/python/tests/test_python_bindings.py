@@ -1,5 +1,7 @@
-import {{ cookiecutter.project_slug.replace("-", "") }}
+{%- set modname = cookiecutter.project_slug.replace("-", "") -%}
+import {{ modname }}
 
 
-def test_{{ cookiecutter.project_slug.replace("-", "_") }}():
-    assert {{ cookiecutter.project_slug.replace("-", "") }}.add_one(1) == 2
+def test_{{ modname }}():
+    assert {{ modname }}.add_one(1) == 2
+    assert one_plus_one() == 2

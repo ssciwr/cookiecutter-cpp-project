@@ -60,9 +60,6 @@ Building {{ cookiecutter.project_name }} requires the following software install
 {%- if cookiecutter.python_bindings == "Yes" -%}
 * Python `>= 3.6` for building Python bindings
 {%- endif %}
-{%- if cookiecutter.use_submodules == "No" and cookiecutter.python_bindings == "Yes" -%}
-* The [PyBind11](https://github.com/pybind/pybind11) library for building Python bindings
-{%- endif %}
 
 # Building {{ cookiecutter.project_name }}
 
