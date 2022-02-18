@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]"{% endif %}]
+requires = ["setuptools>=42", "wheel", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]=={{ cookiecutter._pybind_version }}"{% endif %}]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]

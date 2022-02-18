@@ -2,6 +2,9 @@ import os
 import sys
 import platform
 import subprocess
+{%- if cookiecutter.use_submodules == "No" %}
+import pybind11
+{%- endif %}
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
@@ -34,6 +37,9 @@ class CMakeBuild(build_ext):
                       '-DBUILD_TESTING=OFF',
                       '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
                       '-DPYTHON_EXECUTABLE=' + sys.executable,
+{%- if cookiecutter.use_submodules == "No" %}
+                      f'-DCMAKE_PREFIX_PATH={os.path.dirname(pybind11.__file__)}',
+{%- endif %}
                      ]
 
         cfg = 'Debug' if self.debug else 'Release'
