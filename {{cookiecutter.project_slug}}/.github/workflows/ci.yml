@@ -104,6 +104,12 @@ jobs:
         os: [ubuntu-18.04, macos-10.15, windows-2019]
 
     steps:
+    - uses: actions/checkout@v2
+{% if cookiecutter.use_submodules == "Yes" %}
+      with:
+        submodules: 'recursive'
+{%- endif %}
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -124,8 +130,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+{% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
+{%- endif %}
+
 
     - name: Install LCov
       run: |
