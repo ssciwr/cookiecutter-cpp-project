@@ -1,9 +1,10 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]=={{ cookiecutter._pybind_version }}"{% endif %}]
+requires = ["setuptools>=42", "wheel", "scikit-build", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]=={{ cookiecutter._pybind_version }}"{% endif %}]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-testpaths = ["python/tests"]
+testpaths = ["tests/python"]
+
 {% if cookiecutter.pypi_release == "Yes" -%}
 [tool.cibuildwheel]
 # The variables in this section allow you to customize the process how the wheels

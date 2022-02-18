@@ -1,3 +1,4 @@
+{%- set modname = cookiecutter.project_slug.replace("-", "") -%}
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -5,12 +6,12 @@
 
 namespace py = pybind11;
 
-namespace {{ cookiecutter.project_slug.replace("-", "") }} {
+namespace {{ modname }} {
 
-PYBIND11_MODULE({{ cookiecutter.project_slug.replace("-", "") }}, m)
+PYBIND11_MODULE(_{{ modname }}, m)
 {
   m.doc() = "Python Bindings for {{ cookiecutter.project_name }}";
   m.def("add_one", &add_one, "Increments an integer value");
 }
 
-} // namespace {{ cookiecutter.project_slug.replace("-", "") }}
+} // namespace {{ modname }}

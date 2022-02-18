@@ -16,8 +16,10 @@ generated for you:
     this. Placing this in a separate compilation unit than the unit test
     implementation decreases the compilation time of the test suite.
 {%- if cookiecutter.python_bindings == "Yes" %}
-  * `python/{{ cookiecutter.project_slug }}_python.cpp` is the source file
-    that contains the Pybind11 code to generate the Python package.
+  * The `python/{{ cookiecutter.project_slug.replace("-", "") }}` directory contains a Python
+    package for the project. It contains a compiled Python module `_{{ cookiecutter.project_slug.replace("-", "") }}`
+    that CMake generates from the Pybind11 source file `python/{{ cookiecutter.project_slug.replace("-", "") }}/_{{ cookiecutter.project_slug }}.cpp`. Additionally, it contains pure Python sources (e.g. `__init__.py`) that
+    allow to wrap Python functionality around the compiled module.
 {%- endif %}
 * CMake build system files
   * `CMakeLists.txt` describes the CMake configuration script. You can find such files
