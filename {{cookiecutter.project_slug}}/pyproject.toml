@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]"{% endif %}]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+{% if cookiecutter.pypi_release == "Yes" -%}
+[tool.cibuildwheel]
+# The variables in this section allow you to customize the process how the wheels
+# for the Python packages are built. For a list of options, see this
+# page: https://cibuildwheel.readthedocs.io/en/stable/options/
+
+# Verbose output is helpful for understanding CI failures
+build-verbosity = 3
+
+# We restrict ourselves to recent Python versions
+skip = "pp* *p27-* cp35-* *musllinux*"
+
+# Testing commands for our wheels
+test-command = "pytest {package}/python/tests"
+test-requires = ["pytest"]
+{%- endif %}

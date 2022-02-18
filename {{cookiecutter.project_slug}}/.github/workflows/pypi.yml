@@ -27,14 +27,6 @@ jobs:
 
     - name: Build wheels
       uses: pypa/cibuildwheel@v{{ cookiecutter._cibuildwheel_version }}
-      env:
-        # These variables allow you to customize the process how the wheels
-        # for the Python packages are built. For a list of options, see this
-        # page: https://cibuildwheel.readthedocs.io/en/stable/options/
-        CIBW_BEFORE_BUILD: python -m pip install cmake{% if cookiecutter.use_submodules == "No" %} pybind11[global]{% endif %}
-        CIBW_SKIP: "pp* *p27-* cp35-* *musllinux*"
-        CIBW_TEST_COMMAND: pytest {package}/python/tests
-        CIBW_TEST_REQUIRES: pytest
 
     - uses: actions/upload-artifact@v2
       with:
