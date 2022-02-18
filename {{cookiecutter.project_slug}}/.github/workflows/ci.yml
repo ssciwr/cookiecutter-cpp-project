@@ -96,6 +96,19 @@ jobs:
       working-directory: ${{ "{{runner.workspace}}" }}/build
       run: ctest
 {%- if cookiecutter.python_bindings == "Yes" %}
+  python-testing:
+    name: Python package testing on ${{ "{{matrix.os}}" }}
+    runs-on: ${{ "{{matrix.os}}" }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, macos-10.15, windows-2019]
+
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
     - name: Run Python tests
       shell: bash
       run: |
