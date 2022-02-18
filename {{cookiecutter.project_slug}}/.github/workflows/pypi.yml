@@ -1,15 +1,10 @@
 name: Build Wheels + PyPI deploy
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   release:
     types:
       - published
+  workflow_dispatch:
 
 jobs:
   build-wheels:
