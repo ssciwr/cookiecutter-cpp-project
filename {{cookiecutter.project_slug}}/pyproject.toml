@@ -3,7 +3,8 @@ requires = ["setuptools>=42", "wheel", "scikit-build", "cmake>=3.9"{% if cookiec
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-testpaths = ["python/tests"]
+testpaths = ["tests/python"]
+
 {% if cookiecutter.pypi_release == "Yes" -%}
 [tool.cibuildwheel]
 # The variables in this section allow you to customize the process how the wheels
