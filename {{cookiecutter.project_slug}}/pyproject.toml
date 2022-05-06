@@ -18,6 +18,6 @@ build-verbosity = 3
 skip = "pp* *p27-* cp35-* *musllinux*"
 
 # Testing commands for our wheels
-test-command = "pytest {package}/python/tests"
+test-command = "pytest {package}/tests/python"
 test-requires = ["pytest"]
 {%- endif %}
