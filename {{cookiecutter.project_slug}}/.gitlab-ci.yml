@@ -1,7 +1,6 @@
 variables:
-{%- if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
-{%- else %}
+{%- if cookiecutter.externals == "none" %}
   CATCH2_VERSION: {{ cookiecutter._catch_version }}
 {%- if cookiecutter.python_bindings == "Yes" %}
   PYBIND11_VERSION: {{ cookiecutter._pybind_version }}
@@ -11,7 +10,11 @@ variables:
 .template: &template
   before_script:
     - echo "Installing potential dependencies..."
-{% if cookiecutter.python_bindings == "Yes" and cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals == "vcpkg" %}
+    - vcpkg install
+{%- endif %}
+{% if cookiecutter.externals == "submodules" %}
+{% if cookiecutter.python_bindings == "Yes" %}
     - git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
     - cd pybind11
     - mkdir build
@@ -20,7 +23,6 @@ variables:
     - sudo make install
     - cd ../..
 {%- endif %}
-{% if cookiecutter.use_submodules == "No" %}
     - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
     - cd Catch2
     - mkdir build

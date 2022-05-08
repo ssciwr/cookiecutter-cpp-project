@@ -1,0 +1,8 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "{{ cookiecutter.project_slug }}",
+    "version": "0.0.1",
+    "dependencies": [
+      "catch2"{%- if cookiecutter.python_bindings == "Yes" %},"pybind11"{%- endif %}
+    ]
+  }

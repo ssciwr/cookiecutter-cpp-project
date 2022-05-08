@@ -22,7 +22,7 @@ def test_push_remote(cookies):
             'readthedocs': 'Yes',
             'python_bindings': 'Yes',
             'pypi_release': 'Yes',
-            'use_submodules': 'No',
+            'externals': 'none',
             'codecovio': 'Yes',
             'sonarcloud': 'Yes',
         }

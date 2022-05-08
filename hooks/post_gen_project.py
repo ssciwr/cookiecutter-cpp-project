@@ -56,7 +56,8 @@ def conditional_remove(condition, path):
 
 
 conditional_remove(True, "ext/.keep")
-conditional_remove("{{ cookiecutter.use_submodules }}" == "No", "ext")
+conditional_remove("{{ cookiecutter.externals }}" != "submodules", "ext")
+conditional_remove("{{ cookiecutter.externals }}" != "vcpkg", "vcpkg.json")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
 conditional_remove("{{ cookiecutter.header_only }}" == "Yes", "src")
 conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
@@ -83,7 +84,7 @@ with GitRepository() as repo:
 {% if cookiecutter.remote_url != 'None' %}
     repo.add_remote("origin", "{{ cookiecutter.remote_url }}")
 {% endif %}
-{% if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.externals == "submodules" %}
     repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v{{ cookiecutter._catch_version }}")
     if "{{ cookiecutter.python_bindings }}" == "Yes":
         repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v{{ cookiecutter._pybind_version }}")

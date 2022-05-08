@@ -54,8 +54,12 @@ Building {{ cookiecutter.project_name }} requires the following software install
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 * Doxygen (optional, documentation building is skipped if missing)
 {%- endif %}
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals == "vcpkg" %}
+* The package manager [vcpkg](https://vcpkg.io)
+{% else %}
+{%- if cookiecutter.externals != "submodules" %}
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
+{%- endif %}
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" -%}
 * Python `>= 3.6` for building Python bindings

@@ -1,6 +1,6 @@
 {%- set modname = cookiecutter.project_slug.replace('-', '') -%}
 from skbuild import setup
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals != "submodules" %}
 import os
 import pybind11
 {%- endif %}
@@ -31,7 +31,7 @@ setup(
     cmake_args=[
         "-DBUILD_TESTING=OFF",
         "-DBUILD_DOCS=OFF",
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals != "submodules" %}
         f"-DCMAKE_PREFIX_PATH={os.path.dirname(pybind11.__file__)}",
 {%- endif %}
     ],

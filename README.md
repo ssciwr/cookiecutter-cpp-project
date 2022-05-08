@@ -58,9 +58,7 @@ This cookiecutter accepts the following configuration options:
   from the specified remote URL and the given project name.
 * `full_name`: Author name, defaults to `Your Name`
 * `license` adds a license file to the repository. It can be chosen from [MIT](https://opensource.org/licenses/MIT) (default), [BSD-2](https://opensource.org/licenses/BSD-2-Clause), [GPL-3.0](https://opensource.org/licenses/GPL-3.0), [LGPL-3.0](https://opensource.org/licenses/LGPL-3.0) or it can be omitted.
-* `use_submodules`: Whether `git submodule` should be used to add version-pinned external
-  dependencies (like e.g. the testing framework `Catch2`). If you do not know what git submodules
-  are, you should select `No`.
+* `externals`: How to add external resources to the project.  `submodule` will use `git submodule` should be used to add version-pinned external dependencies (like e.g. the testing framework `Catch2`). `vcpkg` will use the [vcpkg](https://vcpkg.io), and if you want to use the local hosts you should select `none`.
 * `header_only`: Whether the C++ project is header-only. If `No` is selected, a library will
   be added to the project. In both cases, a target is exported that dependent projects can
   link against.
