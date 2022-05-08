@@ -44,13 +44,13 @@ def build_cmake(target=None, ctest=False, install=False, **cmake_args):
 
 
 @pytest.mark.local
-@pytest.mark.parametrize("submodules", ("Yes", "No"))
+@pytest.mark.parametrize("externals", ("submodules", "vcpkg", "none"))
 @pytest.mark.parametrize("header_only", ("Yes", "No"))
-def test_ctest_run(cookies, submodules, header_only):
+def test_ctest_run(cookies, externals, header_only):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'test_project',
-            'use_submodules': submodules,
+            'externals': externals,
             'header_only': header_only,
             'sonarcloud': 'No',
         }
@@ -177,13 +177,13 @@ def test_gitlabci(cookies):
 
 
 @pytest.mark.local
-@pytest.mark.parametrize("submodules", ("Yes", "No"))
-def test_python(cookies, virtualenv, submodules):
+@pytest.mark.parametrize("externals", ("submodules", "vcpkg", "none"))
+def test_python(cookies, virtualenv, externals):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'my-project',
             'python_bindings': 'Yes',
-            'submodules': submodules,
+            'externals': externals,
             'sonarcloud': 'No',
         }
     )

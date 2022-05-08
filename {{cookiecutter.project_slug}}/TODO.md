@@ -11,11 +11,14 @@ The following tasks need to be done to get a fully working project:
 * Make sure that the following software is installed on your computer:
   * A C++-{{ cookiecutter.cxx_minimum_standard}}-compliant C++ compiler
   * CMake `>= 3.9`
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals == "submodules" %}
   * The testing framework [Catch2](https://github.com/catchorg/Catch2)
 {%- if cookiecutter.python_bindings == "Yes" -%}
   * The [PyBind11](https://github.com/pybind/pybind11) library
 {%- endif %}
+{%- endif %}
+{%- if cookiecutter.externals == "vcpkg" %}
+  * Make sure [vcpkg](https://vcpkg.io) is installed and `VCPKG_ROOT` is defined.
 {%- endif %}
 {%- if cookiecutter.gitlab_ci == "Yes" %}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that

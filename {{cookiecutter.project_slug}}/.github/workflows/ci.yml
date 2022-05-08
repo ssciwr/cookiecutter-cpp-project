@@ -12,7 +12,7 @@ on:
   # as well as upon manual triggers through the 'Actions' tab of the Github UI
   workflow_dispatch:
 
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals != "submodules" %}
 env:
   CATCH2_VERSION: {{ cookiecutter._catch_version }}
 {%- if cookiecutter.python_bindings == "Yes" %}
@@ -30,12 +30,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-{% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
-{%- endif %}
 
-{% if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals == "vcpkg" %}
+    - name: Install vcpkg dependencies..."
+      run: |
+        vcpkg install
+{% else %}
+{% if cookiecutter.externals == "none" %}
     - name: Install Catch2 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
@@ -77,7 +80,7 @@ jobs:
         cmake --build . --target install
 {%- endif %}
 {%- endif %}
-
+{%- endif %}
     - name: make build directory
       run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
 
@@ -105,10 +108,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-{% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
-{%- endif %}
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -130,17 +131,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-{% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
-{%- endif %}
 
 
     - name: Install LCov
       run: |
         sudo apt-get install -y lcov
-
-{% if cookiecutter.use_submodules == "No" %}
+{%- if cookiecutter.externals == "vcpkg" %}
+    - name: Install vcpkg dependencies..."
+      run: |
+        vcpkg install
+{% else %}
+{% if cookiecutter.externals == "none" %}
     - name: Install Catch2 (Linux + MacOS)
       if: runner.os != 'Windows'
       run: |
@@ -182,7 +185,7 @@ jobs:
         cmake --build . --target install
 {%- endif %}
 {%- endif %}
-
+{%- endif %}
     - name: make build directory
       run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
 

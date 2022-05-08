@@ -28,8 +28,11 @@ generated for you:
     the `CMakeLists.txt` file from the directory `<dir>` is immediately executed. A comprehensive
     reference of CMake's capabilities can be found in the [official CMake docs](https://cmake.org/documentation/).
     A well-written, opinionated book for beginners and experts is [Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
-{%- if cookiecutter.use_submodules == "Yes" %}
+{%- if cookiecutter.externals == "submodules" %}
 * The `ext` directory contains any submodules that were added by the cookiecutter.
+{%- endif %}
+{%- if cookiecutter.externals == "vcpkg" %}
+* The `vcpkg.json` file defines dependencies provided by [vcpkg manifest mode](https://vcpkg.io/en/docs/users/manifests.html).
 {%- endif %}
 * Documentation configuration files
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
@@ -94,9 +97,7 @@ generated for you:
     repository if you do not need it.
 * Other files
   * `.gitignore` contains a default selection of files to omit from version control.
-{%- if cookiecutter.use_submodules == "Yes" %}
   * `.gitmodules` tracks the state of added submodules
-{%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" %}
   * `setup.py` describes the Python package build process. This file enables you to also
     install your software using e.g. `pip`.

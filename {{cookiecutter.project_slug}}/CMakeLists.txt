@@ -1,7 +1,18 @@
 cmake_minimum_required(VERSION 3.9)
+{%- if cookiecutter.externals == "vcpkg" %}
+# Bootstrap vcpkg
+find_path(VCPKG_ROOT vcpkg
+  NAMES vcpkg vcpkg.exe   
+  PATHS ENV VCPKG_ROOT ENV PATH
+  DOC "Path to vcpkg.exe"
+  REQUIRED
+)
+set(CMAKE_TOOLCHAIN_FILE "${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
+{%- endif %}
 
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
+
 
 # Initialize some default paths
 include(GNUInstallDirs)
@@ -41,11 +52,11 @@ add_subdirectory(app)
 # compile the tests
 include(CTest)
 if(BUILD_TESTING)
-  {%- if cookiecutter.use_submodules == "Yes" %}
+  {%- if cookiecutter.externals == "submodules" %}
   add_subdirectory(ext/Catch2)
   include(./ext/Catch2/contrib/Catch.cmake)
   {%- else %}
-  find_package(Catch2 REQUIRED)
+  find_package(Catch2 CONFIG REQUIRED)
   include(Catch)
   {%- endif %}
   add_subdirectory(tests)
@@ -60,7 +71,7 @@ endif()
 {%- if cookiecutter.python_bindings == "Yes" %}
 if(BUILD_PYTHON)
   # Add Python bindings
-  {%- if cookiecutter.use_submodules == "Yes" %}
+  {%- if cookiecutter.externals == "submodules" %}
   add_subdirectory(ext/pybind11)
   {% else %}
   find_package(pybind11)
@@ -68,7 +79,7 @@ if(BUILD_PYTHON)
   # Compile the Pybind11 module
   {%- set modname = cookiecutter.project_slug.replace("-", "") %}
   pybind11_add_module(_{{ modname }} python/{{ modname }}/_{{ cookiecutter.project_slug }}.cpp)
-  target_link_libraries(_{{ modname }} PUBLIC {{ cookiecutter.project_slug }})
+  target_link_libraries(_{{ modname }} PUBLIC {{ cookiecutter.project_slug }} pybind11::lto pybind11::embed pybind11::module)
 
   # Install the Python module shared library
   install(TARGETS _{{ modname }} DESTINATION .)
