@@ -34,6 +34,11 @@ jobs:
         submodules: 'recursive'
 
 {%- if cookiecutter.externals == "vcpkg" %}
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v10
+      with:
+        vcpkgGitCommitId: 14e7bb4ae24616ec54ff6b2f6ef4e8659434ea44
+
     - name: Install vcpkg dependencies..."
       run: |
         vcpkg install
