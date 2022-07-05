@@ -16,7 +16,6 @@ def test_push_remote(cookies):
         extra_context={
             'project_name': 'My C++ Project',
             'remote_url': 'git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git',
-            'project_slug': 'citest',
             'github_actions_ci': 'Yes',
             'gitlab_ci': 'Yes',
             'readthedocs': 'Yes',
