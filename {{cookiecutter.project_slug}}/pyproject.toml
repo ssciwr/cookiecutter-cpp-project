@@ -1,11 +1,61 @@
+{%- set modname = cookiecutter.project_slug.replace('-', '') -%}
+# This section describes the requirements of the build/installation
+# process itself. Being able to do this was the original reason to
+# introduce pyproject.toml
 [build-system]
-requires = ["setuptools>=42", "wheel", "scikit-build", "cmake>=3.9"{% if cookiecutter.use_submodules == "No" %}, "pybind11[global]=={{ cookiecutter._pybind_version }}"{% endif %}]
+requires = [
+    "setuptools>=61",
+    "wheel",
+    "scikit-build",
+    "cmake>=3.9",
+{%- if cookiecutter.use_submodules == "No" %}
+    "pybind11[global]=={{ cookiecutter._pybind_version }}",
+{%- endif %}
+]
 build-backend = "setuptools.build_meta"
 
+# This section provides general project metadata that is used across
+# a variety of build tools. Notably, the version specified here is the
+# single source of truth for {{ modname }}'s version
+[project]
+name = "{{ modname }}"
+version = "0.0.1"
+description = "Add short description here"
+readme = "README.md"
+maintainers = [
+    { name = "{{ cookiecutter.full_name}}", email = "your@email.com" },
+]
+requires-python = ">=3.8"
+{%- if cookiecutter.license != "None" %}
+license = { file = "LICENSE.md" }
+{%- endif %}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+{%- if cookiecutter.license == "MIT" %}
+    "License :: OSI Approved :: MIT License",
+{%- elif cookiecutter.license == "BSD-2" %}
+    "License :: OSI Approved :: BSD License",
+{%- elif cookiecutter.license == "GPL-3.0" %}
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+{%- elif cookiecutter.license == "LGPL-3.0" %}
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+{%- endif %}
+]
+dependencies = []
+
+# NB: Setuptools-specific build options are currently still stored
+#     in setup.py, as scikit-build is not (yet) supporting PEP621.
+#     Later on, these will be stored in [tool.setuptools]
+
+# The following is the configuration for the pytest test suite
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]
 
 {% if cookiecutter.pypi_release == "Yes" -%}
+# The next section configures building wheels in Continuous Integration
+# The cibuildwheel documentation covers the available options in detail:
+# https://cibuildwheel.readthedocs.io/en/stable/options/
 [tool.cibuildwheel]
 # The variables in this section allow you to customize the process how the wheels
 # for the Python packages are built. For a list of options, see this
@@ -15,7 +65,7 @@ testpaths = ["tests/python"]
 build-verbosity = 3
 
 # We restrict ourselves to recent Python versions
-skip = "pp* *p27-* cp35-* *musllinux*"
+skip = "pp* *p27-* cp35-* cp36-* cp37-* *musllinux*"
 
 # Testing commands for our wheels
 test-command = "pytest {package}/tests/python"

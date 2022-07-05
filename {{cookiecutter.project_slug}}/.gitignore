@@ -1,3 +1,6 @@
+# The scikit-build build directory
+_skbuild
+
 # Prerequisites
 *.d
 
