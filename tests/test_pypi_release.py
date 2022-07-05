@@ -29,16 +29,16 @@ def test_pypi_deploy():
     ])
     next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
-    # Modify the version in setup.py and commit the change
+    # Modify the version in pyproject.toml and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
     os.chdir("test-github-actions-cookiecutter-cpp-project")
-    with open("setup.py", "r") as source:
+    with open("pyproject.toml", "r") as source:
         lines = source.readlines()
-    with open("setup.py", "w") as source:
+    with open("pyproject.toml", "w") as source:
         for line in lines:
-            source.write(re.sub(r'version=.*$', 'version="{}",'.format(str(next_version)), line))
-    subprocess.check_call("git add setup.py".split())
-    subprocess.check_call(["git", "commit", "-m", "Bump version in setup.py"])
+            source.write(re.sub(r'version = .*$', 'version = "{}"'.format(str(next_version)), line))
+    subprocess.check_call("git add pyproject.toml".split())
+    subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
     subprocess.check_call("git push -f origin main:pypi_release".split())
     time.sleep(2)
 
