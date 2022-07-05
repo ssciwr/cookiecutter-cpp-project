@@ -10,7 +10,7 @@ def inside_bake(bake):
     """
     old_path = os.getcwd()
     try:
-        os.chdir(os.path.join(bake.project.dirpath(), bake.project.basename))
+        os.chdir(str(bake.project_path))
         yield
     finally:
         os.chdir(old_path)

@@ -27,7 +27,7 @@ def check_bake(bake):
     if bake.exception:
         raise bake.exception
     assert bake.exit_code == 0
-    assert bake.project.isdir()
+    assert bake.project_path.is_dir()
 
 
 def build_cmake(target=None, ctest=False, install=False, **cmake_args):
@@ -112,7 +112,7 @@ def test_cmake_installation(cookies, header_only):
 def test_with_remote(cookies):
     bake = cookies.bake(extra_context={'remote_url': 'https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git'})
     check_bake(bake)
-    assert bake.project.basename == 'test-github-actions-cookiecutter-cpp-project'
+    assert bake.project_path.name == 'test-github-actions-cookiecutter-cpp-project'
     with inside_bake(bake):
         assert len(subprocess.check_output("git remote -vv".split())) > 0
 
