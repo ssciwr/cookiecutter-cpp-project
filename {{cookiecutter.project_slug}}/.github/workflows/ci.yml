@@ -29,12 +29,6 @@ jobs:
         os: [ubuntu-18.04, macos-10.15, windows-2019]
 
     steps:
-    - name: Check long paths
-      if: runner.os == 'Windows'
-      shell: powershell
-      run: |
-        (Get-ItemProperty "HKLM:System\CurrentControlSet\Control\FileSystem").LongPathsEnabled
-
     - uses: actions/checkout@v2
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
@@ -140,7 +134,6 @@ jobs:
       with:
         submodules: 'recursive'
 {%- endif %}
-
 
     - name: Install LCov
       run: |
