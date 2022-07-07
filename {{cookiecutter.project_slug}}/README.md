@@ -58,7 +58,7 @@ Building {{ cookiecutter.project_name }} requires the following software install
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" -%}
-* Python `>= 3.6` for building Python bindings
+* Python `>= 3.8` for building Python bindings
 {%- endif %}
 
 # Building {{ cookiecutter.project_name }}

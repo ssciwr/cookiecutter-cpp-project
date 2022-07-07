@@ -29,6 +29,12 @@ jobs:
         os: [ubuntu-18.04, macos-10.15, windows-2019]
 
     steps:
+    - name: Check long paths
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        (Get-ItemProperty "HKLM:System\CurrentControlSet\Control\FileSystem").LongPathsEnabled
+
     - uses: actions/checkout@v2
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
@@ -113,7 +119,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: 3.8
 
     - name: Run Python tests
       shell: bash

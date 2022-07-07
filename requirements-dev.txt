@@ -6,7 +6,7 @@ packaging
 pybind11
 PyGithub
 pytest
-pytest-cookies
+git+https://github.com/jamesmyatt/pytest-cookies.git@a5d414e3a76e91622d3560660b84987fa181a3d1
 pytest-timeout
 pytest-virtualenv
 python-gitlab

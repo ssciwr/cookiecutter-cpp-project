@@ -21,24 +21,24 @@ def test_pypi_deploy():
 
     # Construct a version, by finding the maximum version across Github, PyPI and TestPyPI and increasing that
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
-    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     current_version = max([
-        upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
-        upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
+        upstream_version('https://pypi.org/pypi/testghacookiecutter/json'),
+        upstream_version('https://test.pypi.org/pypi/testghacookiecutter/json'),
         version.parse(repo.get_latest_release().title[1:])
     ])
     next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
-    # Modify the version in setup.py and commit the change
-    subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
-    os.chdir("test-github-actions-cookiecutter-cpp-project")
-    with open("setup.py", "r") as source:
+    # Modify the version in pyproject.toml and commit the change
+    subprocess.check_call("git clone git@github.com:dokempf/test-gha-cookiecutter.git".split())
+    os.chdir("test-gha-cookiecutter")
+    with open("pyproject.toml", "r") as source:
         lines = source.readlines()
-    with open("setup.py", "w") as source:
+    with open("pyproject.toml", "w") as source:
         for line in lines:
-            source.write(re.sub(r'version=.*$', 'version="{}",'.format(str(next_version)), line))
-    subprocess.check_call("git add setup.py".split())
-    subprocess.check_call(["git", "commit", "-m", "Bump version in setup.py"])
+            source.write(re.sub(r'version = .*$', 'version = "{}"'.format(str(next_version)), line))
+    subprocess.check_call("git add pyproject.toml".split())
+    subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
     subprocess.check_call("git push -f origin main:pypi_release".split())
     time.sleep(2)
 
