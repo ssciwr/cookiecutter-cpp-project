@@ -11,14 +11,14 @@ on:
 jobs:
   test-pypi-release:
     name: Testing PyPI release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checking out the cookie cutter repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
       with:
         python-version: 3.8
 
