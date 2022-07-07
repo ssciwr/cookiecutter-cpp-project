@@ -3,6 +3,7 @@ cookiecutter
 flaky
 jsonschema
 packaging
+pre-commit
 pybind11
 PyGithub
 pytest
