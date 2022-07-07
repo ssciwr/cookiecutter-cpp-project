@@ -21,17 +21,17 @@ def test_pypi_deploy():
 
     # Construct a version, by finding the maximum version across Github, PyPI and TestPyPI and increasing that
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
-    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     current_version = max([
-        upstream_version('https://pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
-        upstream_version('https://test.pypi.org/pypi/testgithubactionscookiecuttercppproject/json'),
+        upstream_version('https://pypi.org/pypi/testghacookiecutter/json'),
+        upstream_version('https://test.pypi.org/pypi/testghacookiecutter/json'),
         version.parse(repo.get_latest_release().title[1:])
     ])
     next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
     # Modify the version in pyproject.toml and commit the change
-    subprocess.check_call("git clone git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git".split())
-    os.chdir("test-github-actions-cookiecutter-cpp-project")
+    subprocess.check_call("git clone git@github.com:dokempf/test-gha-cookiecutter.git".split())
+    os.chdir("test-gha-cookiecutter")
     with open("pyproject.toml", "r") as source:
         lines = source.readlines()
     with open("pyproject.toml", "w") as source:

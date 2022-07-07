@@ -15,7 +15,7 @@ def test_push_remote(cookies):
     bake = cookies.bake(
         extra_context={
             'project_name': 'My C++ Project',
-            'remote_url': 'git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git',
+            'remote_url': 'git@github.com:dokempf/test-gha-cookiecutter.git',
             'github_actions_ci': 'Yes',
             'gitlab_ci': 'Yes',
             'readthedocs': 'Yes',
@@ -42,7 +42,7 @@ def test_github_actions_ci_on_deployed_bake():
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
 
     # Identify the correct workflow
-    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     branch = repo.get_branch('main')
     workflow = repo.get_workflow("ci.yml").get_runs()[0]
     assert workflow.head_sha == branch.commit.sha
@@ -90,12 +90,12 @@ def test_gitlab_ci_on_deployed_bake():
 def test_readthedocs_deploy():
     # Authenticate with the Github API to get the upstream commit
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
-    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     sha = repo.get_branch('main').commit.sha
 
     def rtd_api_request(endpoint):
         response = requests.get(
-            'https://readthedocs.org/api/v3/projects/test-github-actions-cookiecutter-cpp-project/{}'.format(endpoint),
+            'https://readthedocs.org/api/v3/projects/test-gha-cookiecutter/{}'.format(endpoint),
             headers={'Authorization': 'token {}'.format(os.getenv('RTD_API_ACCESS_TOKEN'))}
         )
         return response.json()
@@ -136,11 +136,11 @@ def codecov_api_verification(remote_url, token, sha):
 def test_codecovio_github_deploy():
     # Authenticate with the Github API to get the upstream commit
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
-    repo = gh.get_repo('dokempf/test-github-actions-cookiecutter-cpp-project')
+    repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     sha = repo.get_branch('main').commit.sha
 
     codecov_api_verification(
-        'gh/dokempf/test-github-actions-cookiecutter-cpp-project',
+        'gh/dokempf/test-gha-cookiecutter',
         os.getenv('CODECOV_GH_API_ACCESS_TOKEN'),
         sha
     )
