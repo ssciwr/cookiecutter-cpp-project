@@ -110,9 +110,9 @@ def test_cmake_installation(cookies, header_only):
 
 @pytest.mark.local
 def test_with_remote(cookies):
-    bake = cookies.bake(extra_context={'remote_url': 'https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git'})
+    bake = cookies.bake(extra_context={'remote_url': 'https://github.com/dokempf/test-gha-cookiecutter.git'})
     check_bake(bake)
-    assert bake.project_path.name == 'test-github-actions-cookiecutter-cpp-project'
+    assert bake.project_path.name == 'test-gha-cookiecutter'
     with inside_bake(bake):
         assert len(subprocess.check_output("git remote -vv".split())) > 0
 
@@ -149,7 +149,7 @@ def test_doxygen(cookies):
 def test_github_actions_ci(cookies):
     bake = cookies.bake(
         extra_context={
-            'remote_url': 'git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git',
+            'remote_url': 'git@github.com:dokempf/test-gha-cookiecutter.git',
             'github_actions_ci': 'Yes',
             'python_bindings': 'Yes',
             'pypi_release': 'Yes',
@@ -230,8 +230,8 @@ def test_sonarcloud_without_github(cookies):
 @pytest.mark.parametrize(
     "remote_url",
     [
-        "git@github.com:dokempf/test-github-actions-cookiecutter-cpp-project.git",
-        "https://github.com/dokempf/test-github-actions-cookiecutter-cpp-project.git",
+        "git@github.com:dokempf/test-gha-cookiecutter.git",
+        "https://github.com/dokempf/test-gha-cookiecutter.git",
         "git@gitlab.com:dokempf/test-gitlab-ci-cookiecutter-cpp-project.git",
         "https://gitlab.com/dokempf/test-gitlab-ci-cookiecutter-cpp-project.git",
         "ssh://git@gitlab.dune-project.org:22022/dominic/test-gitlab-ci-cookiecutter-cpp-project.git",
