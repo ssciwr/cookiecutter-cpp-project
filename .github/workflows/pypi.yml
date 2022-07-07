@@ -32,7 +32,7 @@ jobs:
         git config --global user.name "SSC CI Test User"
 
     - name: Set up SSH Agent to deploy to test repositories
-      uses: webfactory/ssh-agent@v0.4.1
+      uses: webfactory/ssh-agent@v0.5.4
       with:
         ssh-private-key: |
           ${{ secrets.GHA_TEST_PRIVATE_KEY }}
