@@ -1,13 +1,6 @@
 # Welcome to {{ cookiecutter.project_name }}
 
 {# The white-space control of the below template is quite delicate - if you add one, do it exactly like this (mind the -'s) -#}
-{%- set is_github = "github.com" in cookiecutter.remote_url -%}
-{%- set is_gitlab = "gitlab" in cookiecutter.remote_url -%}
-{%- set provider_acronym = "gh" if is_github else "gl" if is_gitlab else "none" %}
-{%- set username = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.split("/")[-2].split(":")[-1] -%}
-{%- set remote_slug = "None" if cookiecutter.remote_url == "None" else cookiecutter.remote_url.replace(".git", "").split("/")[-1] -%}
-{%- set gitlab_instance = "None" if cookiecutter.remote_url == "None" else "https%3A%2F%2F" + cookiecutter.remote_url.replace("https://", "").replace("ssh://git@", "").split("/")[0].split(":")[0] -%}
-{%- set python_package = cookiecutter.project_slug.replace("-", "") -%}
 {% if cookiecutter.license == "MIT" -%}
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 {% endif -%}
@@ -21,28 +14,28 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif -%}
 {% if cookiecutter.remote_url != "None" -%}
-{% if cookiecutter.github_actions_ci == "Yes" and is_github -%}
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ username }}/{{ remote_slug }}/CI)](https://github.com/{{ username }}/{{ remote_slug }}/actions?query=workflow%3ACI)
+{% if cookiecutter.github_actions_ci == "Yes" and cookiecutter|is_github -%}
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/CI)](https://github.com/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/actions?query=workflow%3ACI)
 {% endif -%}
-{% if cookiecutter.gitlab_ci == "Yes" and is_gitlab -%}
-[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ username }}/{{ remote_slug }}/main
+{% if cookiecutter.gitlab_ci == "Yes" and cookiecutter|is_gitlab -%}
+[![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/main
 {%- if "gitlab.com" not in cookiecutter.remote_url -%}
-?gitlab_url={{ gitlab_instance }}
+?gitlab_url={{ cookiecutter|gitlab_instance }}
 {%- endif -%}
-)]({{ gitlab_instance }}/{{ username }}/{{ remote_slug }}/-/pipelines)
+)]({{ cookiecutter|gitlab_instance }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/-/pipelines)
 {% endif -%}
 {% endif -%}
 {% if cookiecutter.pypi_release != "No" -%}
-[![PyPI Release](https://img.shields.io/pypi/v/{{ python_package }}.svg)](https://pypi.org/project/{{ python_package }})
+[![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter|modname }}.svg)](https://pypi.org/project/{{ cookiecutter|modname }})
 {% endif -%}
 {% if cookiecutter.readthedocs == "Yes" -%}
-[![Documentation Status](https://readthedocs.org/projects/{{ remote_slug }}/badge/)](https://{{ remote_slug }}.readthedocs.io/)
+[![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter|remote_slug }}/badge/)](https://{{ cookiecutter|remote_slug }}.readthedocs.io/)
 {% endif -%}
 {% if cookiecutter.codecovio == "Yes" -%}
-[![codecov](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ provider_acronym }}/{{ username }}/{{ remote_slug }})
+[![codecov](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }})
 {%- endif %}
 {% if cookiecutter.sonarcloud == "Yes" -%}
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project={{ username }}_{{ remote_slug }}&metric=alert_status)](https://sonarcloud.io/dashboard?id={{ username }}_{{ remote_slug }})
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project={{ cookiecutter|username }}_{{ cookiecutter|remote_slug }}&metric=alert_status)](https://sonarcloud.io/dashboard?id={{ cookiecutter|username }}_{{ cookiecutter|remote_slug }})
 {%- endif %}
 {{ "\n" -}}
 # Prerequisites

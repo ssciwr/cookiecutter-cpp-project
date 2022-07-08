@@ -1,4 +1,3 @@
-{%- set modname = cookiecutter.project_slug.replace('-', '') -%}
 # This section describes the requirements of the build/installation
 # process itself. Being able to do this was the original reason to
 # introduce pyproject.toml
@@ -16,9 +15,9 @@ build-backend = "setuptools.build_meta"
 
 # This section provides general project metadata that is used across
 # a variety of build tools. Notably, the version specified here is the
-# single source of truth for {{ modname }}'s version
+# single source of truth for {{ cookiecutter|modname }}'s version
 [project]
-name = "{{ modname }}"
+name = "{{ cookiecutter|modname }}"
 version = "0.0.1"
 description = "Add short description here"
 readme = "README.md"
