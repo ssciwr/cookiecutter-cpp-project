@@ -66,12 +66,11 @@ if(BUILD_PYTHON)
   find_package(pybind11)
   {%- endif %}
   # Compile the Pybind11 module
-  {%- set modname = cookiecutter.project_slug.replace("-", "") %}
-  pybind11_add_module(_{{ modname }} python/{{ modname }}/_{{ cookiecutter.project_slug }}.cpp)
-  target_link_libraries(_{{ modname }} PUBLIC {{ cookiecutter.project_slug }})
+  pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
+  target_link_libraries(_{{ cookiecutter|modname }} PUBLIC {{ cookiecutter.project_slug }})
 
   # Install the Python module shared library
-  install(TARGETS _{{ modname }} DESTINATION .)
+  install(TARGETS _{{ cookiecutter|modname }} DESTINATION .)
 endif()
 {%- endif %}
 

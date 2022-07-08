@@ -15,6 +15,11 @@
     "pypi_release": "{{ cookiecutter.python_bindings }}",
     "codecovio": ["Yes", "No"],
     "sonarcloud": ["No", "Yes"],
+    "_extensions": [
+        "local_extensions.PrecommitExtension",
+        "local_extensions.ShortcutExtension"
+    ],
+    "__python_module": "{{ cookiecutter|modname }}",
     "_catch_version": "2.13.9",
     "_cibuildwheel_version": "2.8.0",
     "_pybind_version": "2.9.2",

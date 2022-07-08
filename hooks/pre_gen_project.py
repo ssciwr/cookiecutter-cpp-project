@@ -5,7 +5,17 @@
 # An example of a pre-hook would be to validate the provided input for a
 # user configuration value and exit with an error upon failure.
 
+import cookiecutter
 import sys
+
+
+# Ensure that the version of cookiecutter is >= 2.1. Unfortunately, we cannot
+# use the packaging library here, because we cannot install additional dependencies
+# and cookiecutter did not depend on it pre-v2
+parts = cookiecutter.__version__.split(".")
+if int(parts[0]) < 2 or (int(parts[0]) == 2  and int(parts[1]) < 1):
+    sys.stderr.write("This template requires cookiecutter >= 2.1")
+    sys.exit(1)
 
 
 def fail_if(condition, message):

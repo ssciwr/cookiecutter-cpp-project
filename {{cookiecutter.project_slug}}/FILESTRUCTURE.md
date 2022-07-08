@@ -51,6 +51,10 @@ generated for you:
     on the Readthedocs build servers.
 {%- endif %}
 * Configuration for CI/Code analysis/Documentation services
+{%- if have_precommit %}
+  * `.pre-commit-config.yaml` contains a configuration for the [pre-commit](https://pre-commit.com/)
+    tool. It was added because the `pre-commit` tool was found in your Python environment.
+{%- endif %}
 {%- if cookiecutter.github_actions_ci == "Yes" %}
   * `.github/workflows/ci.yml` describes the Github Workflow for Continuous
     integration. For further reading on workflow files, we recommend the

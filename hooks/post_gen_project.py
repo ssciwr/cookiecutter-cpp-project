@@ -11,14 +11,6 @@ import sys
 from cookiecutter.utils import rmtree
 
 
-# Check whether we have pre-commit or not
-try:
-    import pre_commit
-    have_precommit = True
-except ImportError:
-    have_precommit = False
-
-
 class GitRepository(object):
     """ A context for the setup of a Git repository """
     def __init__(self):
@@ -35,7 +27,7 @@ class GitRepository(object):
         subprocess.check_call("git add *".split())
 
         # Maybe run pre-commit
-        if have_precommit:
+        if {{ have_precommit }}:
             subprocess.call("pre-commit run -a".split())
             subprocess.check_call("git add *".split())
 
@@ -90,7 +82,7 @@ conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
 conditional_remove("{{ cookiecutter.sonarcloud }}" == "No", "sonar-project.properties")
 conditional_remove("{{ cookiecutter.sonarcloud }}" == "No", ".github/workflows/sonarcloud.yml")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
-conditional_remove(not have_precommit, ".pre-commit-config.yaml")
+conditional_remove(not {{ have_precommit }}, ".pre-commit-config.yaml")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 

@@ -1,4 +1,3 @@
-{%- set modname = cookiecutter.project_slug.replace('-', '') -%}
 from skbuild import setup
 {%- if cookiecutter.use_submodules == "No" %}
 import os
@@ -7,7 +6,7 @@ import pybind11
 
 
 setup(
-    packages=["{{ modname }}"],
+    packages=["{{ cookiecutter|modname }}"],
     package_dir={"": "python"},
     zip_safe=False,
     cmake_args=[
@@ -17,5 +16,5 @@ setup(
         f"-DCMAKE_PREFIX_PATH={os.path.dirname(pybind11.__file__)}",
 {%- endif %}
     ],
-    cmake_install_dir="python/{{ modname }}",
+    cmake_install_dir="python/{{ cookiecutter|modname }}",
 )
