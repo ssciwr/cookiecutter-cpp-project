@@ -90,9 +90,9 @@ def test_cmake_installation(cookies, header_only):
             lines = f.readlines()
         with open("CMakeLists.txt", "w") as f:
             for line in lines:
-                f.write(line)
-                if line.startswith("project"):
+                if line.startswith("# Initialize some default paths"):
                     f.write("find_package(upstream REQUIRED)\n")
+                f.write(line)
 
         # Have the library depend on the upstream library
         with open("src/CMakeLists.txt", "a") as f:

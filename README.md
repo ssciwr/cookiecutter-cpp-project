@@ -16,6 +16,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 * Building a Doxygen documentation
 * Setup of Python bindings with Pybind11
 * CI-based deployment of Python wheels to PyPI
+* Generated [pre-commit](https://pre-commit.com/) configuration is added if you have `pre-commit` installed
 * Integration with coverage testing from [codecov.io](https://codecov.io)
 * Integration with code quality analysis from [sonarcloud.io](https://sonarcloud.io/)
 * Based on an established tool: [Cookiecutter](https://github.com/cookiecutter/cookiecutter) has >15k stars on Github!
