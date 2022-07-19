@@ -3,4 +3,4 @@ This is the list of copyright holders of {{ cookiecutter.project_name }}.
 For information on the license, see LICENSE.md.
 {%- endif %}
 
-* {{ cookiecutter.full_name }}, 2020
+* {{ cookiecutter.full_name }}, {{ current_year }}

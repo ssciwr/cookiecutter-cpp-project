@@ -20,7 +20,7 @@ import subprocess
 # -- Project information -----------------------------------------------------
 
 project = '{{ cookiecutter.project_slug }}'
-copyright = '2020, {{ cookiecutter.full_name }}'
+copyright = '{{ current_year }}, {{ cookiecutter.full_name }}'
 author = '{{ cookiecutter.full_name }}'
 
 # -- General configuration ---------------------------------------------------

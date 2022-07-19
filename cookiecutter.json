@@ -17,7 +17,8 @@
     "sonarcloud": ["No", "Yes"],
     "_extensions": [
         "local_extensions.PrecommitExtension",
-        "local_extensions.ShortcutExtension"
+        "local_extensions.ShortcutExtension",
+        "local_extensions.CurrentDateExtension"
     ],
     "__python_module": "{{ cookiecutter|modname }}",
     "_catch_version": "2.13.9",
