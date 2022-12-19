@@ -15,7 +15,7 @@
 {% endif -%}
 {% if cookiecutter.remote_url != "None" -%}
 {% if cookiecutter.github_actions_ci == "Yes" and cookiecutter|is_github -%}
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/CI)](https://github.com/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/actions?query=workflow%3ACI)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/ci.yml?branch=main)](https://github.com/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/actions/workflows/ci.yml)
 {% endif -%}
 {% if cookiecutter.gitlab_ci == "Yes" and cookiecutter|is_gitlab -%}
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/main
