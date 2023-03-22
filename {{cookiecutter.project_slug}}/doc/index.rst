@@ -1,5 +1,5 @@
-{{ cookiecutter.project_name}}
-{% for c in "{{ cookiecutter.project_name}}" %}={% endfor %}
+{{ cookiecutter.project_name }}
+{{ "=" * cookiecutter.project_name|length }}
 
 .. toctree::
    :maxdepth: 2
