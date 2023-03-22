@@ -3,6 +3,14 @@ cmake_minimum_required(VERSION 3.9)
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
 
+{%- if cookiecutter.external_dependency != "None" %}
+
+# Set CMake policies for this project
+
+# We allow <Package>_ROOT (env) variables for locating dependencies
+cmake_policy(SET CMP0074 NEW)
+{%- endif %}
+
 # Initialize some default paths
 include(GNUInstallDirs)
 
@@ -22,11 +30,18 @@ option(BUILD_PYTHON "Enable building of Python bindings" ON)
 option(BUILD_DOCS "Enable building of documentation" ON)
 {%- endif %}
 
+{%- if cookiecutter.external_dependency != "None" %}
+
+# Find external dependencies
+find_package({{ cookiecutter.external_dependency }})
+{%- endif %}
+
 {%- if cookiecutter.header_only == "No" %}
 
 # compile the library
 add_subdirectory(src)
 {% else %}
+
 # Add an interface target for our header-only library
 add_library({{ cookiecutter.project_slug }} INTERFACE)
 target_include_directories({{ cookiecutter.project_slug }} INTERFACE
@@ -78,6 +93,7 @@ endif()
 add_library({{ cookiecutter.project_slug }}::{{ cookiecutter.project_slug }} ALIAS {{ cookiecutter.project_slug }})
 
 # Install targets and configuration
+{%- if cookiecutter.external_dependency == "None" %}
 install(
   TARGETS {{ cookiecutter.project_slug }}
   EXPORT {{ cookiecutter.project_slug }}-config
@@ -91,6 +107,35 @@ install(
   NAMESPACE {{ cookiecutter.project_slug }}::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
+{%- else %}
+install(
+  TARGETS {{ cookiecutter.project_slug }}
+  EXPORT {{ cookiecutter.project_slug }}-targets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+install(
+  EXPORT {{ cookiecutter.project_slug }}-targets
+  FILE {{ cookiecutter.project_slug }}Targets.cmake
+  NAMESPACE {{ cookiecutter.project_slug }}::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  ${CMAKE_CURRENT_LIST_DIR}/{{ cookiecutter.project_slug }}Config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
+
+install(
+  FILES ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
+
+export(
+  EXPORT {{ cookiecutter.project_slug }}-targets
+  FILE ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Targets.cmake
+  NAMESPACE {{ cookiecutter.project_slug }}::)
+{%- endif %}
 
 install(
   DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/

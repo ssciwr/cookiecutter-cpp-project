@@ -44,6 +44,9 @@ Building {{ cookiecutter.project_name }} requires the following software install
 
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
 * CMake `>= 3.9`
+{%- if cookiecutter.external_dependency != "None" %}
+* {{ cookiecutter.external_dependency }}
+{%- endif %}
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 * Doxygen (optional, documentation building is skipped if missing)
 {%- endif %}

@@ -1,0 +1,15 @@
+get_filename_component(
+  {{ cookiecutter.project_slug|upper }}_CMAKE_DIR
+  ${CMAKE_CURRENT_LIST_FILE}
+  PATH
+)
+set(CMAKE_MODULE_PATH ${{ "{" }}{{ cookiecutter.project_slug|upper }}_CMAKE_DIR} ${CMAKE_MODULE_PATH})
+
+include(CMakeFindDependencyMacro)
+if(@{{ cookiecutter.external_dependency|upper }}_FOUND@)
+find_dependency({{ cookiecutter.external_dependency }})
+endif()
+
+if(NOT TARGET {{ cookiecutter.project_slug }}::{{ cookiecutter.project_slug }})
+  include("${{ "{" }}{{ cookiecutter.project_slug|upper }}_CMAKE_DIR}/{{ cookiecutter.project_slug }}Targets.cmake")
+endif()
