@@ -7,7 +7,7 @@ pre-commit
 pybind11
 PyGithub
 pytest
-git+https://github.com/jamesmyatt/pytest-cookies.git@a5d414e3a76e91622d3560660b84987fa181a3d1
+pytest-cookies
 pytest-timeout
 pytest-virtualenv
 python-gitlab
