@@ -17,6 +17,17 @@ The following tasks need to be done to get a fully working project:
   * The [PyBind11](https://github.com/pybind/pybind11) library
 {%- endif %}
 {%- endif %}
+{%- if cookiecutter.external_dependency != "None" %}
+  * Adapt your list of external dependencies in `CMakeLists.txt` and `{{ cookiecutter.project_slug }}Config.cmake.in`.
+    You can e.g.
+    * Link your library or applications to your dependency. For this to work, you need
+      to see if your dependency exports targets and what their name is. As this is highly
+      individual, this cookiecutter could not do this for you.
+    * Add more dependencies in analogy to `{{ cookiecutter.external_dependency }}`
+    * Make dependencies requirements by adding `REQUIRED` to `find_package()`
+    * Add version constraints to dependencies by adding `VERSION` to `find_package()`
+    * Make a dependency a pure build time dependency by removing it from `{{ cookiecutter.project_slug }}Config.cmake.in`
+{%- endif %}
 {%- if cookiecutter.gitlab_ci == "Yes" %}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that
   there is a suitable Runner available. If you are using the cloud-hosted gitlab.com,

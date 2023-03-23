@@ -65,6 +65,11 @@ This cookiecutter accepts the following configuration options:
 * `header_only`: Whether the C++ project is header-only. If `No` is selected, a library will
   be added to the project. In both cases, a target is exported that dependent projects can
   link against.
+* `external_dependency`: The name of an external dependency of your library. Defaults to `None`.
+  This will generate the required CMake code for handling of external dependencies. Note that
+  this support will typically not work straight away, as it highly depends on the dependency.
+  See the generated TODO list for hints at what to do. If you have multiple external dependencies
+  add one of them here and then manually add the other ones analoguously.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org

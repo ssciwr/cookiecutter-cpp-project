@@ -82,6 +82,7 @@ conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
 conditional_remove("{{ cookiecutter.sonarcloud }}" == "No", "sonar-project.properties")
 conditional_remove("{{ cookiecutter.sonarcloud }}" == "No", ".github/workflows/sonarcloud.yml")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
+conditional_remove("{{ cookiecutter.external_dependency }}" == "None", "{{ cookiecutter.project_slug }}Config.cmake.in")
 conditional_remove(not {{ have_precommit }}, ".pre-commit-config.yaml")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
