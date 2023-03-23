@@ -69,7 +69,7 @@ This cookiecutter accepts the following configuration options:
   This will generate the required CMake code for handling of external dependencies. Note that
   this support will typically not work straight away, as it highly depends on the dependency.
   See the generated TODO list for hints at what to do. If you have multiple external dependencies
-  add one of here and then manually add the other ones analoguously.
+  add one of them here and then manually add the other ones analoguously.
 * `github_actions_ci`: Whether to add a CI workflow for Github Actions
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org

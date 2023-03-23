@@ -32,7 +32,7 @@ generated for you:
   * `{{ cookiecutter.project_slug }}Config.cmake.in` provides a template for the configuration
     installed alongside your project. This is required to implement the transitivity of your dependency
     on `{{ cookiecutter.external_dependency }}`: If downstream projects use your library, they should
-    also search for `{{ cookiecutter.external_dependency }}`. The config file template implements
+    automatically search for `{{ cookiecutter.external_dependency }}`. The config file template implements
     exactly this logic.
 {%- endif %}
 {%- if cookiecutter.use_submodules == "Yes" %}
