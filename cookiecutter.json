@@ -21,8 +21,8 @@
         "local_extensions.CurrentDateExtension"
     ],
     "__python_module": "{{ cookiecutter|modname }}",
-    "_catch_version": "2.13.9",
-    "_cibuildwheel_version": "2.11.4",
-    "_pybind_version": "2.10.2",
+    "_catch_version": "2.13.10",
+    "_cibuildwheel_version": "2.12.1",
+    "_pybind_version": "2.10.4",
     "_sonarscanner_version": "4.7.0.2747"
 }
