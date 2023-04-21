@@ -2,14 +2,14 @@ repos:
 {%- if cookiecutter.python_bindings %}
   # Run Black - the uncompromising Python code formatter
   - repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 23.3.0
     hooks:
       - id: black-jupyter
 {%- endif %}
 
   # Format C++ code with Clang-Format - automatically applying the changes
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v15.0.7
+    rev: v16.0.1
     hooks:
       - id: clang-format
         args:
