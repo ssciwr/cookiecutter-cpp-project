@@ -52,7 +52,7 @@ The following tasks need to be done to get a fully working project:
   and add a "new pending publisher". The relevant information is:
   * PyPI project name: `{{ cookiecutter|modname }}`
   * Owner: `{{ cookiecutter|username }}`
-  * Repository name: `{{ cookiecutter.remote_slug }}`
+  * Repository name: `{{ cookiecutter|remote_slug }}`
   * Workflow name: `pypi.yml`
   * Environment name: not required
 {%- endif %}
