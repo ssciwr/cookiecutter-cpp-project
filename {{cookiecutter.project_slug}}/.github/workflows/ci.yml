@@ -207,7 +207,7 @@ jobs:
         lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v3
       with:
         fail_ci_if_error: true
         files: ${{ "{{runner.workspace}}" }}/coverage.info
