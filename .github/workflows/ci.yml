@@ -25,7 +25,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.8", "3.9", "3.10"]
+        # We test on the oldest and newest supported Python versions
+        # Unfortenately, we can't test on the latest Python version, as the
+        # pytest-virtualenv plugin does not support it yet, see
+        # https://github.com/man-group/pytest-plugins/issues/220
+        python-version: ["3.8", "3.11"]
 
     steps:
     - name: Checking out the cookie cutter repository
