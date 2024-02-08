@@ -39,3 +39,11 @@ repos:
     hooks:
       - id: cmake-format
       - id: cmake-lint
+{%- if cookiecutter.github_actions_ci == "Yes" %}
+
+  # GitHub Actions Workflow linter
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.6.25
+    hooks:
+      - id: actionlint
+{%- endif %}

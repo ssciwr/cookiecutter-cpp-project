@@ -79,21 +79,21 @@ jobs:
 {%- endif %}
 
     - name: make build directory
-      run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
+      run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
     - name: configure cmake
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOCS=OFF
 
     - name: build
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 
     - name: run tests
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
 {%- if cookiecutter.python_bindings == "Yes" %}
   python-testing:
@@ -183,26 +183,26 @@ jobs:
 {%- endif %}
 
     - name: make build directory
-      run: cmake -E make_directory ${{ "{{runner.workspace}}" }}/build
+      run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
     - name: configure cmake
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -DBUILD_DOCS=OFF
 
     - name: build
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 
     - name: run tests
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}/build
+      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
 
     - name: collect coverage report
       shell: bash
-      working-directory: ${{ "{{runner.workspace}}" }}
+      working-directory: ${{ "{{ github.workspace }}" }}
       run: |
         lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info
 
