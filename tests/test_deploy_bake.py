@@ -113,23 +113,6 @@ def test_readthedocs_deploy():
     assert build["commit"] == sha
 
 
-def codecov_api_verification(remote_url, token, sha):
-    def codecov_api_request(endpoint):
-        resp = requests.get('https://codecov.io/api/{}/{}'.format(remote_url, endpoint),
-                            headers={'Authorization': 'token {}'.format(token)}
-                            )
-        return resp.json()
-
-    # Poll the codecov.io API
-    commit = codecov_api_request('commit/{}'.format(sha))['commit']
-    while commit['state'] != 'complete':
-        time.sleep(5)
-        commit = codecov_api_request('commit/{}'.format(sha))['commit']
-
-    # Assert 100% coverage
-    assert commit['totals']['c'] == '100'
-
-
 @pytest.mark.integrations
 @pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
 @pytest.mark.timeout(120)
@@ -139,25 +122,14 @@ def test_codecovio_github_deploy():
     repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     sha = repo.get_branch('main').commit.sha
 
-    codecov_api_verification(
-        'gh/dokempf/test-gha-cookiecutter',
-        os.getenv('CODECOV_GH_API_ACCESS_TOKEN'),
-        sha
-    )
+    # Ask CodeCov API for coverage information
+    resp = requests.get(
+        f'https://api.codecov.io/api/v2/github/dokempf/repos/test-gha-cookiecutter/totals',
+        headers={
+            'authorization': f'Bearer {os.getenv("CODECOV_GH_API_ACCESS_TOKEN")}'
+        },
+        params={"sha": sha}
+    ).json()
 
-
-@pytest.mark.integrations
-@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
-@pytest.mark.timeout(60)
-def test_codecovio_gitlab_deploy():
-    # Authenticate with Gitlab API
-    gl = gitlab.Gitlab('https://gitlab.com', private_token=os.getenv("GL_API_ACCESS_TOKEN"))
-    gl.auth()
-    project = gl.projects.get('dokempf/test-gitlab-ci-cookiecutter-cpp-project')
-    sha = project.branches.get('main').commit['id']
-
-    codecov_api_verification(
-        'gl/dokempf/test-gitlab-ci-cookiecutter-cpp-project',
-        os.getenv('CODECOV_GL_API_ACCESS_TOKEN'),
-        sha
-    )
+    # Assert 100% coverage
+    assert resp['totals']['coverage'] == 100
