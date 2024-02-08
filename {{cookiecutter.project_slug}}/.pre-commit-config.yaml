@@ -2,7 +2,7 @@ repos:
 {%- if cookiecutter.python_bindings %}
   # Run Black - the uncompromising Python code formatter
   - repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 23.7.0
     hooks:
       - id: black-jupyter
 {%- endif %}
