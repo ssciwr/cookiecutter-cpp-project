@@ -37,11 +37,16 @@ variables:
     - ctest
 
 build-and-test:gcc:
-  image: conanio/gcc9
+  # Note: You can use your own Docker images here that e.g. include relevant
+  #       dependencies and development tools. We choose images provided by conan
+  #       as these are well maintained and try to provide a good C++ developement
+  #       environment with both gcc and clang. For more information, see here:
+  #       https://github.com/conan-io/conan-docker-tools
+  image: conanio/gcc11
   <<: *template
 
 build-and-test:clang:
-  image: conanio/clang10
+  image: conanio/clang11
   <<: *template
 
 {% if cookiecutter.codecovio == "Yes" -%}
