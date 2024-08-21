@@ -82,14 +82,6 @@ generated for you:
     provided file is the default configuration plus suitable exclusions. For more options, check
     their [configuration reference](https://docs.codecov.io/docs/codecov-yaml).
 {%- endif %}
-{%- if cookiecutter.sonarcloud == "Yes" %}
-  * `sonar-project.properties` configures the code analysis on SonarCloud. The provided
-    default parameters should be sufficient for most users. If they are not for you,
-    you should have a look at the [Analysis Parameters Reference](https://docs.sonarqube.org/latest/analysis/analysis-parameters/)
-    and at the [Documentation for C/C++/Objective-C](https://docs.sonarqube.org/latest/analysis/languages/cfamily/).
-  * `.github/workflows/sonarcloud.yml` is the Github workflow that triggers the SonarCloud
-    analysis. The provided default should be sufficient for most users.
-{%- endif %}
 * Markdown files with meta information on the project. [Markdown](https://www.markdownguide.org/basic-syntax/) is
   a good language for these files, as it is easy to write and rendered into something beautiful by your git repository
   hosting provider.

@@ -23,7 +23,6 @@ def test_push_remote(cookies):
             'pypi_release': 'Yes',
             'use_submodules': 'No',
             'codecovio': 'Yes',
-            'sonarcloud': 'Yes',
         }
     )
     with inside_bake(bake):
@@ -59,7 +58,6 @@ def test_github_actions_ci_on_deployed_bake():
         assert workflow.conclusion == 'success'
 
     check_workflow("ci.yml")
-    check_workflow("sonarcloud.yml")
 
 
 @pytest.mark.integrations

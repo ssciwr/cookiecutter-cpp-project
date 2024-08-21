@@ -52,7 +52,6 @@ def test_ctest_run(cookies, submodules, header_only):
             'project_slug': 'test_project',
             'use_submodules': submodules,
             'header_only': header_only,
-            'sonarcloud': 'No',
         }
     )
     check_bake(bake)
@@ -67,14 +66,12 @@ def test_cmake_installation(cookies, header_only):
         extra_context={
             'project_slug': 'downstream',
             'header_only': 'No',
-            'sonarcloud': 'No',
         }
     )
     upstream_bake = cookies.bake(
         extra_context={
             'project_slug': 'upstream',
             'header_only': header_only,
-            'sonarcloud': 'No',
         }
     )
     with inside_bake(upstream_bake):
@@ -122,7 +119,6 @@ def test_readthedocs(cookies):
     bake = cookies.bake(
         extra_context={
             'readthedocs': 'Yes',
-            'sonarcloud': 'No',
         }
     )
     check_bake(bake)
@@ -136,7 +132,6 @@ def test_doxygen(cookies):
     bake = cookies.bake(
         extra_context={
             'doxygen': 'Yes',
-            'sonarcloud': 'No',
         }
     )
     check_bake(bake)
@@ -153,14 +148,12 @@ def test_github_actions_ci(cookies):
             'github_actions_ci': 'Yes',
             'python_bindings': 'Yes',
             'pypi_release': 'Yes',
-            'sonarcloud': 'Yes',
         }
     )
     check_bake(bake)
     with inside_bake(bake):
         check_file_against_schemastore(".github/workflows/ci.yml", "https://json.schemastore.org/github-workflow")
         check_file_against_schemastore(".github/workflows/pypi.yml", "https://json.schemastore.org/github-workflow")
-        check_file_against_schemastore(".github/workflows/sonarcloud.yml", "https://json.schemastore.org/github-workflow")
 
 
 @pytest.mark.local
@@ -168,7 +161,6 @@ def test_gitlabci(cookies):
     bake = cookies.bake(
         extra_context={
             'gitlab_ci': 'Yes',
-            'sonarcloud': 'No',
         }
     )
     check_bake(bake)
@@ -184,7 +176,6 @@ def test_python(cookies, virtualenv, submodules):
             'project_slug': 'my-project',
             'python_bindings': 'Yes',
             'submodules': submodules,
-            'sonarcloud': 'No',
         }
     )
     check_bake(bake)
@@ -215,18 +206,6 @@ def test_codecov_without_license(cookies):
 
 
 @pytest.mark.local
-def test_sonarcloud_without_license(cookies):
-    bake = cookies.bake(extra_context={'license': 'None', 'sonarcloud': 'Yes'})
-    assert bake.exit_code != 0
-
-
-@pytest.mark.local
-def test_sonarcloud_without_github(cookies):
-    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'sonarcloud': 'Yes'})
-    assert bake.exit_code != 0
-
-
-@pytest.mark.local
 @pytest.mark.parametrize(
     "remote_url",
     [
@@ -243,7 +222,6 @@ def test_remote_urls(cookies, remote_url):
             "github_actions_ci": "Yes",
             "gitlab_ci": "Yes",
             "remote_url": remote_url,
-            "sonarcloud": "No",
         }
     )
     check_bake(bake)
