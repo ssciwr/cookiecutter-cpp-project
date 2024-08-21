@@ -1,2 +1,3 @@
 breathe
 cmake
+sphinx_rtd_theme
