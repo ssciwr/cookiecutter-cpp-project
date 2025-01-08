@@ -34,9 +34,6 @@
 {% if cookiecutter.codecovio == "Yes" -%}
 [![codecov](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }})
 {%- endif %}
-{% if cookiecutter.sonarcloud == "Yes" -%}
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project={{ cookiecutter|username }}_{{ cookiecutter|remote_slug }}&metric=alert_status)](https://sonarcloud.io/dashboard?id={{ cookiecutter|username }}_{{ cookiecutter|remote_slug }})
-{%- endif %}
 {{ "\n" -}}
 # Prerequisites
 

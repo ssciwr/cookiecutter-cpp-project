@@ -38,18 +38,3 @@ fail_if(
     "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
     "Coverage reports for codecov.io require an open source license for your project"
 )
-
-fail_if(
-    "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
-    "Code quality analysis from sonarcloud.io requires an open source license for your project"
-)
-
-fail_if(
-    "{{ cookiecutter.sonarcloud }}" == "Yes" and "{{ cookiecutter.github_actions_ci }}" == "No",
-    "Code quality analysis from sonarcloud.io is currently only supported in combination with Github Actions CI"
-)
-
-fail_if(
-    "{{ cookiecutter.sonarcloud }}" == "Yes" and "github.com" not in "{{ cookiecutter.remote_url }}",
-    "Code quality analysis from sonarcloud.io is currently only supported in combination with a Github remote repository"
-)
