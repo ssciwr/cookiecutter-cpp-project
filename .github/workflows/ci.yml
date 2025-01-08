@@ -29,7 +29,7 @@ jobs:
         # Unfortenately, we can't test on the latest Python version, as the
         # pytest-virtualenv plugin does not support it yet, see
         # https://github.com/man-group/pytest-plugins/issues/220
-        python-version: ["3.8", "3.11"]
+        python-version: ["3.9", "3.13"]
 
     steps:
     - name: Checking out the cookie cutter repository
@@ -88,10 +88,9 @@ jobs:
     - name: Checking out the cookie cutter repository
       uses: actions/checkout@v4
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v5
+    - uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: "3.13"
 
     - name: Install test requirements
       run: |
