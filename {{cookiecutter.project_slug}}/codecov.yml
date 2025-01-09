@@ -20,5 +20,9 @@ comment:
   require_changes: no
 
 ignore:
+  - app
+{%- if cookiecutter.python_bindings == "Yes" %}
+  - python
+{%- endif %}
   - "**/tests"
   - "**/Catch2"
