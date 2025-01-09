@@ -3,15 +3,10 @@
 # introduce pyproject.toml
 [build-system]
 requires = [
-    "setuptools>=61",
-    "wheel",
-    "scikit-build",
-    "cmake>=3.9",
-{%- if cookiecutter.use_submodules == "No" %}
-    "pybind11[global]=={{ cookiecutter._pybind_version }}",
-{%- endif %}
+    "scikit-build-core",
+    "pybind11[global]",
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "scikit_build_core.build"
 
 # This section provides general project metadata that is used across
 # a variety of build tools. Notably, the version specified here is the
@@ -43,9 +38,15 @@ classifiers = [
 ]
 dependencies = []
 
-# NB: Setuptools-specific build options are currently still stored
-#     in setup.py, as scikit-build is not (yet) supporting PEP621.
-#     Later on, these will be stored in [tool.setuptools]
+# The configuration for the scikit-build-core build process
+[tool.scikit-build]
+cmake.version = ">=3.9"
+build.verbose = true
+
+[tool.scikit-build.cmake.define]
+BUILD_PYTHON = "ON"
+BUILD_TESTING = "OFF"
+BUILD_DOCS = "OFF"
 
 # The following is the configuration for the pytest test suite
 [tool.pytest.ini_options]

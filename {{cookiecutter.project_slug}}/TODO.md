@@ -13,9 +13,6 @@ The following tasks need to be done to get a fully working project:
   * CMake `>= 3.9`
 {%- if cookiecutter.use_submodules == "No" %}
   * The testing framework [Catch2](https://github.com/catchorg/Catch2)
-{%- if cookiecutter.python_bindings == "Yes" -%}
-  * The [PyBind11](https://github.com/pybind/pybind11) library
-{%- endif %}
 {%- endif %}
 {%- if cookiecutter.external_dependency != "None" %}
   * Adapt your list of external dependencies in `CMakeLists.txt` and `{{ cookiecutter.project_slug }}Config.cmake.in`.
@@ -43,7 +40,7 @@ The following tasks need to be done to get a fully working project:
   on Debian or Ubuntu.
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" %}
-* Edit the parameters of `setup()` in `setup.py` file to contain the necessary information
+* Edit the parameters of `pyproject.toml` file to contain the necessary information
   about your project, such as your email adress, PyPI classifiers and a short project description.
 {%- endif %}
 {%- if cookiecutter.pypi_release == "Yes" %}

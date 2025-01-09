@@ -101,11 +101,9 @@ generated for you:
   * `.gitmodules` tracks the state of added submodules
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" %}
-  * `setup.py` describes the Python package build process. This file enables you to also
-    install your software using e.g. `pip`.
   * `pyproject.toml` provides information about the Python project and its toolchain.
-    `pip` uses this file before even executing `setup.py` to determine dependencies
-    of the build process itself. Additionally, it can be used to configure tools like `pytest`.
+    `pip` uses this file to control the entire build process. Additionally, it can be
+    used to configure tools like `pytest`.
 {%- if cookiecutter.pypi_release == "Yes" -%}
     Additionally, this file is needed for the automated release process to PyPI.
   * `.github/workflows/pypi.yml` defines the workflow that deploys to PyPI. The

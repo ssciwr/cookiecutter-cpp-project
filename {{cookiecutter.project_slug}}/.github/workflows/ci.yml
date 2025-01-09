@@ -15,9 +15,6 @@ on:
 {%- if cookiecutter.use_submodules == "No" %}
 env:
   CATCH2_VERSION: {{ cookiecutter._catch_version }}
-{%- if cookiecutter.python_bindings == "Yes" %}
-  PYBIND11_VERSION: {{ cookiecutter._pybind_version }}
-{%- endif %}
 {%- endif %}
 
 jobs:
@@ -55,27 +52,6 @@ jobs:
         cd build
         cmake -DBUILD_TESTING=OFF  ..
         cmake --build . --target install
-{% if cookiecutter.python_bindings == "Yes" %}
-    - name: Install Pybind11 (Linux + MacOS)
-      if: runner.os != 'Windows'
-      run: |
-        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
-        cd pybind11
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        sudo cmake --build . --target install
-
-    - name: Install Pybind11 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone -b v$Env:PYBIND11_VERSION https://github.com/pybind/pybind11.git
-        cd pybind11
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        cmake --build . --target install
-{%- endif %}
 {%- endif %}
 
     - name: make build directory
@@ -113,7 +89,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: "3.13"
 
     - name: Run Python tests
       shell: bash
@@ -148,32 +124,33 @@ jobs:
         cd build
         cmake -DBUILD_TESTING=OFF  ..
         sudo cmake --build . --target install
+{%- endif %}
 
 {% if cookiecutter.python_bindings == "Yes" %}
-    - name: Install Pybind11
-      if: runner.os != 'Windows'
+    - name: Install Python package editable
       run: |
-        git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
-        cd pybind11
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        sudo cmake --build . --target install
-{%- endif %}
-{%- endif %}
-
-    - name: make build directory
+        python -m pip install scikit_build_core pybind11[global]
+        python -m pip install --no-build-isolation --config-settings=build-dir="${{ "{{ github.workspace }}" }}/build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" --config-settings=cmake.define.BUILD_TESTING="ON" -v -e .
+        python -m pip install -r requirements-dev.txt
+    
+    - name: Run Python tests
+      run: |
+        python -m pytest --cov --cov-report=xml
+{% else %}
+    - name: Creat cmake build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
     - name: configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -DBUILD_DOCS=OFF
+      run: |
+        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -DBUILD_DOCS=OFF
 
     - name: build
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
+{% endif %}
 
     - name: run tests
       shell: bash
@@ -184,11 +161,11 @@ jobs:
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}
       run: |
-        lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info
+        lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info  --ignore-errors mismatch
 
-    - name: Upload coverage to Codecov
+    - name: Upload C++ coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
         fail_ci_if_error: true
-        files: ${{ "{{github.workspace}}" }}/coverage.info
+        files: ${{ "{{github.workspace}}" }}/coverage.info{% if cookiecutter.python_bindings == "Yes" %},coverage.xml{% endif %}
 {% endif %}
