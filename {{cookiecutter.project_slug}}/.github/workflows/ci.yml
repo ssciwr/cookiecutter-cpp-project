@@ -140,8 +140,7 @@ jobs:
         sudo apt-get install -y lcov
 
 {% if cookiecutter.use_submodules == "No" %}
-    - name: Install Catch2 (Linux + MacOS)
-      if: runner.os != 'Windows'
+    - name: Install Catch2
       run: |
         git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
         cd Catch2
@@ -150,17 +149,8 @@ jobs:
         cmake -DBUILD_TESTING=OFF  ..
         sudo cmake --build . --target install
 
-    - name: Install Catch2 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone -b v$Env:CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        cmake --build . --target install
 {% if cookiecutter.python_bindings == "Yes" %}
-    - name: Install Pybind11 (Linux + MacOS)
+    - name: Install Pybind11
       if: runner.os != 'Windows'
       run: |
         git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
@@ -169,16 +159,6 @@ jobs:
         cd build
         cmake -DBUILD_TESTING=OFF  ..
         sudo cmake --build . --target install
-
-    - name: Install Pybind11 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone -b v$Env:PYBIND11_VERSION https://github.com/pybind/pybind11.git
-        cd pybind11
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        cmake --build . --target install
 {%- endif %}
 {%- endif %}
 
@@ -207,10 +187,8 @@ jobs:
         lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         fail_ci_if_error: true
         files: ${{ "{{github.workspace}}" }}/coverage.info
-      env:
-        CODECOV_TOKEN: ${{ "{{ secrets.CODECOV_TOKEN }}" }}
 {% endif %}

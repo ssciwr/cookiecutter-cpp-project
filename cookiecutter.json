@@ -14,7 +14,7 @@
     "cxx_minimum_standard": ["11", "14", "17", "20"],
     "python_bindings": ["No", "Yes"],
     "pypi_release": "{{ cookiecutter.python_bindings }}",
-    "codecovio": ["Yes", "No"],
+    "codecovio": "{{ cookiecutter.github_actions_ci }}",
     "_extensions": [
         "local_extensions.PrecommitExtension",
         "local_extensions.ShortcutExtension",
