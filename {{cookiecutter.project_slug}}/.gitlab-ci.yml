@@ -10,15 +10,21 @@ variables:
 
 .template: &template
   before_script:
+    - echo "Installing required dependencies..."
+    - apt update
+    - apt install -y cmake git
     - echo "Installing potential dependencies..."
-{% if cookiecutter.python_bindings == "Yes" and cookiecutter.use_submodules == "No" %}
+{% if cookiecutter.python_bindings == "Yes" %}
+    - apt install -y python3-dev
+{% if cookiecutter.use_submodules == "No" %}
     - git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
     - cd pybind11
     - mkdir build
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
-    - sudo make install
+    - make install
     - cd ../..
+{% endif %}
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
     - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
@@ -26,7 +32,7 @@ variables:
     - mkdir build
     - cd build
     - cmake -DBUILD_TESTING=OFF ..
-    - sudo make install
+    - make install
     - cd ../..
 {%- endif %}
   script:
@@ -36,10 +42,15 @@ variables:
     - cmake --build .
     - ctest
 
+
+# Note: You can use your own Docker images here that e.g. include relevant
+#       dependencies and development tools. We choose well-maintained images
+#       providing up-to-date compiler toolchains.
+
 build-and-test:gcc:
-  image: conanio/gcc9
+  image: gcc:14
   <<: *template
 
 build-and-test:clang:
-  image: conanio/clang10
+  image: silkeh/clang:18
   <<: *template
