@@ -38,3 +38,8 @@ fail_if(
     "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
     "Coverage reports for codecov.io require an open source license for your project"
 )
+
+fail_if(
+    "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.github_actions_ci }}" == "No",
+    "Coverage reports for codecov.io are only supported for Github Actions CI"
+)

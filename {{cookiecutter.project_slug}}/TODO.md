@@ -59,7 +59,6 @@ The following tasks need to be done to get a fully working project:
 {%- if cookiecutter.codecovio == "Yes" %}
 * Enable the integration with `codecov.io` by heading to the [Codecov.io Website](https://codecov.io),
   log in (e.g. with your Github credentials) and enable integration for your repository. In order to do
-  so, you need to select it from the list of repositories (potentially re-syncing with GitHub) and head
-  to the Settings Tab. Within setting, get your token for this repository and put store it as a secret
-  called `CODECOV_TOKEN` for GitHub Actions.
+  so, you need to select it from the list of repositories (potentially re-syncing with GitHub). Then, head
+  to the "Settings" Tab and select "Global Upload Token". Here, you should select the "not required" option.
 {%- endif %}

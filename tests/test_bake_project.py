@@ -206,6 +206,12 @@ def test_codecov_without_license(cookies):
 
 
 @pytest.mark.local
+def test_codecov_without_github_actions(cookies):
+    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'codecovio': 'Yes'})
+    assert bake.exit_code != 0
+
+
+@pytest.mark.local
 @pytest.mark.parametrize(
     "remote_url",
     [
