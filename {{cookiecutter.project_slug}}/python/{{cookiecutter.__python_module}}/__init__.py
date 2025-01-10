@@ -1,4 +1,4 @@
-from {{ cookiecutter|modname }}._{{ cookiecutter|modname }} import add_one
+from _{{ cookiecutter|modname }} import add_one
 
 # Export the version given in project metadata
 from importlib import metadata

@@ -74,7 +74,6 @@ conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/requirements-r
 conditional_remove("{{ cookiecutter.doxygen }}" == "No" and "{{ cookiecutter.readthedocs }}" == "No", "doc")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "pyproject.toml")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "requirements-dev.txt")
-conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "setup.py")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "tests/python")
 conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
@@ -92,8 +91,6 @@ with GitRepository() as repo:
 {% endif %}
 {% if cookiecutter.use_submodules == "Yes" %}
     repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v{{ cookiecutter._catch_version }}")
-    if "{{ cookiecutter.python_bindings }}" == "Yes":
-        repo.add_submodule("https://github.com/pybind/pybind11.git", "ext/pybind11", tag="v{{ cookiecutter._pybind_version }}")
 {% else %}
     pass
 {% endif %}

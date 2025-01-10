@@ -24,7 +24,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Compilation options
 {%- if cookiecutter.python_bindings == "Yes" %}
-option(BUILD_PYTHON "Enable building of Python bindings" ON)
+option(BUILD_PYTHON "Enable building of Python bindings" OFF)
 {%- endif %}
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 option(BUILD_DOCS "Enable building of documentation" ON)
@@ -75,11 +75,7 @@ endif()
 {%- if cookiecutter.python_bindings == "Yes" %}
 if(BUILD_PYTHON)
   # Add Python bindings
-  {%- if cookiecutter.use_submodules == "Yes" %}
-  add_subdirectory(ext/pybind11)
-  {% else %}
-  find_package(pybind11)
-  {%- endif %}
+  find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
   target_link_libraries(_{{ cookiecutter|modname }} PUBLIC {{ cookiecutter.project_slug }})

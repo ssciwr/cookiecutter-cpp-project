@@ -3,9 +3,6 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 {%- else %}
   CATCH2_VERSION: {{ cookiecutter._catch_version }}
-{%- if cookiecutter.python_bindings == "Yes" %}
-  PYBIND11_VERSION: {{ cookiecutter._pybind_version }}
-{%- endif %}
 {%- endif %}
 
 .template: &template
@@ -16,15 +13,6 @@ variables:
     - echo "Installing potential dependencies..."
 {% if cookiecutter.python_bindings == "Yes" %}
     - apt install -y python3-dev
-{% if cookiecutter.use_submodules == "No" %}
-    - git clone -b v$PYBIND11_VERSION https://github.com/pybind/pybind11.git
-    - cd pybind11
-    - mkdir build
-    - cd build
-    - cmake -DBUILD_TESTING=OFF ..
-    - make install
-    - cd ../..
-{% endif %}
 {%- endif %}
 {% if cookiecutter.use_submodules == "No" %}
     - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git

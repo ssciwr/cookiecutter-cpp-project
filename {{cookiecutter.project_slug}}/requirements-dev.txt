@@ -1,1 +1,4 @@
 pytest
+{% if cookiecutter.codecovio == "Yes" %}
+pytest-cov
+{% endif %}
