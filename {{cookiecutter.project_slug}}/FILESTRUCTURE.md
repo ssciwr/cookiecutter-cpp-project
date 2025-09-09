@@ -12,9 +12,6 @@ generated for you:
   * `tests/{{ cookiecutter.project_slug }}_t.cpp` contains the unit tests for the library.
     The unit tests are written using Catch2. For further reading on what can be achieved
     with Catch2, we recommend [their tutorial](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md).
-  * `tests/tests.cpp` is the Catch2 testing driver. You do not need to change
-    this. Placing this in a separate compilation unit than the unit test
-    implementation decreases the compilation time of the test suite.
 {%- if cookiecutter.python_bindings == "Yes" %}
   * The `python/{{ cookiecutter.project_slug.replace("-", "") }}` directory contains a Python
     package for the project. It contains a compiled Python module `_{{ cookiecutter.project_slug.replace("-", "") }}`

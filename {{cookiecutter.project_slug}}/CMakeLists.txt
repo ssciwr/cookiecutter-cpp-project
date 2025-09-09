@@ -58,10 +58,7 @@ include(CTest)
 if(BUILD_TESTING)
   {%- if cookiecutter.use_submodules == "Yes" %}
   add_subdirectory(ext/Catch2)
-  include(./ext/Catch2/contrib/Catch.cmake)
-  {%- else %}
-  find_package(Catch2 REQUIRED)
-  include(Catch)
+  include(./ext/Catch2/extras/Catch.cmake)
   {%- endif %}
   add_subdirectory(tests)
 endif()

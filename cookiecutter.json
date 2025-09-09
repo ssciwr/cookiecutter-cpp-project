@@ -21,6 +21,6 @@
         "local_extensions.CurrentDateExtension"
     ],
     "__python_module": "{{ cookiecutter|modname }}",
-    "_catch_version": "2.13.10",
+    "_catch_version": "3.10.0",
     "_cibuildwheel_version": "2.22.0"
 }
