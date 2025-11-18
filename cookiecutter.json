@@ -11,7 +11,7 @@
     "gitlab_ci": ["Yes", "No"],
     "readthedocs": ["Yes", "No"],
     "doxygen": ["Yes", "No"],
-    "cxx_minimum_standard": ["11", "14", "17", "20", "23"],
+    "cxx_minimum_standard": ["14", "17", "20", "23"],
     "python_bindings": ["No", "Yes"],
     "pypi_release": "{{ cookiecutter.python_bindings }}",
     "codecovio": "{{ cookiecutter.github_actions_ci }}",
@@ -21,6 +21,6 @@
         "local_extensions.CurrentDateExtension"
     ],
     "__python_module": "{{ cookiecutter|modname }}",
-    "_catch_version": "3.10.0",
-    "_cibuildwheel_version": "2.22.0"
+    "_catch_version": "3.11.0",
+    "_cibuildwheel_version": "3.3.0"
 }
