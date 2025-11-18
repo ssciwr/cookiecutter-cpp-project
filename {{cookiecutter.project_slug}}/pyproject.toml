@@ -19,22 +19,24 @@ readme = "README.md"
 maintainers = [
     { name = "{{ cookiecutter.full_name}}", email = "your@email.com" },
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 {%- if cookiecutter.license != "None" %}
-license = { text = "{{ cookiecutter.license }}" }
+license-files = ["LICEN[CS]E*"]
+{%- if cookiecutter.license == "MIT" %}
+license = "MIT"
+{%- elif cookiecutter.license == "BSD-2" %}
+license = "BSD-2-Clause"
+{%- elif cookiecutter.license == "GPL-3.0" %}
+license = "GPL-3.0-only"
+{%- elif cookiecutter.license == "LGPL-3.0" %}
+license = "LGPL-3.0-only"
 {%- endif %}
+{%- endif %}
+
 classifiers = [
+    "Programming Language :: Python :: C++",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
-{%- if cookiecutter.license == "MIT" %}
-    "License :: OSI Approved :: MIT License",
-{%- elif cookiecutter.license == "BSD-2" %}
-    "License :: OSI Approved :: BSD License",
-{%- elif cookiecutter.license == "GPL-3.0" %}
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-{%- elif cookiecutter.license == "LGPL-3.0" %}
-    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
-{%- endif %}
 ]
 dependencies = []
 
@@ -65,7 +67,7 @@ testpaths = ["tests/python"]
 build-verbosity = 3
 
 # We restrict ourselves to recent Python versions
-skip = "pp* *p27-* cp35-* cp36-* cp37-* *musllinux*"
+skip = "pp* *p27-* cp35-* cp36-* cp37-* cp38-* *musllinux*"
 
 # Testing commands for our wheels
 test-command = "pytest {package}/tests/python"
