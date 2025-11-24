@@ -16,7 +16,7 @@ on:
   - cron: "0 5 * * 1"
 
 env:
-  CATCH2_VERSION: 2.13.9
+  CATCH2_VERSION: 3.11.0
 
 jobs:
   test:
@@ -33,10 +33,10 @@ jobs:
 
     steps:
     - name: Checking out the cookie cutter repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -86,9 +86,9 @@ jobs:
 
     steps:
     - name: Checking out the cookie cutter repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: "3.13"
 
@@ -102,7 +102,7 @@ jobs:
         git config --global user.name "SSC CI Test User"
 
     - name: Set up SSH Agent to deploy to test repositories
-      uses: webfactory/ssh-agent@v0.5.4
+      uses: webfactory/ssh-agent@v0.9.1
       with:
         ssh-private-key: |
           ${{ secrets.GHA_TEST_PRIVATE_KEY }}

@@ -1,5 +1,5 @@
 #include "{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp"
-#include "catch2/catch.hpp"
+#include <catch2/catch_test_macros.hpp>
 
 using namespace {{ cookiecutter.project_slug.replace("-", "") }};
 
