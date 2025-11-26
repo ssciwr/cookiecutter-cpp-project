@@ -16,13 +16,13 @@ jobs:
       with:
         path: cookiecutter-repository
 
-    - name: Install cookiecutter and dependencies
+    - name: Install cookiecutter
       run: pip install cookiecutter
 
     - name: Set up git identity
       run: |
-        git config --global user.name "ssc-sync-bot"
-        git config --global user.email "<bot_username>@users.noreply.github.com"
+        git config --global user.email "ssc@sync-template.com"
+        git config --global user.name "SSC Template Sync"
   
     - name: Bake template using config
       run: |
@@ -32,12 +32,12 @@ jobs:
           cookiecutter-repository/
 
     - name: Checkout target repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: ssciwr/cpp-project-template
         ref: sync-test
         path: target-repository
-        token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+        ssh-key: ${{ secrets.SSCIWR_CPP_PROJECT_TEMPLATE_DEPLOY_KEY }}
 
     - name: Sync generated files
       run: |
@@ -45,19 +45,11 @@ jobs:
           --exclude '.git/' \
           your-project/ target-repository/
 
-    - name: Commit changes
+    - name: Commit and push
       working-directory: target-repository
       run: |
         git add .
         git commit -m "Sync from ssciwr/cookiecutter-cpp-project" || echo "No changes"
 
-    - name: Create pull request
-      uses: peter-evans/create-pull-request@v7
-      with:
-        token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
-        commit-message: "Sync from cookiecutter"
-        branch: auto-sync/update-from-cookiecutter
-        title: "Automated sync from cookiecutter"
-        body: "This PR propagates changes from https://github.com/ssciwr/cookiecutter-cpp-project."
-        base: sync-test
-        path: target-repository
+        echo "Pushing changes to target repository..."
+        git push origin sync-test
