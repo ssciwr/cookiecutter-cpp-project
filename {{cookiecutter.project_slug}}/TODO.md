@@ -59,3 +59,4 @@ The following tasks need to be done to get a fully working project:
   so, you need to select it from the list of repositories (potentially re-syncing with GitHub). Then, head
   to the "Settings" Tab and select "Global Upload Token". Here, you should select the "not required" option.
 {%- endif %}
+* Fill CITATION.cff with specific information about project. See [Citation File Format (CFF) Website](https://citation-file-format.github.io/) for more information.
