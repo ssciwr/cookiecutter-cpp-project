@@ -138,3 +138,9 @@ The web documentation can then be browsed by opening `doc/html/index.html` in yo
 {% else %}
 {{ cookiecutter.project_name }} *should* provide a documentation.
 {% endif -%}
+
+
+## Acknowledgments
+
+This repository was set up using the [SSC Cookiecutter for C++ Packages](https://github.com/ssciwr/cookiecutter-cpp-project).
+
