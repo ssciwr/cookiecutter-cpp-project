@@ -6,12 +6,6 @@ project({{ cookiecutter.project_slug }}
   LANGUAGES CXX
 )
 
-{%- if cookiecutter.external_dependency != "None" %}
-# Set CMake policies for this project
-# We allow <Package>_ROOT (env) variables for locating dependencies
-cmake_policy(SET CMP0074 NEW)
-{%- endif %}
-
 # Initialize some default paths
 include(GNUInstallDirs)
 
