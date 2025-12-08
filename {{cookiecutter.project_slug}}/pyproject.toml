@@ -42,7 +42,7 @@ dependencies = []
 
 # The configuration for the scikit-build-core build process
 [tool.scikit-build]
-cmake.version = ">=3.9"
+cmake.version = ">=3.23"
 build.verbose = true
 
 [tool.scikit-build.cmake.define]

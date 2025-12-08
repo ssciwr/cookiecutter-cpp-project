@@ -5,8 +5,12 @@ set(DOXYGEN_SHORT_NAMES YES)
 {% if cookiecutter.readthedocs == "Yes" -%}
 set(DOXYGEN_GENERATE_XML YES)
 {%- endif %}
+
 doxygen_add_docs(doxygen
-  ${CMAKE_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/include
+{%- if cookiecutter.header_only == "No" %}
+  ${CMAKE_SOURCE_DIR}/src
+{%- endif %}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT Building doxygen documentation...
 )

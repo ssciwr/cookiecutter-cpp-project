@@ -40,7 +40,7 @@
 Building {{ cookiecutter.project_name }} requires the following software installed:
 
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
-* CMake `>= 3.9`
+* CMake `>= 3.23`
 {%- if cookiecutter.external_dependency != "None" %}
 * {{ cookiecutter.external_dependency }}
 {%- endif %}
@@ -61,10 +61,8 @@ It assumes that your current working directory is the top-level directory
 of the freshly cloned repository:
 
 ```
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build .
+cmake -B build
+cmake --build build
 ```
 
 The build process can be customized with the following CMake variables,
@@ -118,13 +116,13 @@ To build it locally, first ensure the requirements are installed by running this
 pip install -r doc/requirements.txt
 ```
 
-Then build the sphinx documentation from the top-level build directory:
+Then build the sphinx documentation from the top-level directory:
 
 ```
-cmake --build . --target sphinx-doc
+cmake --build build --target sphinx-doc
 ```
 
-The web documentation can then be browsed by opening `doc/sphinx/index.html` in your browser.
+The web documentation can then be browsed by opening `build/doc/sphinx/index.html` in your browser.
 {% elif cookiecutter.doxygen == "Yes" %}
 {{ cookiecutter.project_name }} provides a Doxygen documentation. You can build
 the documentation locally by making sure that `Doxygen` is installed on your system
@@ -134,7 +132,7 @@ and running this command from the top-level build directory:
 cmake --build . --target doxygen
 ```
 
-The web documentation can then be browsed by opening `doc/html/index.html` in your browser.
+The web documentation can then be browsed by opening `build/doc/html/index.html` in your browser.
 {% else %}
 {{ cookiecutter.project_name }} *should* provide a documentation.
 {% endif -%}
