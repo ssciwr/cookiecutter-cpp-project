@@ -137,7 +137,7 @@ jobs:
       run: |
         python -m pytest --cov --cov-report=xml
 {% else %}
-    - name: Creat cmake build directory
+    - name: Create cmake build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
     - name: configure cmake
