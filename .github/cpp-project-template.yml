@@ -7,7 +7,7 @@ default_context:
     use_submodules: "No"
     header_only: "No"
     external_dependency: "None"
-    github_acitons_ci: "Yes"
+    github_actions_ci: "Yes"
     gitlab_ci: "No"
     readthedocs: "Yes"
     doxygen: "Yes"
