@@ -8,10 +8,10 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
   GIT_TAG v{{ cookiecutter._catch_version }})
 
-# Make Catch2 available in this project. This defines the CMake targets like Catch2::Catch2 and Catch2::Catch2WithMain.
+# Make Catch2 available in this project. This defines the imported targets Catch2::Catch2 and Catch2::Catch2WithMain.
 FetchContent_MakeAvailable(Catch2)
 
-# Make Catch2 available in this project. This defines the CMake targets like Catch2::Catch2 and Catch2::Catch2WithMain.
+# Include Catch2's CMake helper functions (e.g. catch_discover_tests).
 include(Catch)
 {%- endif %}
 

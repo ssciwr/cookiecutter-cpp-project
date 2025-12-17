@@ -1,8 +1,6 @@
 variables:
 {%- if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
-{%- else %}
-  CATCH2_VERSION: {{ cookiecutter._catch_version }}
 {%- endif %}
 
 .template: &template
@@ -13,15 +11,6 @@ variables:
     - echo "Installing potential dependencies..."
 {% if cookiecutter.python_bindings == "Yes" %}
     - apt install -y python3-dev
-{%- endif %}
-{% if cookiecutter.use_submodules == "No" %}
-    - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
-    - cd Catch2
-    - mkdir build
-    - cd build
-    - cmake -DBUILD_TESTING=OFF ..
-    - make install
-    - cd ../..
 {%- endif %}
   script:
     - cmake -E make_directory build

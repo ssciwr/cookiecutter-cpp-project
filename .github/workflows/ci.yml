@@ -15,9 +15,6 @@ on:
   schedule:
   - cron: "0 5 * * 1"
 
-env:
-  CATCH2_VERSION: 3.11.0
-
 jobs:
   test:
     name: Testing on ${{ matrix.os }} with Python ${{ matrix.python-version }}
@@ -45,26 +42,6 @@ jobs:
         python -m pip install -r requirements-dev.txt
 
     - uses: ssciwr/doxygen-install@v1
-
-    - name: Install Catch2 (Linux + MacOS)
-      if: runner.os != 'Windows'
-      run: |
-        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        sudo cmake --build . --target install
-
-    - name: Install Catch2 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone -b v$Env:CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        cmake --build . --target install
 
     - name: Set up git identity
       run: |
