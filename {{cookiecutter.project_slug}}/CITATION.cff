@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "{{cookiecutter.project_name}}"
+abstract: "This is an awesome project. It does many things."
+keywords:
+  - keyword1
+  - keyword2
+  - keyword3
+authors:
+  - name: "{{cookiecutter.full_name}}"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: 0.0.1
+date-released: "{{ current_date }}"
+identifiers:
+  - description: This is a collection of archived snapshots of this project.
+    type: doi
+    value: "10.5281/zenodo.123456"
+{%- if cookiecutter.license != "None" %}
+license: {{cookiecutter.license}}
+{%- endif %}
+{%- if cookiecutter.remote_url != 'None' %}
+repository-code: {{cookiecutter.remote_url}}
+{%- endif %}
