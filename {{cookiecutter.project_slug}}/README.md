@@ -51,7 +51,7 @@ Building {{ cookiecutter.project_name }} requires the following software install
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" -%}
-* Python `>= 3.8` for building Python bindings
+* Python `>= 3.10` for building Python bindings
 {%- endif %}
 
 # Building {{ cookiecutter.project_name }}
@@ -68,12 +68,12 @@ cmake --build build
 The build process can be customized with the following CMake variables,
 which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 
-* `BUILD_TESTING`: Enable building of the test suite (default: `ON`)
+* `{{ cookiecutter.project_slug }}_BUILD_TESTING`: Enable building of the test suite (default: `ON`)
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
-* `BUILD_DOCS`: Enable building the documentation (default: `ON`)
+* `{{ cookiecutter.project_slug }}_BUILD_DOCS`: Enable building the documentation (default: `ON`)
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" %}
-* `BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
+* `{{ cookiecutter.project_slug }}_BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
 {%- endif %}
 
 {% if cookiecutter.python_bindings == "Yes" %}
@@ -88,7 +88,7 @@ python -m pip install .
 
 # Testing {{ cookiecutter.project_name }}
 
-When built according to the above explanation (with `-DBUILD_TESTING=ON`),
+When built according to the above explanation (with `-D{{ cookiecutter.project_slug }}_BUILD_TESTING=ON`),
 the C++ test suite of `{{ cookiecutter.project_name }}` can be run using
 `ctest` from the build directory:
 

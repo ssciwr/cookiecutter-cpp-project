@@ -15,7 +15,7 @@ variables:
   script:
     - cmake -E make_directory build
     - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOCS=OFF ..
+    - cmake -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF ..
     - cmake --build .
     - ctest
 

@@ -19,7 +19,7 @@ readme = "README.md"
 maintainers = [
     { name = "{{ cookiecutter.full_name}}", email = "your@email.com" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 {%- if cookiecutter.license != "None" %}
 license-files = ["LICEN[CS]E*"]
 {%- if cookiecutter.license == "MIT" %}
@@ -46,9 +46,9 @@ cmake.version = ">=3.23"
 build.verbose = true
 
 [tool.scikit-build.cmake.define]
-BUILD_PYTHON = "ON"
-BUILD_TESTING = "OFF"
-BUILD_DOCS = "OFF"
+{{ cookiecutter.project_slug }}_BUILD_PYTHON = "ON"
+{{ cookiecutter.project_slug }}_BUILD_TESTING = "OFF"
+{{ cookiecutter.project_slug }}_BUILD_DOCS = "OFF"
 
 # The following is the configuration for the pytest test suite
 [tool.pytest.ini_options]
@@ -67,7 +67,7 @@ testpaths = ["tests/python"]
 build-verbosity = 3
 
 # We restrict ourselves to recent Python versions
-skip = "pp* *p27-* cp35-* cp36-* cp37-* cp38-* *musllinux*"
+skip = "pp* *p27-* cp35-* cp36-* cp37-* cp38-* cp39-* *musllinux*"
 
 # Testing commands for our wheels
 test-command = "pytest {package}/tests/python"

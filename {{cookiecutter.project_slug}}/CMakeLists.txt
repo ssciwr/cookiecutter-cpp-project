@@ -18,10 +18,20 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Compilation options
 {%- endif %}
 {%- if cookiecutter.python_bindings == "Yes" %}
-option(BUILD_PYTHON "Enable building of Python bindings" OFF)
+if(PROJECT_IS_TOP_LEVEL)
+  option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" ON)
+else()
+  option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" OFF)
+endif() 
 {%- endif %}
+
+
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
-option(BUILD_DOCS "Enable building of documentation" ON)
+if(PROJECT_IS_TOP_LEVEL)
+  option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" ON)
+else()
+  option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" OFF)
+endif() 
 {%- endif %}
 
 {%- if cookiecutter.external_dependency != "None" %}
@@ -50,12 +60,14 @@ target_sources({{ cookiecutter.project_slug }}
 target_compile_features({{ cookiecutter.project_slug }} INTERFACE cxx_std_{{ cookiecutter.cxx_minimum_standard }})
 {%- endif %}
 
-# Compile the application executable
-add_subdirectory(app)
+if(PROJECT_IS_TOP_LEVEL)
+  # Compile the application executable
+  add_subdirectory(app)
+endif()
 
 # Compile the tests
 include(CTest)
-if(BUILD_TESTING)
+if({{ cookiecutter.project_slug }}_BUILD_TESTING)
   {%- if cookiecutter.use_submodules == "Yes" %}
   add_subdirectory(ext/Catch2)
   include(./ext/Catch2/extras/Catch.cmake)
@@ -65,14 +77,14 @@ endif()
 
 {% if cookiecutter.doxygen == "Yes" -%}
 # Add the documentation
-if(BUILD_DOCS)
+if({{ cookiecutter.project_slug }}_BUILD_DOCS)
   add_subdirectory(doc)
 endif()
 {%- endif %}
 
 {%- if cookiecutter.python_bindings == "Yes" %}
 # Add Python bindings
-if(BUILD_PYTHON)
+if({{ cookiecutter.project_slug }}_BUILD_PYTHON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)

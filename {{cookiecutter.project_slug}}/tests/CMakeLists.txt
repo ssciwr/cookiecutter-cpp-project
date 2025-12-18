@@ -16,13 +16,15 @@ include(Catch)
 {%- endif %}
 
 # Create a single test binary that compiles all test files.
-add_executable(tests)
+add_executable({{ cookiecutter.project_slug }}_tests)
 
 # Add the implementation file
-target_sources(tests PRIVATE {{ cookiecutter.project_slug }}_t.cpp)
+target_sources({{ cookiecutter.project_slug }}_tests PRIVATE {{ cookiecutter.project_slug }}_t.cpp)
 
 # Link the test binary
-target_link_libraries(tests PUBLIC {{ cookiecutter.project_slug }} Catch2::Catch2WithMain)
+target_link_libraries({{ cookiecutter.project_slug }}_tests PUBLIC {{ cookiecutter.project_slug }} Catch2::Catch2WithMain)
 
 # allow user to run tests with `make test` or `ctest`
-catch_discover_tests(tests)
+catch_discover_tests({{ cookiecutter.project_slug }}_tests
+  TEST_PREFIX "{{ cookiecutter.project_slug }}."
+)
