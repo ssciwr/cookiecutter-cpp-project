@@ -31,7 +31,7 @@ In order to use this C++ Project Cookiecutter you need the following software in
 In addition, the project that is generated from this cookiecutter will require the following software:
 
 * A C++ compiler, e.g. `g++` or `clang++`
-* CMake `>= 3.9`
+* CMake `>= 3.23`
 * Doxygen (optional, but recommended)
 
 # Using C++ Project Cookiecutter
@@ -73,8 +73,8 @@ This cookiecutter accepts the following configuration options:
 * `gitlab_ci`: Whether to add a CI workflow for GitLab CI
 * `readthedocs`: Whether to create a Sphinx-documentation that can automatically be deployed to readthedocs.org
 * `doxygen`: Whether a Doxygen documentation should be extracted from the project
-* `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `11` (default), `14`, `17` and `20`.
-  `C++03` and earlier are not supported, because the generated project will depend on libraries that require `C++11` ([Catch2](https://github.com/catchorg/Catch2)
+* `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `14` (default), `17`, `20` and `23`.
+  `C++11` and earlier are not supported, because the generated project will depend on libraries that require `C++14` ([Catch2](https://github.com/catchorg/Catch2)
   for testing and [pybind11](https://github.com/pybind/pybind11) for potential Python bindings).
 * `python_bindings`: Whether to automatically add a PyBind11-based Python binding package.
 * `pypi_release`: Whether to add an automatic PyPI deploy workflow to the CI system.
