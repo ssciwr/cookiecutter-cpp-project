@@ -14,7 +14,8 @@ doxygen_add_docs({{ cookiecutter.project_slug }}-doxygen
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT Building doxygen documentation...
 )
-{% if cookiecutter.readthedocs == "Yes" -%}
+{%- if cookiecutter.readthedocs == "Yes" %}
+
 add_custom_target({{ cookiecutter.project_slug }}-sphinx-doc
                   COMMAND
                   sphinx-build -b html

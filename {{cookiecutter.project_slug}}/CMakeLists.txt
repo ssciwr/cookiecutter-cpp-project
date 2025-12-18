@@ -8,38 +8,32 @@ project({{ cookiecutter.project_slug }}
 
 # Initialize some default paths
 include(GNUInstallDirs)
+{%- if cookiecutter.python_bindings == "Yes" %}
 
-{% if cookiecutter.python_bindings == "Yes" -%}
 # Enable PIC for Python bindings
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-{%- endif %}
 
-{%- if cookiecutter.python_bindings == "Yes" or cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
-# Compilation options
-{%- endif %}
-{%- if cookiecutter.python_bindings == "Yes" %}
 if(PROJECT_IS_TOP_LEVEL)
   option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" ON)
 else()
   option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" OFF)
-endif() 
-{%- endif %}
+endif()
+{%- endif -%}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 
-
-{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 if(PROJECT_IS_TOP_LEVEL)
   option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" ON)
 else()
   option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" OFF)
-endif() 
+endif()
 {%- endif %}
-
 {%- if cookiecutter.external_dependency != "None" %}
+
 # Find external dependencies
 find_package({{ cookiecutter.external_dependency }})
 {%- endif %}
-
 {%- if cookiecutter.header_only == "No" %}
+
 # Compile the library
 add_subdirectory(src)
 {% else %}
@@ -65,26 +59,26 @@ if(PROJECT_IS_TOP_LEVEL)
   add_subdirectory(app)
 endif()
 
-# Compile the tests
-include(CTest)
-if({{ cookiecutter.project_slug }}_BUILD_TESTING)
+if(PROJECT_IS_TOP_LEVEL)
+  # Compile the tests
+  include(CTest)
+  if({{ cookiecutter.project_slug }}_BUILD_TESTING)
   {%- if cookiecutter.use_submodules == "Yes" %}
-  add_subdirectory(ext/Catch2)
-  include(./ext/Catch2/extras/Catch.cmake)
+    add_subdirectory(ext/Catch2)
   {%- endif %}
-  add_subdirectory(tests)
+    add_subdirectory(tests)
+  endif()
 endif()
+{%- if cookiecutter.doxygen == "Yes" %}
 
-{% if cookiecutter.doxygen == "Yes" -%}
 # Add the documentation
-if({{ cookiecutter.project_slug }}_BUILD_DOCS)
+if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_DOCS)
   add_subdirectory(doc)
 endif()
 {%- endif %}
-
-{%- if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings == "Yes" %}
 # Add Python bindings
-if({{ cookiecutter.project_slug }}_BUILD_PYTHON)
+if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
   set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
@@ -94,12 +88,10 @@ if({{ cookiecutter.project_slug }}_BUILD_PYTHON)
   # Install the Python module shared library
   install(TARGETS _{{ cookiecutter|modname }} DESTINATION .)
 endif()
-{%- endif %}
-
+{% endif %}
 # Add an alias target for use if this project is included as a subproject in another project
 add_library({{ cookiecutter.project_slug }}::{{ cookiecutter.project_slug }} ALIAS {{ cookiecutter.project_slug }})
-
-{%- if cookiecutter.external_dependency == "None" %}
+{% if cookiecutter.external_dependency == "None" %}
 # Install the library target and its public headers
 install(
   TARGETS {{ cookiecutter.project_slug }}
@@ -113,7 +105,7 @@ install(
   NAMESPACE {{ cookiecutter.project_slug }}::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
-{%- else %}
+{% else %}
 # Install the build target and record it in an export set.
 install(
   TARGETS {{ cookiecutter.project_slug }}
@@ -149,8 +141,7 @@ export(
   FILE ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Targets.cmake
   NAMESPACE {{ cookiecutter.project_slug }}::
 )
-{%- endif %}
-
+{% endif %}
 # This prints a summary of found dependencies
 include(FeatureSummary)
 feature_summary(WHAT ALL)
