@@ -85,6 +85,7 @@ endif()
 {%- if cookiecutter.python_bindings == "Yes" %}
 # Add Python bindings
 if({{ cookiecutter.project_slug }}_BUILD_PYTHON)
+  set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
