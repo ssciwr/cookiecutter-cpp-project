@@ -17,15 +17,15 @@ doxygen_add_docs({{ cookiecutter.project_slug }}-doxygen
 {%- if cookiecutter.readthedocs == "Yes" %}
 
 add_custom_target({{ cookiecutter.project_slug }}-sphinx-doc
-                  COMMAND
-                  sphinx-build -b html
-                  -Dbreathe_projects.{{ cookiecutter.project_slug }}="${CMAKE_CURRENT_BINARY_DIR}/xml"
-                  -c ${CMAKE_CURRENT_SOURCE_DIR}
-                  ${CMAKE_CURRENT_SOURCE_DIR}
-                  ${CMAKE_CURRENT_BINARY_DIR}/sphinx
-                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                  COMMENT "Generating documentation with Sphinx..."
-                  )
+  COMMAND
+    sphinx-build -b html
+    -Dbreathe_projects.{{ cookiecutter.project_slug }}="${CMAKE_CURRENT_BINARY_DIR}/xml"
+    -c ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/sphinx
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Generating documentation with Sphinx..."
+)
 add_dependencies({{ cookiecutter.project_slug }}-sphinx-doc {{ cookiecutter.project_slug }}-doxygen)
 {%- endif %}
 {%- endif -%}

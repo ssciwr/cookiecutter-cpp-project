@@ -22,10 +22,17 @@ include(${PROJECT_SOURCE_DIR}/ext/Catch2/extras/Catch.cmake)
 add_executable({{ cookiecutter.project_slug }}_tests)
 
 # Add the implementation file
-target_sources({{ cookiecutter.project_slug }}_tests PRIVATE {{ cookiecutter.project_slug }}_t.cpp)
+target_sources({{ cookiecutter.project_slug }}_tests
+  PRIVATE
+    {{ cookiecutter.project_slug }}_t.cpp
+)
 
 # Link the test binary
-target_link_libraries({{ cookiecutter.project_slug }}_tests PUBLIC {{ cookiecutter.project_slug }} Catch2::Catch2WithMain)
+target_link_libraries({{ cookiecutter.project_slug }}_tests
+  PUBLIC
+    {{ cookiecutter.project_slug }}
+    Catch2::Catch2WithMain
+)
 
 # allow user to run tests with `make test` or `ctest`
 catch_discover_tests({{ cookiecutter.project_slug }}_tests

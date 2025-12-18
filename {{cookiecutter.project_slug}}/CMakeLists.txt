@@ -51,7 +51,10 @@ target_sources({{ cookiecutter.project_slug }}
 )
 
 # Request a minimum C++ standard for this target
-target_compile_features({{ cookiecutter.project_slug }} INTERFACE cxx_std_{{ cookiecutter.cxx_minimum_standard }})
+target_compile_features({{ cookiecutter.project_slug }}
+  INTERFACE
+    cxx_std_{{ cookiecutter.cxx_minimum_standard }}
+)
 {%- endif %}
 
 if(PROJECT_IS_TOP_LEVEL)
@@ -83,7 +86,10 @@ if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
-  target_link_libraries(_{{ cookiecutter|modname }} PUBLIC {{ cookiecutter.project_slug }})
+  target_link_libraries(_{{ cookiecutter|modname }}
+    PUBLIC
+      {{ cookiecutter.project_slug }}
+  )
 
   # Install the Python module shared library
   install(TARGETS _{{ cookiecutter|modname }} DESTINATION .)
@@ -102,8 +108,8 @@ install(
 # Export the installed target into a simple <Project>-config file, so that find_package({{ cookiecutter.project_slug }}) works for consumers
 install(
   EXPORT {{ cookiecutter.project_slug }}-config
-  NAMESPACE {{ cookiecutter.project_slug }}::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
+  NAMESPACE {{ cookiecutter.project_slug }}::
 )
 {% else %}
 # Install the build target and record it in an export set.
@@ -117,8 +123,8 @@ install(
 install(
   EXPORT {{ cookiecutter.project_slug }}-targets
   FILE {{ cookiecutter.project_slug }}Targets.cmake
-  NAMESPACE {{ cookiecutter.project_slug }}::
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
+  NAMESPACE {{ cookiecutter.project_slug }}::
 )
 
 # Generate a <Project>Config.cmake file from a template

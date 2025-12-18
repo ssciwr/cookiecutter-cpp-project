@@ -14,4 +14,7 @@ target_sources({{ cookiecutter.project_slug }}
 )
 
 # Request a minimum C++ standard for this target
-target_compile_features({{ cookiecutter.project_slug }} PUBLIC cxx_std_{{ cookiecutter.cxx_minimum_standard }})
+target_compile_features({{ cookiecutter.project_slug }}
+  PUBLIC
+    cxx_std_{{ cookiecutter.cxx_minimum_standard }}
+)
