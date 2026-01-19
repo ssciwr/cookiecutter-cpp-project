@@ -36,7 +36,7 @@ jobs:
     - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
 
     - name: Build
       shell: bash
@@ -65,7 +65,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: "3.13"
+        python-version: "3.14"
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v1
