@@ -12,6 +12,9 @@ variables:
 {% if cookiecutter.python_bindings == "Yes" %}
     - apt install -y python3-dev
 {%- endif %}
+{% if cookiecutter.doxygen == "Yes" %}
+    - apt install -y doxygen
+{% endif %}
   script:
     - cmake -E make_directory build
     - cd build

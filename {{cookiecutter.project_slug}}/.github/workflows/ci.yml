@@ -26,21 +26,24 @@ jobs:
       with:
         submodules: 'recursive'
 {%- endif %}
-
-    - name: make build directory
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
+    - name: Make build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
-    - name: configure cmake
+    - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
 
-    - name: build
+    - name: Build
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 
-    - name: run tests
+    - name: Run tests
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
@@ -63,7 +66,10 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.13"
-
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
     - name: Run Python tests
       shell: bash
       run: |
@@ -87,7 +93,10 @@ jobs:
     - name: Install LCov
       run: |
         sudo apt-get install -y lcov
-
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
 {% if cookiecutter.python_bindings == "Yes" %}
     - name: Install Python package editable
       run: |
@@ -102,24 +111,24 @@ jobs:
     - name: Create cmake build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
-    - name: configure cmake
+    - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: |
         cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
 
-    - name: build
+    - name: Build
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 {% endif %}
 
-    - name: run tests
+    - name: Run tests
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
 
-    - name: collect coverage report
+    - name: Collect coverage report
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}
       run: |
