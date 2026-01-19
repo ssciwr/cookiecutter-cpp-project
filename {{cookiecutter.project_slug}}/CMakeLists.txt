@@ -97,57 +97,52 @@ endif()
 {% endif %}
 # Add an alias target for use if this project is included as a subproject in another project
 add_library({{ cookiecutter.project_slug }}::{{ cookiecutter.project_slug }} ALIAS {{ cookiecutter.project_slug }})
-{% if cookiecutter.external_dependency == "None" %}
-# Install the library target and its public headers
+
+# Install the target and headers
 install(
   TARGETS {{ cookiecutter.project_slug }}
-  EXPORT {{ cookiecutter.project_slug }}-config
+  EXPORT {{ cookiecutter.project_slug }}Targets
   FILE_SET HEADERS
 )
 
-# Export the installed target into a simple <Project>-config file, so that find_package({{ cookiecutter.project_slug }}) works for consumers
+# Install the exported targets (this creates {{ cookiecutter.project_slug }}Targets.cmake)
 install(
-  EXPORT {{ cookiecutter.project_slug }}-config
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
-  NAMESPACE {{ cookiecutter.project_slug }}::
-)
-{% else %}
-# Install the build target and record it in an export set.
-install(
-  TARGETS {{ cookiecutter.project_slug }}
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  FILE_SET HEADERS
-)
-
-# Export the target definition so other CMake projects can reconstruct the imported target via find_package()
-install(
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  FILE {{ cookiecutter.project_slug }}Targets.cmake
+  EXPORT {{ cookiecutter.project_slug }}Targets
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
   NAMESPACE {{ cookiecutter.project_slug }}::
 )
 
-# Generate a <Project>Config.cmake file from a template
+# Include helpers for calling configure_package_config_file
 include(CMakePackageConfigHelpers)
+
+# Generate the {{ cookiecutter.project_slug }}Config.cmake file
 configure_package_config_file(
-  ${CMAKE_CURRENT_LIST_DIR}/{{ cookiecutter.project_slug }}Config.cmake.in
+  ${CMAKE_CURRENT_LIST_DIR}/cmake/{{ cookiecutter.project_slug }}Config.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
 
-# Install the generated project configuration file alongside the targets
+# Install the generated Config file
 install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
 
-# Export targets for the build tree
-export(
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  FILE ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Targets.cmake
-  NAMESPACE {{ cookiecutter.project_slug }}::
+# Generate a version file
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}ConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
 )
-{% endif %}
+
+# Install the version file
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}ConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
+)
+
 # This prints a summary of found dependencies
 include(FeatureSummary)
 feature_summary(WHAT ALL)
