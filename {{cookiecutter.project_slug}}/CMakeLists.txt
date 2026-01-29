@@ -10,9 +10,6 @@ project({{ cookiecutter.project_slug }}
 include(GNUInstallDirs)
 {%- if cookiecutter.python_bindings == "Yes" %}
 
-# Enable PIC for Python bindings
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 if(PROJECT_IS_TOP_LEVEL)
   option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" ON)
 else()
@@ -82,6 +79,9 @@ endif()
 {% if cookiecutter.python_bindings == "Yes" %}
 # Add Python bindings
 if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
+  # Enable PIC for Python bindings
+  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
   set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
