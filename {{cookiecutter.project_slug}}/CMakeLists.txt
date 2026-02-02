@@ -8,6 +8,9 @@ project({{ cookiecutter.project_slug }}
 
 # Initialize some default paths
 include(GNUInstallDirs)
+
+# Define build options
+option({{ cookiecutter.project_slug }}_BUILD_TESTING "Enable building of tests" OFF)
 {%- if cookiecutter.python_bindings == "Yes" %}
 
 if(PROJECT_IS_TOP_LEVEL)
