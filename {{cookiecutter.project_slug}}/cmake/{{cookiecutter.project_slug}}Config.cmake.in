@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+{% if cookiecutter.external_dependency != "None" %}
+include(CMakeFindDependencyMacro)
+
+find_dependency({{ cookiecutter.external_dependency }})
+{% endif %}
+include("${CMAKE_CURRENT_LIST_DIR}/{{ cookiecutter.project_slug }}Targets.cmake")

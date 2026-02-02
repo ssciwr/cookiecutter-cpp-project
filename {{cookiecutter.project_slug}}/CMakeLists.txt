@@ -1,138 +1,152 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.23)
 
 # Set a name and a version number for your project:
-project({{ cookiecutter.project_slug }} VERSION 0.0.1 LANGUAGES CXX)
-
-{%- if cookiecutter.external_dependency != "None" %}
-
-# Set CMake policies for this project
-
-# We allow <Package>_ROOT (env) variables for locating dependencies
-cmake_policy(SET CMP0074 NEW)
-{%- endif %}
+project({{ cookiecutter.project_slug }}
+  VERSION 0.0.1
+  LANGUAGES CXX
+)
 
 # Initialize some default paths
 include(GNUInstallDirs)
 
-# Define the minimum C++ standard that is required
-set(CMAKE_CXX_STANDARD {{ cookiecutter.cxx_minimum_standard }})
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-{% if cookiecutter.python_bindings == "Yes" -%}
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-{%- endif %}
-
-# Compilation options
+# Define build options
+option({{ cookiecutter.project_slug }}_BUILD_TESTING "Enable building of tests" OFF)
 {%- if cookiecutter.python_bindings == "Yes" %}
-option(BUILD_PYTHON "Enable building of Python bindings" OFF)
-{%- endif %}
-{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
-option(BUILD_DOCS "Enable building of documentation" ON)
-{%- endif %}
 
+if(PROJECT_IS_TOP_LEVEL)
+  option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" ON)
+else()
+  option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" OFF)
+endif()
+{%- endif -%}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+
+if(PROJECT_IS_TOP_LEVEL)
+  option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" ON)
+else()
+  option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" OFF)
+endif()
+{%- endif %}
 {%- if cookiecutter.external_dependency != "None" %}
 
 # Find external dependencies
 find_package({{ cookiecutter.external_dependency }})
 {%- endif %}
-
 {%- if cookiecutter.header_only == "No" %}
 
-# compile the library
+# Compile the library
 add_subdirectory(src)
 {% else %}
 
-# Add an interface target for our header-only library
+# Add an interface target for the header-only library
 add_library({{ cookiecutter.project_slug }} INTERFACE)
-target_include_directories({{ cookiecutter.project_slug }} INTERFACE
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include/>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+# Add the public headers that belong to this library
+target_sources({{ cookiecutter.project_slug }}
+  INTERFACE
+    FILE_SET HEADERS
+    BASE_DIRS include
+    FILES
+      include/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp
+)
+
+# Request a minimum C++ standard for this target
+target_compile_features({{ cookiecutter.project_slug }}
+  INTERFACE
+    cxx_std_{{ cookiecutter.cxx_minimum_standard }}
 )
 {%- endif %}
 
-# compile the application
-add_subdirectory(app)
-
-# compile the tests
-include(CTest)
-if(BUILD_TESTING)
-  {%- if cookiecutter.use_submodules == "Yes" %}
-  add_subdirectory(ext/Catch2)
-  include(./ext/Catch2/extras/Catch.cmake)
-  {%- endif %}
-  add_subdirectory(tests)
+if(PROJECT_IS_TOP_LEVEL)
+  # Compile the application executable
+  add_subdirectory(app)
 endif()
 
-{% if cookiecutter.doxygen == "Yes" -%}
-if(BUILD_DOCS)
-  # Add the documentation
+if(PROJECT_IS_TOP_LEVEL)
+  # Compile the tests
+  include(CTest)
+  if({{ cookiecutter.project_slug }}_BUILD_TESTING)
+  {%- if cookiecutter.use_submodules == "Yes" %}
+    add_subdirectory(ext/Catch2)
+  {%- endif %}
+    add_subdirectory(tests)
+  endif()
+endif()
+{%- if cookiecutter.doxygen == "Yes" %}
+
+# Add the documentation
+if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_DOCS)
   add_subdirectory(doc)
 endif()
 {%- endif %}
-{%- if cookiecutter.python_bindings == "Yes" %}
-if(BUILD_PYTHON)
-  # Add Python bindings
+{% if cookiecutter.python_bindings == "Yes" %}
+# Add Python bindings
+if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
+  # Enable PIC for Python bindings
+  set_target_properties({{ cookiecutter.project_slug }}
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE ON
+  )
+
+  set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
-  target_link_libraries(_{{ cookiecutter|modname }} PUBLIC {{ cookiecutter.project_slug }})
+  target_link_libraries(_{{ cookiecutter|modname }}
+    PUBLIC
+      {{ cookiecutter.project_slug }}
+  )
 
   # Install the Python module shared library
   install(TARGETS _{{ cookiecutter|modname }} DESTINATION .)
 endif()
-{%- endif %}
-
+{% endif %}
 # Add an alias target for use if this project is included as a subproject in another project
 add_library({{ cookiecutter.project_slug }}::{{ cookiecutter.project_slug }} ALIAS {{ cookiecutter.project_slug }})
 
-# Install targets and configuration
-{%- if cookiecutter.external_dependency == "None" %}
+# Install the target and headers
 install(
   TARGETS {{ cookiecutter.project_slug }}
-  EXPORT {{ cookiecutter.project_slug }}-config
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  EXPORT {{ cookiecutter.project_slug }}Targets
+  FILE_SET HEADERS
 )
 
+# Install the exported targets (this creates {{ cookiecutter.project_slug }}Targets.cmake)
 install(
-  EXPORT {{ cookiecutter.project_slug }}-config
+  EXPORT {{ cookiecutter.project_slug }}Targets
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
   NAMESPACE {{ cookiecutter.project_slug }}::
+)
+
+# Include helpers for calling configure_package_config_file
+include(CMakePackageConfigHelpers)
+
+# Generate the {{ cookiecutter.project_slug }}Config.cmake file
+configure_package_config_file(
+  ${CMAKE_CURRENT_LIST_DIR}/cmake/{{ cookiecutter.project_slug }}Config.cmake.in
+  ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
+)
+
+# Install the generated Config file
+install(
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
-{%- else %}
+
+# Generate a version file
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}ConfigVersion.cmake
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+# Install the version file
 install(
-  TARGETS {{ cookiecutter.project_slug }}
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-install(
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  FILE {{ cookiecutter.project_slug }}Targets.cmake
-  NAMESPACE {{ cookiecutter.project_slug }}::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
-
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-  ${CMAKE_CURRENT_LIST_DIR}/{{ cookiecutter.project_slug }}Config.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Config.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }})
-
-export(
-  EXPORT {{ cookiecutter.project_slug }}-targets
-  FILE ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}Targets.cmake
-  NAMESPACE {{ cookiecutter.project_slug }}::)
-{%- endif %}
-
-install(
-  DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/{{ cookiecutter.project_slug }}ConfigVersion.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/{{ cookiecutter.project_slug }}
 )
 
 # This prints a summary of found dependencies

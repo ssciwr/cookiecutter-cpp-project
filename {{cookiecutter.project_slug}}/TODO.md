@@ -10,12 +10,12 @@ The following tasks need to be done to get a fully working project:
 {%- endif %}
 * Make sure that the following software is installed on your computer:
   * A C++-{{ cookiecutter.cxx_minimum_standard}}-compliant C++ compiler
-  * CMake `>= 3.9`
+  * CMake `>= 3.23`
 {%- if cookiecutter.use_submodules == "No" %}
   * The testing framework [Catch2](https://github.com/catchorg/Catch2)
 {%- endif %}
 {%- if cookiecutter.external_dependency != "None" %}
-  * Adapt your list of external dependencies in `CMakeLists.txt` and `{{ cookiecutter.project_slug }}Config.cmake.in`.
+  * Adapt your list of external dependencies in `CMakeLists.txt` and `cmake/{{ cookiecutter.project_slug }}Config.cmake.in`.
     You can e.g.
     * Link your library or applications to your dependency. For this to work, you need
       to see if your dependency exports targets and what their name is. As this is highly
@@ -23,7 +23,7 @@ The following tasks need to be done to get a fully working project:
     * Add more dependencies in analogy to `{{ cookiecutter.external_dependency }}`
     * Make dependencies requirements by adding `REQUIRED` to `find_package()`
     * Add version constraints to dependencies by adding `VERSION` to `find_package()`
-    * Make a dependency a pure build time dependency by removing it from `{{ cookiecutter.project_slug }}Config.cmake.in`
+    * Make a dependency a pure build time dependency by removing it from `cmake/{{ cookiecutter.project_slug }}Config.cmake.in`
 {%- endif %}
 {%- if cookiecutter.gitlab_ci == "Yes" %}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that
@@ -59,3 +59,4 @@ The following tasks need to be done to get a fully working project:
   so, you need to select it from the list of repositories (potentially re-syncing with GitHub). Then, head
   to the "Settings" Tab and select "Global Upload Token". Here, you should select the "not required" option.
 {%- endif %}
+* Fill CITATION.cff with specific information about project. See [Citation File Format (CFF) Website](https://citation-file-format.github.io/) for more information.

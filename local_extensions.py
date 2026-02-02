@@ -10,8 +10,10 @@ class CurrentDateExtension(Extension):
     def __init__(self, environment):
         super().__init__(environment)
 
+        now = datetime.datetime.now(datetime.timezone.utc)
         environment.globals.update({
-            "current_year": datetime.datetime.utcnow().year
+            "current_year": now.year,
+            "current_date": now.date().isoformat()
         })
 
 #
