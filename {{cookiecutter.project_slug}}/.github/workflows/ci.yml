@@ -21,14 +21,14 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
 {%- endif %}
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
     - name: Make build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
@@ -36,7 +36,7 @@ jobs:
     - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_TESTING=ON -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
 
     - name: Build
       shell: bash
@@ -56,19 +56,19 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
 {%- endif %}
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.14"
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
     - name: Run Python tests
       shell: bash
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
@@ -95,7 +95,7 @@ jobs:
         sudo apt-get install -y lcov
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
 {% if cookiecutter.python_bindings == "Yes" %}
     - name: Install Python package editable
@@ -115,7 +115,7 @@ jobs:
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: |
-        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
+        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -D{{ cookiecutter.project_slug }}_BUILD_TESTING=ON -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
 
     - name: Build
       shell: bash

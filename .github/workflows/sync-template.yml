@@ -1,0 +1,55 @@
+name: Sync template repository
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the cookiecutter repository
+      uses: actions/checkout@v6
+      with:
+        path: cookiecutter-repository
+
+    - name: Install cookiecutter
+      run: pip install cookiecutter
+
+    - name: Set up git identity
+      run: |
+        git config --global user.email "ssc@sync-template.com"
+        git config --global user.name "SSC Template Sync"
+  
+    - name: Bake template using config
+      run: |
+        cookiecutter \
+          --no-input \
+          --config-file cookiecutter-repository/.github/cpp-project-template.yml \
+          cookiecutter-repository/
+
+    - name: Checkout target repository
+      uses: actions/checkout@v6
+      with:
+        repository: ssciwr/cpp-project-template
+        ref: main
+        path: target-repository
+        ssh-key: ${{ secrets.SSCIWR_CPP_PROJECT_TEMPLATE_DEPLOY_KEY }}
+
+    - name: Sync generated files
+      run: |
+        rsync -av --delete \
+          --exclude '.git/' \
+          your-project/ target-repository/
+
+    - name: Commit and push
+      working-directory: target-repository
+      run: |
+        git add .
+        git commit -m "Sync from ssciwr/cookiecutter-cpp-project" || echo "No changes"
+
+        echo "Pushing changes to target repository..."
+        git push origin main

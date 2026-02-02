@@ -13,7 +13,9 @@ namespace {{ cookiecutter.project_slug.replace("-", "") }} {
  * @returns the successor of x
  */
 {%- endif %}
-{% if cookiecutter.header_only == "Yes" %}inline {% endif %}int add_one(int x){% if cookiecutter.header_only == "No" %};{%- else %}{
+{% if cookiecutter.header_only == "Yes" %}inline {% endif %}int
+add_one(int x){% if cookiecutter.header_only == "No" %};{%- else %}
+{
   return x + 1;
 }
 {%- endif %}
