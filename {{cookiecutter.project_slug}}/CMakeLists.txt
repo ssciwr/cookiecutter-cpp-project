@@ -80,7 +80,10 @@ endif()
 # Add Python bindings
 if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
   # Enable PIC for Python bindings
-  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+  set_target_properties({{ cookiecutter.project_slug }}
+    PROPERTIES
+      POSITION_INDEPENDENT_CODE ON
+  )
 
   set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
