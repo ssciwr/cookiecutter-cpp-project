@@ -37,7 +37,7 @@ jobs:
       run: |
         python -m pip install -r requirements-dev.txt
 
-    - uses: ssciwr/doxygen-install@v1
+    - uses: ssciwr/doxygen-install@v2
 
     - name: Set up git identity
       run: |

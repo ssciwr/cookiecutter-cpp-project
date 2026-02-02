@@ -28,7 +28,7 @@ jobs:
 {%- endif %}
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
     - name: Make build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
@@ -68,7 +68,7 @@ jobs:
         python-version: "3.14"
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
     - name: Run Python tests
       shell: bash
@@ -95,7 +95,7 @@ jobs:
         sudo apt-get install -y lcov
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
-      uses: ssciwr/doxygen-install@v1
+      uses: ssciwr/doxygen-install@v2
 {% endif %}
 {% if cookiecutter.python_bindings == "Yes" %}
     - name: Install Python package editable
