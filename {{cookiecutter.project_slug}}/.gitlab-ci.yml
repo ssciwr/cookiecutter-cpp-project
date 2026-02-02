@@ -1,8 +1,6 @@
 variables:
 {%- if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
-{%- else %}
-  CATCH2_VERSION: {{ cookiecutter._catch_version }}
 {%- endif %}
 
 .template: &template
@@ -14,22 +12,13 @@ variables:
 {% if cookiecutter.python_bindings == "Yes" %}
     - apt install -y python3-dev
 {%- endif %}
-{% if cookiecutter.use_submodules == "No" %}
-    - git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
-    - cd Catch2
-    - mkdir build
-    - cd build
-    - cmake -DBUILD_TESTING=OFF ..
-    - make install
-    - cd ../..
-{%- endif %}
+{% if cookiecutter.doxygen == "Yes" %}
+    - apt install -y doxygen
+{% endif %}
   script:
-    - cmake -E make_directory build
-    - cd build
-    - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOCS=OFF ..
-    - cmake --build .
-    - ctest
-
+    - cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
+    - cmake --build build
+    - ctest --test-dir build
 
 # Note: You can use your own Docker images here that e.g. include relevant
 #       dependencies and development tools. We choose well-maintained images

@@ -123,7 +123,8 @@ def test_readthedocs(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_cmake(target='sphinx-doc')
+        project = bake.context['project_slug']
+        build_cmake(target=f'{project}-sphinx-doc')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "sphinx", "index.html"))
 
 
@@ -136,7 +137,8 @@ def test_doxygen(cookies):
     )
     check_bake(bake)
     with inside_bake(bake):
-        build_cmake(target='doxygen')
+        project = bake.context['project_slug']
+        build_cmake(target=f'{project}-doxygen')
         assert os.path.exists(os.path.join(os.getcwd(), "doc", "html", "index.html"))
 
 

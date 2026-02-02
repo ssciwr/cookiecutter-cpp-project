@@ -1,39 +1,41 @@
-{%- if cookiecutter.use_submodules == "No" %}
-# ------------------------------------------------------------------------------
-# Enable CMake's FetchContent module, which allows downloading dependencies like
-# Catch2 automatically at configure time.
-# ------------------------------------------------------------------------------
+{%- if cookiecutter.use_submodules == "No" -%}
+# Enable CMake's FetchContent module, which allows downloading dependencies like Catch2 automatically at configure time.
 include(FetchContent)
 
-# ------------------------------------------------------------------------------
-# Declare a dependency on Catch2 via FetchContent. This will clone the Catch2
-# GitHub repository during configuration.
-# ------------------------------------------------------------------------------
+# Declare a dependency on Catch2 via FetchContent. This will clone the Catch2 GitHub repository during configuration.
 FetchContent_Declare(
   Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
   GIT_TAG v{{ cookiecutter._catch_version }})
 
-# ------------------------------------------------------------------------------
-# Make Catch2 available in this project. This defines the CMake targets like
-# Catch2::Catch2 and Catch2::Catch2WithMain.
-# ------------------------------------------------------------------------------
+# Make Catch2 available in this project. This defines the imported targets Catch2::Catch2 and Catch2::Catch2WithMain.
 FetchContent_MakeAvailable(Catch2)
 
-# ------------------------------------------------------------------------------
-# Make Catch2 available in this project. This defines the CMake targets like
-# Catch2::Catch2 and Catch2::Catch2WithMain.
-# ------------------------------------------------------------------------------
-include(Catch)
+{%- else -%}
+# Find the Catch2 package
+find_package(Catch2 3 REQUIRED)
 {%- endif %}
 
-# ------------------------------------------------------------------------------
+# Include Catch2's CMake helper functions (e.g., catch_discover_tests).
+include(Catch)
+
 # Create a single test binary that compiles all test files.
-# ------------------------------------------------------------------------------
-add_executable(tests {{ cookiecutter.project_slug }}_t.cpp)
+add_executable({{ cookiecutter.project_slug }}_tests)
+
+# Add the implementation file
+target_sources({{ cookiecutter.project_slug }}_tests
+  PRIVATE
+    {{ cookiecutter.project_slug }}_t.cpp
+)
 
 # Link the test binary
-target_link_libraries(tests PUBLIC {{ cookiecutter.project_slug }} Catch2::Catch2WithMain)
+target_link_libraries({{ cookiecutter.project_slug }}_tests
+  PUBLIC
+    {{ cookiecutter.project_slug }}
+    Catch2::Catch2WithMain
+)
 
 # allow user to run tests with `make test` or `ctest`
-catch_discover_tests(tests)
+catch_discover_tests({{ cookiecutter.project_slug }}_tests
+  TEST_PREFIX "{{ cookiecutter.project_slug }}."
+)

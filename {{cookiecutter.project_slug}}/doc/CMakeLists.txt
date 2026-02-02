@@ -5,22 +5,27 @@ set(DOXYGEN_SHORT_NAMES YES)
 {% if cookiecutter.readthedocs == "Yes" -%}
 set(DOXYGEN_GENERATE_XML YES)
 {%- endif %}
-doxygen_add_docs(doxygen
-  ${CMAKE_SOURCE_DIR}
+
+doxygen_add_docs({{ cookiecutter.project_slug }}-doxygen
+  ${CMAKE_SOURCE_DIR}/include
+{%- if cookiecutter.header_only == "No" %}
+  ${CMAKE_SOURCE_DIR}/src
+{%- endif %}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT Building doxygen documentation...
 )
-{% if cookiecutter.readthedocs == "Yes" -%}
-add_custom_target(sphinx-doc
-                  COMMAND
-                  sphinx-build -b html
-                  -Dbreathe_projects.{{ cookiecutter.project_slug }}="${CMAKE_CURRENT_BINARY_DIR}/xml"
-                  -c ${CMAKE_CURRENT_SOURCE_DIR}
-                  ${CMAKE_CURRENT_SOURCE_DIR}
-                  ${CMAKE_CURRENT_BINARY_DIR}/sphinx
-                  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-                  COMMENT "Generating documentation with Sphinx..."
-                  )
-add_dependencies(sphinx-doc doxygen)
+{%- if cookiecutter.readthedocs == "Yes" %}
+
+add_custom_target({{ cookiecutter.project_slug }}-sphinx-doc
+  COMMAND
+    sphinx-build -b html
+    -Dbreathe_projects.{{ cookiecutter.project_slug }}="${CMAKE_CURRENT_BINARY_DIR}/xml"
+    -c ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/sphinx
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Generating documentation with Sphinx..."
+)
+add_dependencies({{ cookiecutter.project_slug }}-sphinx-doc {{ cookiecutter.project_slug }}-doxygen)
 {%- endif %}
 {%- endif -%}

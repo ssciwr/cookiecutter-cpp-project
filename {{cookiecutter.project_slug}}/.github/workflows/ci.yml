@@ -12,11 +12,6 @@ on:
   # as well as upon manual triggers through the 'Actions' tab of the Github UI
   workflow_dispatch:
 
-{%- if cookiecutter.use_submodules == "No" %}
-env:
-  CATCH2_VERSION: {{ cookiecutter._catch_version }}
-{%- endif %}
-
 jobs:
   build-and-test:
     name: Testing on ${{ "{{matrix.os}}" }}
@@ -31,43 +26,24 @@ jobs:
       with:
         submodules: 'recursive'
 {%- endif %}
-
-{% if cookiecutter.use_submodules == "No" %}
-    - name: Install Catch2 (Linux + MacOS)
-      if: runner.os != 'Windows'
-      run: |
-        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        sudo cmake --build . --target install
-
-    - name: Install Catch2 (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone -b v$Env:CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        cmake --build . --target install
-{%- endif %}
-
-    - name: make build directory
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
+    - name: Make build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
-    - name: configure cmake
+    - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOCS=OFF
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
 
-    - name: build
+    - name: Build
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 
-    - name: run tests
+    - name: Run tests
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
@@ -89,8 +65,11 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: "3.13"
-
+        python-version: "3.14"
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
     - name: Run Python tests
       shell: bash
       run: |
@@ -114,18 +93,10 @@ jobs:
     - name: Install LCov
       run: |
         sudo apt-get install -y lcov
-
-{% if cookiecutter.use_submodules == "No" %}
-    - name: Install Catch2
-      run: |
-        git clone -b v$CATCH2_VERSION https://github.com/catchorg/Catch2.git
-        cd Catch2
-        mkdir build
-        cd build
-        cmake -DBUILD_TESTING=OFF  ..
-        sudo cmake --build . --target install
-{%- endif %}
-
+{% if cookiecutter.doxygen == "Yes" %}
+    - name: Install Doxygen
+      uses: ssciwr/doxygen-install@v1
+{% endif %}
 {% if cookiecutter.python_bindings == "Yes" %}
     - name: Install Python package editable
       run: |
@@ -137,31 +108,31 @@ jobs:
       run: |
         python -m pytest --cov --cov-report=xml
 {% else %}
-    - name: Creat cmake build directory
+    - name: Create cmake build directory
       run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
 
-    - name: configure cmake
+    - name: Configure cmake
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: |
-        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -DBUILD_DOCS=OFF
+        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
 
-    - name: build
+    - name: Build
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: cmake --build .
 {% endif %}
 
-    - name: run tests
+    - name: Run tests
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
 
-    - name: collect coverage report
+    - name: Collect coverage report
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}
       run: |
-        lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info --ignore-errors mismatch --exclude '*/catch2/*'
+        lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info --ignore-errors mismatch,unused --exclude '*/catch2/*'
 
     - name: Upload C++ coverage to Codecov
       uses: codecov/codecov-action@v5
