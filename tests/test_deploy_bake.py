@@ -19,7 +19,7 @@ def test_push_remote(cookies):
             'github_actions_ci': 'Yes',
             'gitlab_ci': 'Yes',
             'readthedocs': 'Yes',
-            'python_bindings': 'Yes',
+            'python_bindings': 'pybind11',
             'pypi_release': 'Yes',
             'use_submodules': 'No',
             'codecovio': 'Yes',

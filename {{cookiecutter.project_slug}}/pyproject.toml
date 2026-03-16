@@ -4,7 +4,11 @@
 [build-system]
 requires = [
     "scikit-build-core",
-    "pybind11[global]",
+    {%- if cookiecutter.python_bindings == "pybind11" %}
+    "pybind11[global]"
+    {%- elif cookiecutter.python_bindings == "nanobind" %}
+    "nanobind[global]"
+    {%- endif %}
 ]
 build-backend = "scikit_build_core.build"
 

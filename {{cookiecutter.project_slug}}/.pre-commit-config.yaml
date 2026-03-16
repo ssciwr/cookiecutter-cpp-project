@@ -1,5 +1,5 @@
 repos:
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
   # Run Black - the uncompromising Python code formatter
   - repo: https://github.com/psf/black
     rev: 23.7.0
@@ -25,7 +25,7 @@ repos:
       - id: trailing-whitespace
       # Apply a file size limit of 500kB
       - id: check-added-large-files
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
       # Simple parser validation of e.g. pyproject.toml
       - id: check-toml
 {%- endif %}

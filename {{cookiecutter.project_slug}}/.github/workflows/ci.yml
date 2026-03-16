@@ -47,7 +47,7 @@ jobs:
       shell: bash
       working-directory: ${{ "{{ github.workspace }}" }}/build
       run: ctest
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
   python-testing:
     name: Python package testing on ${{ "{{matrix.os}}" }}
     runs-on: ${{ "{{matrix.os}}" }}
@@ -97,10 +97,10 @@ jobs:
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v2
 {% endif %}
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
     - name: Install Python package editable
       run: |
-        python -m pip install scikit_build_core pybind11[global]
+        python -m pip install scikit_build_core {% if cookiecutter.python_bindings == "pybind11" -%}pybind11[global]{%- elif cookiecutter.python_bindings == "nanobind" %}nanobind[global]{% endif %}
         python -m pip install --no-build-isolation --config-settings=build-dir="${{ "{{ github.workspace }}" }}/build" --config-settings=cmake.define.CMAKE_CXX_FLAGS="--coverage" --config-settings=cmake.define.BUILD_TESTING="ON" -v -e .
         python -m pip install -r requirements-dev.txt
     
@@ -138,5 +138,5 @@ jobs:
       uses: codecov/codecov-action@v5
       with:
         fail_ci_if_error: true
-        files: ${{ "{{github.workspace}}" }}/coverage.info{% if cookiecutter.python_bindings == "Yes" %},coverage.xml{% endif %}
+        files: ${{ "{{github.workspace}}" }}/coverage.info{% if cookiecutter.python_bindings != "None" %},coverage.xml{% endif %}
 {% endif %}

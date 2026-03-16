@@ -11,7 +11,7 @@ include(GNUInstallDirs)
 
 # Define build options
 option({{ cookiecutter.project_slug }}_BUILD_TESTING "Enable building of tests" OFF)
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
 
 if(PROJECT_IS_TOP_LEVEL)
   option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" ON)
@@ -79,7 +79,7 @@ if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_DOCS)
   add_subdirectory(doc)
 endif()
 {%- endif %}
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
 # Add Python bindings
 if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
   # Enable PIC for Python bindings
@@ -88,15 +88,26 @@ if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_PYTHON)
       POSITION_INDEPENDENT_CODE ON
   )
 
+  {% if cookiecutter.python_bindings == "pybind11" -%}
   set(PYBIND11_FINDPYTHON ON)
   find_package(pybind11 REQUIRED)
   # Compile the Pybind11 module
   pybind11_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
+  {% elif cookiecutter.python_bindings == "nanobind" %}
+  find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+
+  # Detect the installed nanobind package and import it into CMake
+  execute_process(
+    COMMAND "${Python_EXECUTABLE}" -m nanobind --cmake_dir
+    OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE nanobind_ROOT
+  )
+  find_package(nanobind CONFIG REQUIRED)
+  nanobind_add_module(_{{ cookiecutter|modname }} python/{{ cookiecutter|modname }}/_{{ cookiecutter.project_slug }}.cpp)
+  {%- endif %}
   target_link_libraries(_{{ cookiecutter|modname }}
     PUBLIC
       {{ cookiecutter.project_slug }}
   )
-
   # Install the Python module shared library
   install(TARGETS _{{ cookiecutter|modname }} DESTINATION .)
 endif()

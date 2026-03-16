@@ -14,7 +14,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 * Ready-to-use integration with the Github Actions and Gitlab CI
 * Generation and deployment of Sphinx-based documentation for [Read the Docs](https://readthedocs.org)
 * Building a Doxygen documentation
-* Setup of Python bindings with Pybind11
+* Setup of Python bindings with [pybind11](https://github.com/pybind/pybind11) or [nanobind](https://github.com/wjakob/nanobind)
 * CI-based deployment of Python wheels to PyPI
 * Generated [pre-commit](https://pre-commit.com/) configuration is added if you have `pre-commit` installed
 * Integration with coverage testing from [codecov.io](https://codecov.io)
@@ -76,7 +76,7 @@ This cookiecutter accepts the following configuration options:
 * `cxx_minimum_standard`: The minimum C++ standard required for this project. It can be chosen from `14` (default), `17`, `20` and `23`.
   `C++11` and earlier are not supported, because the generated project will depend on libraries that require `C++14` ([Catch2](https://github.com/catchorg/Catch2)
   for testing and [pybind11](https://github.com/pybind/pybind11) for potential Python bindings).
-* `python_bindings`: Whether to automatically add a PyBind11-based Python binding package.
+* `python_bindings`: Whether to automatically add a PyBind11-based Python binding package. It can be chosen from [pybind11](https://github.com/pybind/pybind11) and [nanobind](https://github.com/wjakob/nanobind) or it can be omitted ([None]).
 * `pypi_release`: Whether to add an automatic PyPI deploy workflow to the CI system.
   This is currently limited to Github Actions CI as it provides cloud-based runners for all relevant
   platforms (Linux, MacOS, Windows). A PyPI release is automatically triggered when a release is

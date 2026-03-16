@@ -50,7 +50,7 @@ Building {{ cookiecutter.project_name }} requires the following software install
 {%- if cookiecutter.use_submodules == "No" %}
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
 {%- endif %}
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
 * Python `>= 3.10` for building Python bindings
 {%- endif %}
 
@@ -72,11 +72,11 @@ which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 {%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 * `{{ cookiecutter.project_slug }}_BUILD_DOCS`: Enable building the documentation (default: `ON`)
 {%- endif %}
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
 * `{{ cookiecutter.project_slug }}_BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
 {%- endif %}
 
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
 If you wish to build and install the project as a Python project without
 having access to C++ build artifacts like libraries and executables, you
 can do so using `pip` from the root directory:
@@ -96,7 +96,7 @@ the C++ test suite of `{{ cookiecutter.project_name }}` can be run using
 cd build
 ctest
 ```
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
 The Python test suite can be run by first `pip`-installing the Python package
 and then running `pytest` from the top-level directory:
 
