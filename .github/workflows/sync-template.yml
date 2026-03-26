@@ -5,6 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      sync:
+        description: "Commit and push changes to the target repository"
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   sync:
@@ -23,13 +29,17 @@ jobs:
       run: |
         git config --global user.email "ssc@sync-template.com"
         git config --global user.name "SSC Template Sync"
-  
+
     - name: Bake template using config
       run: |
         cookiecutter \
           --no-input \
           --config-file cookiecutter-repository/.github/cpp-project-template.yml \
           cookiecutter-repository/
+
+    - name: Show source repository contents
+      working-directory: your-project
+      run: tree -a -I ".git" .
 
     - name: Checkout target repository
       uses: actions/checkout@v6
@@ -39,16 +49,26 @@ jobs:
         path: target-repository
         ssh-key: ${{ secrets.SSCIWR_CPP_PROJECT_TEMPLATE_DEPLOY_KEY }}
 
+    - name: Show target repository contents
+      working-directory: target-repository
+      run: tree -a -I ".git" .
+
     - name: Sync generated files
       run: |
         rsync -av --delete \
           --exclude '.git/' \
           your-project/ target-repository/
 
-    - name: Commit and push
+    - name: Add changes
       working-directory: target-repository
       run: |
         git add .
+        git status
+
+    - name: Commit and push changes
+      if: ${{ github.event_name == 'push' || inputs.sync }}
+      working-directory: target-repository
+      run: |
         git commit -m "Sync from ssciwr/cookiecutter-cpp-project" || echo "No changes"
 
         echo "Pushing changes to target repository..."

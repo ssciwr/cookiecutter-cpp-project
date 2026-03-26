@@ -24,12 +24,12 @@ class GitRepository(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Finalize by making an initial git commit
-        subprocess.check_call("git add *".split())
+        subprocess.check_call(["git", "add", "-A"])
 
         # Maybe run pre-commit
         if {{ have_precommit }}:
             subprocess.call("pre-commit run -a".split())
-            subprocess.check_call("git add *".split())
+            subprocess.check_call(["git", "add", "-A"])
 
         subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
 
@@ -79,7 +79,6 @@ conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "tests/python")
 conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
 conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
-conditional_remove(not {{ have_precommit }}, ".pre-commit-config.yaml")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 

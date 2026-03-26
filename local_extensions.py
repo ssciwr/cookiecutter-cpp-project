@@ -66,7 +66,7 @@ def _provider_acronym(data):
 def _username(data):
     if data["remote_url"] == "None":
         return "None"
-    
+
     return data["remote_url"].split("/")[-2].split(":")[-1]
 
 
