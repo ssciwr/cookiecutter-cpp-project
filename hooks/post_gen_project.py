@@ -24,12 +24,12 @@ class GitRepository(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         # Finalize by making an initial git commit
-        subprocess.check_call("git add *".split())
+        subprocess.check_call(["git", "add", "-A"])
 
         # Maybe run pre-commit
         if {{ have_precommit }}:
             subprocess.call("pre-commit run -a".split())
-            subprocess.check_call("git add *".split())
+            subprocess.check_call(["git", "add", "-A"])
 
         subprocess.check_call(["git", "commit", "-m", "Initial Commit"])
 
