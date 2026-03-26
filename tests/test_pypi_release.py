@@ -5,6 +5,8 @@ import pytest
 import requests
 import subprocess
 import time
+import tomlkit
+
 from packaging import version
 
 
@@ -22,22 +24,34 @@ def test_pypi_deploy():
     # Construct a version, by finding the maximum version across Github, PyPI and TestPyPI and increasing that
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
     repo = gh.get_repo('dokempf/test-gha-cookiecutter')
-    current_version = max([
-        upstream_version('https://pypi.org/pypi/testghacookiecutter/json'),
-        upstream_version('https://test.pypi.org/pypi/testghacookiecutter/json'),
-        version.parse(repo.get_latest_release().title[1:])
-    ])
-    next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
 
     # Modify the version in pyproject.toml and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-gha-cookiecutter.git".split())
     os.chdir("test-gha-cookiecutter")
     subprocess.check_call(["git", "switch", "--track", "origin/pypi_release"])
-    with open("pyproject.toml", "r") as source:
-        lines = source.readlines()
-    with open("pyproject.toml", "w") as source:
-        for line in lines:
-            source.write(re.sub(r'version = .*$', 'version = "{}"'.format(str(next_version)), line))
+
+    # Parse the pyproject.toml file to get the current version on the branch
+    with open("pyproject.toml", "r") as f:
+        data = tomlkit.parse(f.read())
+    branch_version = version.parse(data["project"]["version"])
+
+    # Identify the maximum version across PyPI, TestPyPI, Github and the branch and increase that by one patch version
+    current_version = max([
+        upstream_version('https://pypi.org/pypi/testghacookiecutter/json'),
+        upstream_version('https://test.pypi.org/pypi/testghacookiecutter/json'),
+        version.parse(repo.get_latest_release().title[1:]),
+        branch_version
+    ])
+
+    # Increase the version by one
+    next_version = version.Version('{}.{}.{}'.format(current_version.major, current_version.minor, current_version.micro + 1))
+
+    # Update the version in pyproject.toml
+    data["project"]["version"] = str(next_version)
+    with open("pyproject.toml", "w") as f:
+        f.write(tomlkit.dumps(data))
+
+    # Commit the change and push it to the remote branch
     subprocess.check_call("git add pyproject.toml".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
     subprocess.check_call("git push -f origin pypi_release".split())
