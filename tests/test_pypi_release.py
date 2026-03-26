@@ -32,6 +32,7 @@ def test_pypi_deploy():
     # Modify the version in pyproject.toml and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-gha-cookiecutter.git".split())
     os.chdir("test-gha-cookiecutter")
+    subprocess.check_call(["git", "switch", "--track", "origin/pypi_release"])
     with open("pyproject.toml", "r") as source:
         lines = source.readlines()
     with open("pyproject.toml", "w") as source:
@@ -39,20 +40,19 @@ def test_pypi_deploy():
             source.write(re.sub(r'version = .*$', 'version = "{}"'.format(str(next_version)), line))
     subprocess.check_call("git add pyproject.toml".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
-    subprocess.check_call("git push -f origin main:pypi_release".split())
+    subprocess.check_call("git push -f origin pypi_release".split())
     time.sleep(2)
 
-    # Create the release - this will trigger the PyPI release workflow
-    repo.create_git_release(
-        'v{}'.format(str(next_version)),
-        'v{}'.format(str(next_version)),
-        "Test Release",
-        target_commitish='pypi_release'
+    # Create the release tag - this will trigger the PyPI release workflow
+    branch = repo.get_branch("pypi_release")
+
+    repo.create_git_ref(
+        ref=f"refs/tags/v{next_version}",
+        sha=branch.commit.sha,
     )
     time.sleep(2)
 
     # Identify the PyPI release workflow
-    branch = repo.get_branch('pypi_release')
     workflow = repo.get_workflow("pypi.yml").get_runs()[0]
     assert workflow.head_sha == branch.commit.sha
 
