@@ -2,13 +2,13 @@ repos:
 {%- if cookiecutter.python_bindings != "None" %}
   # Run Black - the uncompromising Python code formatter
   - repo: https://github.com/psf/black
-    rev: 23.7.0
+    rev: 26.3.1
     hooks:
       - id: black-jupyter
 {% endif %}
   # Format C++ code with Clang-Format - automatically applying the changes
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v16.0.6
+    rev: v22.1.1
     hooks:
       - id: clang-format
         args:
@@ -17,7 +17,7 @@ repos:
 
   # Add some general purpose useful hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       # Make sure that contained YAML files are well-formed
       - id: check-yaml
@@ -36,7 +36,7 @@ repos:
 
   # GitHub Actions Workflow linter
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.6.25
+    rev: v1.7.11
     hooks:
       - id: actionlint
 {%- endif %}
