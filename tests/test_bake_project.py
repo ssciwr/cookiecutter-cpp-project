@@ -171,12 +171,13 @@ def test_gitlabci(cookies):
 
 
 @pytest.mark.local
+@pytest.mark.parametrize("python_bindings", ("pybind11", "nanobind"))
 @pytest.mark.parametrize("submodules", ("Yes", "No"))
-def test_python(cookies, virtualenv, submodules):
+def test_python(cookies, virtualenv, python_bindings, submodules):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'my-project',
-            'python_bindings': 'pybind11',
+            'python_bindings': python_bindings,
             'submodules': submodules,
         }
     )
