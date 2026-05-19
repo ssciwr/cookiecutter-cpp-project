@@ -10,6 +10,20 @@ import tomlkit
 from packaging import version
 
 
+def github_tag_versions(repo):
+    versions = []
+
+    for tag in repo.get_tags():
+        if not tag.name.startswith("v"):
+            continue
+
+        try:
+            versions.append(version.parse(tag.name[1:]))
+        except version.InvalidVersion:
+            pass
+
+    return versions
+
 @pytest.mark.pypi
 @pytest.mark.timeout(1800)
 def test_pypi_deploy():
@@ -39,7 +53,8 @@ def test_pypi_deploy():
         upstream_version('https://pypi.org/pypi/testghacookiecutter/json'),
         upstream_version('https://test.pypi.org/pypi/testghacookiecutter/json'),
         version.parse(repo.get_latest_release().title[1:]),
-        branch_version
+        branch_version,
+        *github_tag_versions(repo)
     ])
 
     # Increase the version by one
