@@ -110,7 +110,7 @@ jobs:
           path: dist
 
       - name: Publish distributions to TestPyPI
-        uses: pypa/gh-action-pypi-publish@v1
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
@@ -140,4 +140,4 @@ jobs:
           merge-multiple: true
           path: dist
 
-      - uses: pypa/gh-action-pypi-publish@release/v1.13.0
+      - uses: pypa/gh-action-pypi-publish@release/v1
