@@ -86,7 +86,7 @@ jobs:
   upload-testpypi:
     name: Publish on TestPyPI
     if: {% raw %}${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish_target == 'testpypi') }}{% endraw %}
-    needs: [build-wheels]
+    needs: [build-wheels, build-sdist]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -117,7 +117,7 @@ jobs:
   upload-pypi:
     name: Publish on PyPI
     if: {% raw %}${{ github.event_name == 'push' }}{% endraw %}
-    needs: [build-wheels, upload-testpypi]
+    needs: [build-wheels, build-sdist, upload-testpypi]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
