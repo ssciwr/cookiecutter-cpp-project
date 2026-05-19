@@ -37,8 +37,8 @@ jobs:
 
       - name: Verify release tag matches package version
         if: {% raw %}${{ github.event_name == 'push' }}{% endraw %}
+        shell: python
         run: |
-          python - <<'PY'
           import os
           import pathlib
           import tomllib
@@ -55,7 +55,6 @@ jobs:
               )
 
           print(f"Publishing from {ref}, matching project version {version}.")
-          PY
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v{{ cookiecutter._cibuildwheel_version }}
