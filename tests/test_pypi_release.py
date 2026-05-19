@@ -68,6 +68,9 @@ def test_pypi_deploy():
     # Commit the change and push it to the remote branch
     subprocess.check_call("git add pyproject.toml".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
+
+    commit_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True,).strip()
+
     subprocess.check_call("git push -f origin HEAD:pypi_release".split())
     time.sleep(2)
 
@@ -76,19 +79,32 @@ def test_pypi_deploy():
 
     repo.create_git_ref(
         ref=f"refs/tags/v{next_version}",
-        sha=branch.commit.sha,
+        sha=commit_sha,
     )
-    time.sleep(2)
 
-    # Identify the PyPI release workflow
-    workflow = repo.get_workflow("pypi.yml").get_runs()[0]
-    assert workflow.head_sha == branch.commit.sha
+
+    # Wait until the PyPI release workflow triggered by this tag appears
+    pypi_workflow = repo.get_workflow("pypi.yml")
+
+    workflow = None
+    for _ in range(30):
+        runs = pypi_workflow.get_runs()
+
+        for run in runs:
+            if run.head_sha == commit_sha:
+                workflow = run
+                break
+
+        if workflow is not None:
+            break
+
+        time.sleep(10)
+
+    assert workflow is not None, f"No pypi.yml workflow run found for commit {commit_sha}"
 
     # Poll the workflow status
-    while workflow.status != 'completed':
-        # We poll at a relatively large interval to avoid running against the Github API
-        # limitations in times of heavy development activities on the cookiecutter.
+    while workflow.status != "completed":
         time.sleep(30)
-        workflow = repo.get_workflow("pypi.yml").get_runs()[0]
+        workflow = repo.get_workflow_run(workflow.id)
 
-    assert workflow.conclusion == 'success'
+    assert workflow.conclusion == "success"

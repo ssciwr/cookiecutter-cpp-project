@@ -33,9 +33,20 @@ def test_push_remote(cookies):
         subprocess.check_call("git push -f gitlab main".split())
 
 
+def find_github_workflow_run(repo, workflow_name, sha, branch="main", event="push"):
+    workflow = repo.get_workflow(workflow_name)
+
+    for _ in range(30):
+        for run in workflow.get_runs(branch=branch):
+            if run.head_sha == sha and run.event == event:
+                return run
+
+        time.sleep(10)
+
+    pytest.fail(f"No {workflow_name} run found for {branch} at {sha}")
+
 @pytest.mark.integrations
-@pytest.mark.flaky(max_runs=3, min_passes=1, rerun_filter=wait_five_seconds)
-@pytest.mark.timeout(300)
+@pytest.mark.timeout(600)
 def test_github_actions_ci_on_deployed_bake():
     # Authenticate with the Github API
     gh = github.Github(os.getenv("GH_API_ACCESS_TOKEN"))
@@ -43,21 +54,14 @@ def test_github_actions_ci_on_deployed_bake():
     # Identify the correct workflow
     repo = gh.get_repo('dokempf/test-gha-cookiecutter')
     branch = repo.get_branch('main')
-    workflow = repo.get_workflow("ci.yml").get_runs()[0]
+    workflow = find_github_workflow_run(repo, "ci.yml", branch.commit.sha)
     assert workflow.head_sha == branch.commit.sha
 
-    def check_workflow(name):
-        # Poll the workflow status
-        workflow = repo.get_workflow(name).get_runs()[0]
-        while workflow.status != 'completed':
-            # We poll at a relatively large interval to avoid running against the Github API
-            # limitations in times of heavy development activities on the cookiecutter.
-            time.sleep(30)
-            workflow = repo.get_workflow(name).get_runs()[0]
+    while workflow.status != "completed":
+        time.sleep(30)
+        workflow = repo.get_workflow_run(workflow.id)
 
-        assert workflow.conclusion == 'success'
-
-    check_workflow("ci.yml")
+    assert workflow.conclusion == "success"
 
 
 @pytest.mark.integrations
