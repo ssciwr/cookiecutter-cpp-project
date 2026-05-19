@@ -1,6 +1,5 @@
 import github
 import os
-import re
 import pytest
 import requests
 import subprocess
