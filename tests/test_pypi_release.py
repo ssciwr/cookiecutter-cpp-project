@@ -28,7 +28,6 @@ def test_pypi_deploy():
     # Modify the version in pyproject.toml and commit the change
     subprocess.check_call("git clone git@github.com:dokempf/test-gha-cookiecutter.git".split())
     os.chdir("test-gha-cookiecutter")
-    subprocess.check_call(["git", "switch", "--track", "origin/pypi_release"])
 
     # Parse the pyproject.toml file to get the current version on the branch
     with open("pyproject.toml", "r") as f:
@@ -54,7 +53,7 @@ def test_pypi_deploy():
     # Commit the change and push it to the remote branch
     subprocess.check_call("git add pyproject.toml".split())
     subprocess.check_call(["git", "commit", "-m", "Bump version in pyproject.toml"])
-    subprocess.check_call("git push -f origin pypi_release".split())
+    subprocess.check_call("git push -f origin HEAD:pypi_release".split())
     time.sleep(2)
 
     # Create the release tag - this will trigger the PyPI release workflow
