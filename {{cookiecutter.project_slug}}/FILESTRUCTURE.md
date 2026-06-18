@@ -11,10 +11,10 @@ This is an explanation of the repository's file structure:
   * `tests/{{ cookiecutter.project_slug }}_t.cpp` contains the unit tests for the library.
     The unit tests are written using Catch2. For further reading on what can be achieved
     with Catch2, we recommend [their tutorial](https://github.com/catchorg/Catch2/blob/devel/docs/tutorial.md).
-{%- if cookiecutter.python_bindings == "Yes" %}
+{%- if cookiecutter.python_bindings != "None" %}
   * The `python/{{ cookiecutter.project_slug.replace("-", "") }}` directory contains a Python
     package for the project. It contains a compiled Python module `_{{ cookiecutter.project_slug.replace("-", "") }}`
-    that CMake generates from the Pybind11 source file `python/{{ cookiecutter.project_slug.replace("-", "") }}/_{{ cookiecutter.project_slug }}.cpp`. Additionally, it contains pure Python sources (e.g. `__init__.py`) that
+    that CMake generates from the {% if cookiecutter.python_bindings == "pybind11" -%}Pybind11{% elif cookiecutter.python_bindings == "nanobind" %}nanobind{% endif %} source file `python/{{ cookiecutter.project_slug.replace("-", "") }}/_{{ cookiecutter.project_slug }}.cpp`. Additionally, it contains pure Python sources (e.g. `__init__.py`) that
     allow to wrap Python functionality around the compiled module.
 {%- endif %}
 * CMake build system files

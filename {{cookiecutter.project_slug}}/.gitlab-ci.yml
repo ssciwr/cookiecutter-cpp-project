@@ -9,7 +9,7 @@ variables:
     - apt update
     - apt install -y cmake git
     - echo "Installing potential dependencies..."
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
     - apt install -y python3-dev
 {%- endif %}
 {% if cookiecutter.doxygen == "Yes" %}

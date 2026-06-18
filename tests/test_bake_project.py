@@ -148,7 +148,7 @@ def test_github_actions_ci(cookies):
         extra_context={
             'remote_url': 'git@github.com:dokempf/test-gha-cookiecutter.git',
             'github_actions_ci': 'Yes',
-            'python_bindings': 'Yes',
+            'python_bindings': 'pybind11',
             'pypi_release': 'Yes',
         }
     )
@@ -171,12 +171,13 @@ def test_gitlabci(cookies):
 
 
 @pytest.mark.local
+@pytest.mark.parametrize("python_bindings", ("pybind11", "nanobind"))
 @pytest.mark.parametrize("submodules", ("Yes", "No"))
-def test_python(cookies, virtualenv, submodules):
+def test_python(cookies, virtualenv, python_bindings, submodules):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'my-project',
-            'python_bindings': 'Yes',
+            'python_bindings': python_bindings,
             'submodules': submodules,
         }
     )
@@ -191,13 +192,13 @@ def test_python(cookies, virtualenv, submodules):
 
 @pytest.mark.local
 def test_pypi_without_python(cookies):
-    bake = cookies.bake(extra_context={'python_bindings': 'No', 'pypi_release': 'Yes'})
+    bake = cookies.bake(extra_context={'python_bindings': 'None', 'pypi_release': 'Yes'})
     assert bake.exit_code != 0
 
 
 @pytest.mark.local
 def test_pypi_without_github(cookies):
-    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'Yes'})
+    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'pybind11'})
     assert bake.exit_code != 0
 
 

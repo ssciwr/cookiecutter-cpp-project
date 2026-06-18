@@ -33,7 +33,7 @@ _skbuild
 *.exe
 *.out
 *.app
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != 'None' %}
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

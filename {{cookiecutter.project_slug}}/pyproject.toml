@@ -4,7 +4,11 @@
 [build-system]
 requires = [
     "scikit-build-core",
-    "pybind11[global]",
+    {%- if cookiecutter.python_bindings == "pybind11" %}
+    "pybind11[global]"
+    {%- elif cookiecutter.python_bindings == "nanobind" %}
+    "nanobind[global]"
+    {%- endif %}
 ]
 build-backend = "scikit_build_core.build"
 
@@ -34,7 +38,7 @@ license = "LGPL-3.0-only"
 {%- endif %}
 
 classifiers = [
-    "Programming Language :: Python :: C++",
+    "Programming Language :: C++",
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]

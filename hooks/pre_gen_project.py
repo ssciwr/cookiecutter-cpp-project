@@ -25,7 +25,7 @@ def fail_if(condition, message):
 
 
 fail_if(
-    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "No",
+    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "None",
     "Can't do PyPI release without building Python bindings"
 )
 

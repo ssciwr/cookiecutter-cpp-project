@@ -18,8 +18,7 @@ class GitRepository(object):
 
     def __enter__(self):
         # Initialize the git repository
-        subprocess.check_call("git init".split())
-        subprocess.check_call("git checkout -b main".split())
+        subprocess.check_call("git init -b main".split())
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -72,10 +71,10 @@ conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/conf.py")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/index.rst")
 conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/requirements-rtd.txt")
 conditional_remove("{{ cookiecutter.doxygen }}" == "No" and "{{ cookiecutter.readthedocs }}" == "No", "doc")
-conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "pyproject.toml")
-conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "requirements-dev.txt")
-conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "python")
-conditional_remove("{{ cookiecutter.python_bindings }}" == "No", "tests/python")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "pyproject.toml")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "requirements-dev.txt")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "python")
+conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "tests/python")
 conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
 conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
 conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
