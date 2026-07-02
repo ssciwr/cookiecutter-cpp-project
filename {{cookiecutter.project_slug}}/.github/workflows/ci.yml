@@ -21,7 +21,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
@@ -56,7 +56,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 {% if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
@@ -135,7 +135,7 @@ jobs:
         lcov --directory ./build{% if cookiecutter.header_only == "No" %}/src{% endif %} --capture --output-file coverage.info --ignore-errors mismatch,unused --exclude '*/catch2/*'
 
     - name: Upload C++ coverage to Codecov
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v7
       with:
         fail_ci_if_error: true
         files: ${{ "{{github.workspace}}" }}/coverage.info{% if cookiecutter.python_bindings != "None" %},coverage.xml{% endif %}
