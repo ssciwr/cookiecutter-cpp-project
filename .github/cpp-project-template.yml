@@ -12,6 +12,6 @@ default_context:
     readthedocs: "Yes"
     doxygen: "Yes"
     cxx_minimum_standard: "20"
-    python_bindings: "No"
+    python_bindings: "None"
     pypi_release: "No"
     codecovio: "Yes"

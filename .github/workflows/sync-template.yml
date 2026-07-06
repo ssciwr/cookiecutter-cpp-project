@@ -18,12 +18,12 @@ jobs:
 
     steps:
     - name: Checkout the cookiecutter repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         path: cookiecutter-repository
 
-    - name: Install cookiecutter
-      run: pip install cookiecutter
+    - name: Install cookiecutter and pre-commit
+      run: pip install cookiecutter pre-commit
 
     - name: Set up git identity
       run: |
@@ -42,7 +42,7 @@ jobs:
       run: tree -a -I ".git" .
 
     - name: Checkout target repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: ssciwr/cpp-project-template
         ref: main
