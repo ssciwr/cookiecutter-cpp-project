@@ -22,8 +22,8 @@ jobs:
       with:
         path: cookiecutter-repository
 
-    - name: Install cookiecutter
-      run: pip install cookiecutter
+    - name: Install cookiecutter and pre-commit
+      run: pip install cookiecutter pre-commit
 
     - name: Set up git identity
       run: |
