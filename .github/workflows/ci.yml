@@ -77,8 +77,7 @@ jobs:
     - name: Set up SSH Agent to deploy to test repositories
       uses: webfactory/ssh-agent@v0.10.0
       with:
-        ssh-private-key: |
-          ${{ secrets.GHA_TEST_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.GHA_TEST_PRIVATE_KEY }}
 
     - name: Add gitlab.com to the list of known hosts
       run: |
