@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v7
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+      uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -61,7 +61,7 @@ jobs:
     - name: Checking out the cookie cutter repository
       uses: actions/checkout@v7
 
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@v7
       with:
         python-version: "3.14"
 
@@ -77,8 +77,7 @@ jobs:
     - name: Set up SSH Agent to deploy to test repositories
       uses: webfactory/ssh-agent@v0.10.0
       with:
-        ssh-private-key: |
-          ${{ secrets.GHA_TEST_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.GHA_TEST_PRIVATE_KEY }}
 
     - name: Add gitlab.com to the list of known hosts
       run: |
