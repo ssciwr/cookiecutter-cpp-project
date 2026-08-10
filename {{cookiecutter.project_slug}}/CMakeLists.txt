@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.28)
 
 # Set a name and a version number for your project:
 project({{ cookiecutter.project_slug }}
