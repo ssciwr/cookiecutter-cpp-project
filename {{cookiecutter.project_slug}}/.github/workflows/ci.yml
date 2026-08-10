@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v7
-{% if cookiecutter.use_submodules == "Yes" %}
+{%- if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
 {%- endif %}
@@ -30,24 +30,18 @@ jobs:
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v2
 {% endif %}
-    - name: Make build directory
-      run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
-
     - name: Configure cmake
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_TESTING=ON -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
+      run: cmake --preset test
 
     - name: Build
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake --build .
+      run: cmake --build --preset test
 
     - name: Run tests
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: ctest
-{%- if cookiecutter.python_bindings != "None" %}
+      run: ctest --preset test
+{%- if cookiecutter.python_bindings != "None" -%}
   python-testing:
     name: Python package testing on ${{ "{{matrix.os}}" }}
     runs-on: ${{ "{{matrix.os}}" }}
@@ -69,7 +63,7 @@ jobs:
 {% if cookiecutter.doxygen == "Yes" %}
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v2
-{% endif %}
+{%- endif %}
     - name: Run Python tests
       shell: bash
       run: |
@@ -77,7 +71,6 @@ jobs:
         python -m pip install -r requirements-dev.txt
         pytest
 {%- endif %}
-
 {% if cookiecutter.codecovio == "Yes" %}
   coverage-test:
     name: Coverage Testing
@@ -85,7 +78,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v7
-{% if cookiecutter.use_submodules == "Yes" %}
+{%- if cookiecutter.use_submodules == "Yes" %}
       with:
         submodules: 'recursive'
 {%- endif %}
@@ -97,7 +90,7 @@ jobs:
     - name: Install Doxygen
       uses: ssciwr/doxygen-install@v2
 {% endif %}
-{% if cookiecutter.python_bindings != "None" %}
+{%- if cookiecutter.python_bindings != "None" %}
     - name: Install Python package editable
       run: |
         python -m pip install scikit_build_core {% if cookiecutter.python_bindings == "pybind11" -%}pybind11[global]{%- elif cookiecutter.python_bindings == "nanobind" %}nanobind[global]{% endif %}
@@ -108,25 +101,21 @@ jobs:
       run: |
         python -m pytest --cov --cov-report=xml
 {% else %}
-    - name: Create cmake build directory
-      run: cmake -E make_directory ${{ "{{ github.workspace }}" }}/build
-
     - name: Configure cmake
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
       run: |
-        cmake $GITHUB_WORKSPACE -DCMAKE_CXX_FLAGS="--coverage" -D{{ cookiecutter.project_slug }}_BUILD_TESTING=ON -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF
+        cmake --preset test \
+          -DCMAKE_CXX_FLAGS="--coverage -fprofile-update=atomic -O0 -g" \
+          -DCMAKE_EXE_LINKER_FLAGS="--coverage"
 
     - name: Build
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: cmake --build .
-{% endif %}
+      run: cmake --build --preset test
+{%- endif %}
 
     - name: Run tests
       shell: bash
-      working-directory: ${{ "{{ github.workspace }}" }}/build
-      run: ctest
+      run: ctest --preset test
 
     - name: Collect coverage report
       shell: bash
