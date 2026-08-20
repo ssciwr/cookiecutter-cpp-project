@@ -1,10 +1,15 @@
 repos:
 {%- if cookiecutter.python_bindings != "None" %}
-  # Run Black - the uncompromising Python code formatter
-  - repo: https://github.com/psf/black
-    rev: 26.5.1
+  # Run Ruff - an extremely fast Python linter and code formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.3
     hooks:
-      - id: black-jupyter
+      # Run the linter
+      - id: ruff-check
+        types_or: [ python, pyi, jupyter, pyproject ]
+        args: [ --fix, --show-fixes ]
+      # Run the formatter
+      - id: ruff-format
 {% endif %}
 
   # Format C++ code with Clang-Format - automatically applying the changes
