@@ -4,18 +4,17 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import os
-import subprocess
+import sys
+from pathlib import Path
 
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+# add these directories to sys.path here.
+repo_root = Path(__file__).resolve().parent.parent
+python_package_src = repo_root / "python" / "{{ cookiecutter.project_slug }}" / "src"
 
+sys.path.insert(0, str(python_package_src))
 
 # -- Project information -----------------------------------------------------
 
@@ -30,17 +29,8 @@ author = "{{ cookiecutter.full_name }}"
 # ones.
 extensions = [
     "breathe",
-    "sphinx_rtd_theme",
+    "sphinx.ext.autodoc",
 ]
-
-# Add any paths that contain templates here, relative to this directory.
-templates_path = []
-
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -48,29 +38,9 @@ exclude_patterns = []
 # a list of builtin themes.
 html_theme = "sphinx_rtd_theme"
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
-
 # Breathe Configuration: Breathe is the bridge between the information extracted
 # from the C++ sources by Doxygen and Sphinx.
-breathe_projects = {}
+breathe_projects = {
+    "{{ cookiecutter.project_slug }}": str(repo_root / "build" / "documentation" / "doc" / "xml"),
+}
 breathe_default_project = "{{ cookiecutter.project_slug }}"
-
-# Check if we're running on Read the Docs' servers
-read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
-
-# Implement build logic on RTD servers
-if read_the_docs_build:
-    cwd = os.getcwd()
-    os.makedirs("build-cmake", exist_ok=True)
-    builddir = os.path.join(cwd, "build-cmake")
-    subprocess.check_call(
-        "cmake -D{{ cookiecutter.project_slug }}_BUILD_DOCS=ON -D{{ cookiecutter.project_slug }}_BUILD_TESTING=OFF {% if cookiecutter.python_bindings != 'None' %}-D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF{% endif %} ../..".split(),
-        cwd=builddir,
-    )
-    subprocess.check_call(
-        "cmake --build . --target {{ cookiecutter.project_slug }}-doxygen".split(), cwd=builddir
-    )
-    breathe_projects["{{ cookiecutter.project_slug }}"] = os.path.join(builddir, "doc", "xml")

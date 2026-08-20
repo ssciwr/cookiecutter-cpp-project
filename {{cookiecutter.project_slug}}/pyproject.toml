@@ -46,7 +46,6 @@ dependencies = []
 [project.optional-dependencies]
 docs = [
     "breathe",
-    "myst_parser",
     "sphinx",
     "sphinx_rtd_theme",
 ]
