@@ -1,4 +1,4 @@
-{%- if cookiecutter.use_submodules == "No" -%}
+{% if cookiecutter.use_submodules == "No" %}
 # Enable CMake's FetchContent module, which allows downloading dependencies like Catch2 automatically at configure time.
 include(FetchContent)
 
@@ -10,11 +10,10 @@ FetchContent_Declare(
 
 # Make Catch2 available in this project. This defines the imported targets Catch2::Catch2 and Catch2::Catch2WithMain.
 FetchContent_MakeAvailable(Catch2)
-
-{%- else -%}
+{% else %}
 # Find the Catch2 package
 find_package(Catch2 3 REQUIRED)
-{%- endif %}
+{% endif %}
 
 # Include Catch2's CMake helper functions (e.g., catch_discover_tests).
 include(Catch)

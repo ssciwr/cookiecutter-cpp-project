@@ -1,20 +1,20 @@
-{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" -%}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 find_package(Doxygen REQUIRED)
 set(DOXYGEN_EXCLUDE_PATTERNS "${CMAKE_SOURCE_DIR}/ext/*")
 set(DOXYGEN_SHORT_NAMES YES)
-{% if cookiecutter.readthedocs == "Yes" -%}
+{% if cookiecutter.readthedocs == "Yes" %}
 set(DOXYGEN_GENERATE_XML YES)
-{%- endif %}
+{% endif %}
 
 doxygen_add_docs({{ cookiecutter.project_slug }}-doxygen
   ${CMAKE_SOURCE_DIR}/include
-{%- if cookiecutter.header_only == "No" %}
+{% if cookiecutter.header_only == "No" %}
   ${CMAKE_SOURCE_DIR}/src
-{%- endif %}
+{% endif %}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT Building doxygen documentation...
 )
-{%- if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs == "Yes" %}
 
 add_custom_target({{ cookiecutter.project_slug }}-sphinx-doc
   COMMAND
@@ -27,5 +27,5 @@ add_custom_target({{ cookiecutter.project_slug }}-sphinx-doc
   COMMENT "Generating documentation with Sphinx..."
 )
 add_dependencies({{ cookiecutter.project_slug }}-sphinx-doc {{ cookiecutter.project_slug }}-doxygen)
-{%- endif %}
-{%- endif -%}
+{% endif %}
+{% endif %}

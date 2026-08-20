@@ -12,12 +12,13 @@ namespace {{ cookiecutter.project_slug.replace("-", "") }} {
  * @param x The number to increase
  * @returns the successor of x
  */
-{%- endif %}
-{% if cookiecutter.header_only == "Yes" %}inline {% endif %}int
-add_one(int x){% if cookiecutter.header_only == "No" %};{%- else %}
+{% endif %}
+{{ "inline " if cookiecutter.header_only == "Yes" }}int
+add_one(int x){{ ";" if cookiecutter.header_only == "No" }}
+{% if cookiecutter.header_only == "Yes" %}
 {
   return x + 1;
 }
-{%- endif %}
+{% endif %}
 
 } // namespace {{ cookiecutter.project_slug.replace("-", "") }}

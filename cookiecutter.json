@@ -1,4 +1,8 @@
 {
+    "_jinja2_env_vars": {
+        "trim_blocks": true,
+        "lstrip_blocks": true
+    },
     "project_name": "My C++ Project",
     "remote_url": "None",
     "project_slug": "{%- if cookiecutter.remote_url == 'None' -%}{{ cookiecutter.project_name|replace('+', 'p')|slugify }}{% else %}{{ cookiecutter.remote_url.split('/')[-1]|replace('.git', '')}}{%- endif -%}",

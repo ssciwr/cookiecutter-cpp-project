@@ -4,11 +4,11 @@
 [build-system]
 requires = [
     "scikit-build-core",
-    {%- if cookiecutter.python_bindings == "pybind11" %}
+    {% if cookiecutter.python_bindings == "pybind11" %}
     "pybind11[global]"
-    {%- elif cookiecutter.python_bindings == "nanobind" %}
+    {% elif cookiecutter.python_bindings == "nanobind" %}
     "nanobind[global]"
-    {%- endif %}
+    {% endif %}
 ]
 build-backend = "scikit_build_core.build"
 
@@ -24,19 +24,18 @@ maintainers = [
     { name = "{{ cookiecutter.full_name}}", email = "your@email.com" },
 ]
 requires-python = ">=3.10"
-{%- if cookiecutter.license != "None" %}
+{% if cookiecutter.license != "None" %}
 license-files = ["LICEN[CS]E*"]
-{%- if cookiecutter.license == "MIT" %}
+{% if cookiecutter.license == "MIT" %}
 license = "MIT"
-{%- elif cookiecutter.license == "BSD-2" %}
+{% elif cookiecutter.license == "BSD-2" %}
 license = "BSD-2-Clause"
-{%- elif cookiecutter.license == "GPL-3.0" %}
+{% elif cookiecutter.license == "GPL-3.0" %}
 license = "GPL-3.0-only"
-{%- elif cookiecutter.license == "LGPL-3.0" %}
+{% elif cookiecutter.license == "LGPL-3.0" %}
 license = "LGPL-3.0-only"
-{%- endif %}
-{%- endif %}
-
+{% endif %}
+{% endif %}
 classifiers = [
     "Programming Language :: C++",
     "Programming Language :: Python :: 3",
@@ -57,8 +56,8 @@ build.verbose = true
 # The following is the configuration for the pytest test suite
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]
+{% if cookiecutter.pypi_release == "Yes" %}
 
-{% if cookiecutter.pypi_release == "Yes" -%}
 # The next section configures building wheels in Continuous Integration
 # The cibuildwheel documentation covers the available options in detail:
 # https://cibuildwheel.readthedocs.io/en/stable/options/
@@ -76,4 +75,4 @@ skip = "pp* *p27-* cp35-* cp36-* cp37-* cp38-* cp39-* *musllinux*"
 # Testing commands for our wheels
 test-command = "pytest {package}/tests/python"
 test-requires = ["pytest"]
-{%- endif %}
+{% endif %}

@@ -18,6 +18,7 @@ on:
 jobs:
   build-wheels:
     name: Build wheels on {% raw %}${{ matrix.os }}{% endraw %}
+
     runs-on: {% raw %}${{ matrix.os }}{% endraw %}
 
     strategy:
@@ -37,6 +38,7 @@ jobs:
 
       - name: Verify release tag matches package version
         if: {% raw %}${{ github.event_name == 'push' }}{% endraw %}
+
         shell: python
         run: |
           import os
@@ -62,6 +64,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: wheels-{% raw %}${{ matrix.os }}{% endraw %}
+
           path: ./wheelhouse/*.whl
           if-no-files-found: error
 
@@ -86,6 +89,7 @@ jobs:
   upload-testpypi:
     name: Publish on TestPyPI
     if: {% raw %}${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.publish_target == 'testpypi') }}{% endraw %}
+
     needs: [build-wheels, build-sdist]
     runs-on: ubuntu-latest
     permissions:
@@ -114,6 +118,7 @@ jobs:
   upload-pypi:
     name: Publish on PyPI
     if: {% raw %}${{ github.event_name == 'push' }}{% endraw %}
+
     needs: [build-wheels, build-sdist, upload-testpypi]
     runs-on: ubuntu-latest
     permissions:

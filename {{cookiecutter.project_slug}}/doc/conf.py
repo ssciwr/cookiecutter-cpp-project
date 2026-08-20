@@ -19,9 +19,9 @@ import subprocess
 
 # -- Project information -----------------------------------------------------
 
-project = '{{ cookiecutter.project_slug }}'
-copyright = '{{ current_year }}, {{ cookiecutter.full_name }}'
-author = '{{ cookiecutter.full_name }}'
+project = "{{ cookiecutter.project_slug }}"
+copyright = "{{ current_year }}, {{ cookiecutter.full_name }}"
+author = "{{ cookiecutter.full_name }}"
 
 # -- General configuration ---------------------------------------------------
 
@@ -59,13 +59,18 @@ breathe_projects = {}
 breathe_default_project = "{{ cookiecutter.project_slug }}"
 
 # Check if we're running on Read the Docs' servers
-read_the_docs_build = os.environ.get('READTHEDOCS', None) == "True"
+read_the_docs_build = os.environ.get("READTHEDOCS", None) == "True"
 
 # Implement build logic on RTD servers
 if read_the_docs_build:
     cwd = os.getcwd()
     os.makedirs("build-cmake", exist_ok=True)
     builddir = os.path.join(cwd, "build-cmake")
-    subprocess.check_call("cmake -D{{ cookiecutter.project_slug }}_BUILD_DOCS=ON -D{{ cookiecutter.project_slug }}_BUILD_TESTING=OFF {% if cookiecutter.python_bindings != 'None' %}-D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF{% endif %} ../..".split(), cwd=builddir)
-    subprocess.check_call("cmake --build . --target {{ cookiecutter.project_slug }}-doxygen".split(), cwd=builddir)
+    subprocess.check_call(
+        "cmake -D{{ cookiecutter.project_slug }}_BUILD_DOCS=ON -D{{ cookiecutter.project_slug }}_BUILD_TESTING=OFF {% if cookiecutter.python_bindings != 'None' %}-D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF{% endif %} ../..".split(),
+        cwd=builddir,
+    )
+    subprocess.check_call(
+        "cmake --build . --target {{ cookiecutter.project_slug }}-doxygen".split(), cwd=builddir
+    )
     breathe_projects["{{ cookiecutter.project_slug }}"] = os.path.join(builddir, "doc", "xml")

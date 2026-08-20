@@ -1,7 +1,7 @@
 variables:
-{%- if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
-{%- endif %}
+{% endif %}
 
 .template: &template
   before_script:
@@ -11,7 +11,7 @@ variables:
     - echo "Installing potential dependencies..."
 {% if cookiecutter.python_bindings != "None" %}
     - apt install -y python3-dev
-{%- endif %}
+{% endif %}
 {% if cookiecutter.doxygen == "Yes" %}
     - apt install -y doxygen
 {% endif %}

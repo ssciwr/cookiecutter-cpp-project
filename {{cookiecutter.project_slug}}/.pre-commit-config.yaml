@@ -6,6 +6,7 @@ repos:
     hooks:
       - id: black-jupyter
 {% endif %}
+
   # Format C++ code with Clang-Format - automatically applying the changes
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v22.1.5
@@ -21,24 +22,23 @@ repos:
     hooks:
       # Unify file endings
       - id: end-of-file-fixer
-{%- if cookiecutter.python_bindings != "None" %}
+{% if cookiecutter.python_bindings != "None" %}
       # Apply a file size limit of 500kB
       - id: check-added-large-files
       # Check json files for syntax errors
       - id: check-json
       # Simple parser validation of e.g. pyproject.toml
       - id: check-toml
-{%- endif %}
+{% endif %}
       # Make sure that contained YAML files are well-formed
       - id: check-yaml
       # Trim trailing whitespace of all sorts
       - id: trailing-whitespace
+{% if cookiecutter.github_actions_ci == "Yes" %}
 
-
-{%- if cookiecutter.github_actions_ci == "Yes" %}
   # GitHub Actions Workflow linter
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:
       - id: actionlint
-{%- endif %}
+{% endif %}

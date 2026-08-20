@@ -12,12 +12,12 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" -%}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
         "{{ cookiecutter.project_slug }}_BUILD_DOCS": false,
-{%- endif -%}
-{%- if cookiecutter.python_bindings != "None" -%}
+{% endif %}
+{% if cookiecutter.python_bindings != "None" %}
         "{{ cookiecutter.project_slug }}_BUILD_PYTHON": false,
-{%- endif -%}
+{% endif %}
         "{{ cookiecutter.project_slug }}_BUILD_TESTING": false
       }
     },
@@ -33,12 +33,13 @@
     {
       "name": "release",
       "displayName": "Release",
-      "description": "Optimized release build",
+      "description": "Release build",
       "inherits": "base",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
     {
       "name": "documentation",
       "displayName": "Release build with documentation",
@@ -48,6 +49,7 @@
         "{{ cookiecutter.project_slug }}_BUILD_DOCS": true
       }
     },
+{% endif %}
     {
       "name": "test",
       "displayName": "Debug with tests",
@@ -67,6 +69,7 @@
       "name": "release",
       "configurePreset": "release"
     },
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
     {
       "name": "documentation",
       "configurePreset": "documentation",
@@ -74,6 +77,7 @@
         "{{ cookiecutter.project_slug }}-sphinx-doc"
       ]
     },
+{% endif %}
     {
       "name": "test",
       "configurePreset": "test"
