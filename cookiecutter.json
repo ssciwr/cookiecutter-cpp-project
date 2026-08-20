@@ -1,4 +1,8 @@
 {
+    "_jinja2_env_vars": {
+        "trim_blocks": true,
+        "lstrip_blocks": true
+    },
     "project_name": "My C++ Project",
     "remote_url": "None",
     "project_slug": "{%- if cookiecutter.remote_url == 'None' -%}{{ cookiecutter.project_name|replace('+', 'p')|slugify }}{% else %}{{ cookiecutter.remote_url.split('/')[-1]|replace('.git', '')}}{%- endif -%}",
@@ -21,6 +25,6 @@
         "local_extensions.CurrentDateExtension"
     ],
     "__python_module": "{{ cookiecutter|modname }}",
-    "_catch_version": "3.15.1",
-    "_cibuildwheel_version": "4.1.0"
+    "_catch_version": "3.15.3",
+    "_cibuildwheel_version": "4.2.0"
 }

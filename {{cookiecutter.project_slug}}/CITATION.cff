@@ -15,9 +15,9 @@ identifiers:
   - description: This is a collection of archived snapshots of this project.
     type: doi
     value: "10.5281/zenodo.123456"
-{%- if cookiecutter.license != "None" %}
+{% if cookiecutter.license != "None" %}
 license: {{cookiecutter.license}}
-{%- endif %}
-{%- if cookiecutter.remote_url != 'None' %}
+{% endif %}
+{% if cookiecutter.remote_url != 'None' %}
 repository-code: {{cookiecutter.remote_url}}
-{%- endif %}
+{% endif %}

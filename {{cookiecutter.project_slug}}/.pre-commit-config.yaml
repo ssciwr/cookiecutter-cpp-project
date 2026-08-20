@@ -1,14 +1,20 @@
 repos:
 {%- if cookiecutter.python_bindings != "None" %}
-  # Run Black - the uncompromising Python code formatter
-  - repo: https://github.com/psf/black
-    rev: 26.5.1
+  # Run Ruff - an extremely fast Python linter and code formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.3
     hooks:
-      - id: black-jupyter
+      # Run the linter
+      - id: ruff-check
+        types_or: [ python, pyi, jupyter, pyproject ]
+        args: [ --fix, --show-fixes ]
+      # Run the formatter
+      - id: ruff-format
 {% endif %}
+
   # Format C++ code with Clang-Format - automatically applying the changes
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.5
+    rev: v22.1.8
     hooks:
       - id: clang-format
         args:
@@ -19,24 +25,25 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
+      # Unify file endings
+      - id: end-of-file-fixer
+{% if cookiecutter.python_bindings != "None" %}
+      # Apply a file size limit of 500kB
+      - id: check-added-large-files
+      # Check json files for syntax errors
+      - id: check-json
+      # Simple parser validation of e.g. pyproject.toml
+      - id: check-toml
+{% endif %}
       # Make sure that contained YAML files are well-formed
       - id: check-yaml
       # Trim trailing whitespace of all sorts
       - id: trailing-whitespace
-      # Apply a file size limit of 500kB
-      - id: check-added-large-files
-{%- if cookiecutter.python_bindings != "None" %}
-      # Simple parser validation of e.g. pyproject.toml
-      - id: check-toml
-{%- endif %}
-      # Unify file endings
-      - id: end-of-file-fixer
-
-{%- if cookiecutter.github_actions_ci == "Yes" %}
+{% if cookiecutter.github_actions_ci == "Yes" %}
 
   # GitHub Actions Workflow linter
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.12
     hooks:
       - id: actionlint
-{%- endif %}
+{% endif %}

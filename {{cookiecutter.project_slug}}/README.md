@@ -1,39 +1,39 @@
 # Welcome to {{ cookiecutter.project_name }}
 
 {# The white-space control of the below template is quite delicate - if you add one, do it exactly like this (mind the -'s) -#}
-{% if cookiecutter.license == "MIT" -%}
+{% if cookiecutter.license == "MIT" %}
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-{% endif -%}
-{% if cookiecutter.license == "BSD-2" -%}
+{% endif %}
+{% if cookiecutter.license == "BSD-2" %}
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
-{% endif -%}
-{% if cookiecutter.license == "GPL-3.0" -%}
+{% endif %}
+{% if cookiecutter.license == "GPL-3.0" %}
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-{% endif -%}
-{% if cookiecutter.license == "LGPL-3.0" -%}
+{% endif %}
+{% if cookiecutter.license == "LGPL-3.0" %}
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
-{% endif -%}
-{% if cookiecutter.remote_url != "None" -%}
-{% if cookiecutter.github_actions_ci == "Yes" and cookiecutter|is_github -%}
+{% endif %}
+{% if cookiecutter.remote_url != "None" %}
+{% if cookiecutter.github_actions_ci == "Yes" and cookiecutter|is_github %}
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/ci.yml?branch=main)](https://github.com/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/actions/workflows/ci.yml)
-{% endif -%}
-{% if cookiecutter.gitlab_ci == "Yes" and cookiecutter|is_gitlab -%}
+{% endif %}
+{% if cookiecutter.gitlab_ci == "Yes" and cookiecutter|is_gitlab %}
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/main
-{%- if "gitlab.com" not in cookiecutter.remote_url -%}
+{% if "gitlab.com" not in cookiecutter.remote_url %}
 ?gitlab_url={{ cookiecutter|gitlab_instance }}
-{%- endif -%}
+{% endif %}
 )]({{ cookiecutter|gitlab_instance }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/-/pipelines)
-{% endif -%}
-{% endif -%}
-{% if cookiecutter.pypi_release != "No" -%}
+{% endif %}
+{% endif %}
+{% if cookiecutter.pypi_release != "No" %}
 [![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter|modname }}.svg)](https://pypi.org/project/{{ cookiecutter|modname }})
-{% endif -%}
-{% if cookiecutter.readthedocs == "Yes" -%}
+{% endif %}
+{% if cookiecutter.readthedocs == "Yes" %}
 [![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter|remote_slug }}/badge/)](https://{{ cookiecutter|remote_slug }}.readthedocs.io/)
-{% endif -%}
-{% if cookiecutter.codecovio == "Yes" -%}
+{% endif %}
+{% if cookiecutter.codecovio == "Yes" %}
 [![codecov](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }})
-{%- endif %}
+{% endif %}
 {{ "\n" -}}
 # Prerequisites
 
@@ -41,18 +41,18 @@ Building {{ cookiecutter.project_name }} requires the following software install
 
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
 * CMake `>= 3.23`
-{%- if cookiecutter.external_dependency != "None" %}
+{% if cookiecutter.external_dependency != "None" %}
 * {{ cookiecutter.external_dependency }}
-{%- endif %}
-{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% endif %}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 * Doxygen (optional, documentation building is skipped if missing)
-{%- endif %}
-{%- if cookiecutter.use_submodules == "No" %}
+{% endif %}
+{% if cookiecutter.use_submodules == "No" %}
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
-{%- endif %}
-{%- if cookiecutter.python_bindings != "None" %}
+{% endif %}
+{% if cookiecutter.python_bindings != "None" %}
 * Python `>= 3.10` for building Python bindings
-{%- endif %}
+{% endif %}
 
 # Building {{ cookiecutter.project_name }}
 
@@ -69,12 +69,12 @@ The build process can be customized with the following CMake variables,
 which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 
 * `{{ cookiecutter.project_slug }}_BUILD_TESTING`: Enable building of the test suite (default: `ON`)
-{%- if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
 * `{{ cookiecutter.project_slug }}_BUILD_DOCS`: Enable building the documentation (default: `ON`)
-{%- endif %}
-{%- if cookiecutter.python_bindings != "None" %}
+{% endif %}
+{% if cookiecutter.python_bindings != "None" %}
 * `{{ cookiecutter.project_slug }}_BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
-{%- endif %}
+{% endif %}
 
 {% if cookiecutter.python_bindings != "None" %}
 If you wish to build and install the project as a Python project without
@@ -84,7 +84,7 @@ can do so using `pip` from the root directory:
 ```
 python -m pip install .
 ```
-{%- endif %}
+{% endif %}
 
 # Testing {{ cookiecutter.project_name }}
 
@@ -104,7 +104,7 @@ and then running `pytest` from the top-level directory:
 python -m pip install .
 pytest
 ```
-{%- endif %}
+{% endif %}
 
 # Documentation
 {% if cookiecutter.readthedocs == "Yes" %}
@@ -135,7 +135,7 @@ cmake --build . --target doxygen
 The web documentation can then be browsed by opening `build/doc/html/index.html` in your browser.
 {% else %}
 {{ cookiecutter.project_name }} *should* provide a documentation.
-{% endif -%}
+{% endif %}
 
 
 ## Acknowledgments

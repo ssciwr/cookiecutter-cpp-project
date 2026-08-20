@@ -1,19 +1,31 @@
 version: 2
 
-sphinx:
-  configuration: doc/conf.py
-
-formats: all
-
-submodules:
-  include: all
-  recursive: true
-
 build:
-  os: ubuntu-24.04
+  os: ubuntu-26.04
   tools:
-    python: "3.12"
+    python: "3.14"
+  apt_packages:
+    - cmake
+    - doxygen
+  jobs:
+    pre_build:
+      - cmake --preset documentation
+      - cmake --build --preset documentation
+    build:
+      html:
+        - sphinx-build -T -j auto -b html -d $READTHEDOCS_OUTPUT/doctrees -D language=en doc $READTHEDOCS_OUTPUT/html
 
 python:
+{% if cookiecutter.python_bindings == "pybind11" or cookiecutter.python_bindings == "nanobind" %}
+  install:
+    - method: uv
+      command: sync
+      path: python/{{ cookiecutter.__python_module }}
+      extras:
+        - docs
+{% else %}
   install:
     - requirements: doc/requirements-rtd.txt
+{% endif %}
+sphinx:
+  configuration: doc/conf.py

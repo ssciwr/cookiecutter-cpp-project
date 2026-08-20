@@ -1,33 +1,37 @@
 variables:
-{%- if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules == "Yes" %}
   GIT_SUBMODULE_STRATEGY: recursive
-{%- endif %}
-
-.template: &template
-  before_script:
-    - echo "Installing required dependencies..."
-    - apt update
-    - apt install -y cmake git
-    - echo "Installing potential dependencies..."
-{% if cookiecutter.python_bindings != "None" %}
-    - apt install -y python3-dev
-{%- endif %}
-{% if cookiecutter.doxygen == "Yes" %}
-    - apt install -y doxygen
 {% endif %}
-  script:
-    - cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -D{{ cookiecutter.project_slug }}_BUILD_DOCS=OFF -D{{ cookiecutter.project_slug }}_BUILD_PYTHON=OFF
-    - cmake --build build
-    - ctest --test-dir build
 
-# Note: You can use your own Docker images here that e.g. include relevant
-#       dependencies and development tools. We choose well-maintained images
-#       providing up-to-date compiler toolchains.
+.base:
+  image: ubuntu:24.04
+
+  before_script:
+    - apt-get update
+    - apt-get install -y cmake git $COMPILER_PACKAGES
+{% if cookiecutter.python_bindings != "None" %}
+    - apt-get install -y python3-dev
+{% endif %}
+{% if cookiecutter.doxygen == "Yes" %}
+    - apt-get install -y doxygen
+{% endif %}
+    - cmake --version
+    - $CXX --version
+  script:
+    - cmake --preset test
+    - cmake --build --preset test
+    - ctest --preset test
 
 build-and-test:gcc:
-  image: gcc:14
-  <<: *template
+  extends: .base
+  variables:
+    COMPILER_PACKAGES: "gcc-14 g++-14"
+    CC: gcc-14
+    CXX: g++-14
 
 build-and-test:clang:
-  image: silkeh/clang:18
-  <<: *template
+  extends: .base
+  variables:
+    COMPILER_PACKAGES: "clang-18"
+    CC: clang-18
+    CXX: clang++-18
