@@ -43,6 +43,14 @@ classifiers = [
 ]
 dependencies = []
 
+[project.optional-dependencies]
+docs = [
+    "breathe",
+    "myst_parser",
+    "sphinx",
+    "sphinx_rtd_theme",
+]
+
 # The configuration for the scikit-build-core build process
 [tool.scikit-build]
 cmake.version = ">=3.28"
