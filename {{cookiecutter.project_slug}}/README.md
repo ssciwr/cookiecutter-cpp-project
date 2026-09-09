@@ -40,7 +40,7 @@
 Building {{ cookiecutter.project_name }} requires the following software installed:
 
 * A C++{{ cookiecutter.cxx_minimum_standard }}-compliant compiler
-* CMake `>= 3.23`
+* CMake `>= 3.28`
 {% if cookiecutter.external_dependency != "None" %}
 * {{ cookiecutter.external_dependency }}
 {% endif %}
