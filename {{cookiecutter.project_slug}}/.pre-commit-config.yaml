@@ -2,7 +2,7 @@ repos:
 {%- if cookiecutter.python_bindings != "None" %}
   # Run Ruff - an extremely fast Python linter and code formatter
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.3
+    rev: v0.16.6
     hooks:
       # Run the linter
       - id: ruff-check
@@ -14,7 +14,7 @@ repos:
 
   # Format C++ code with Clang-Format - automatically applying the changes
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.8
+    rev: v23.1.0
     hooks:
       - id: clang-format
         args:

@@ -10,7 +10,7 @@ The following tasks need to be done to get a fully working project:
 {%- endif %}
 * Make sure that the following software is installed on your computer:
   * A C++-{{ cookiecutter.cxx_minimum_standard}}-compliant C++ compiler
-  * CMake `>= 3.23`
+  * CMake `>= 3.28`
 {%- if cookiecutter.use_submodules == "No" %}
   * The testing framework [Catch2](https://github.com/catchorg/Catch2)
 {%- endif %}

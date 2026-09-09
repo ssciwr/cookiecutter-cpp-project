@@ -25,6 +25,11 @@ def fail_if(condition, message):
 
 
 fail_if(
+    "{{ cookiecutter.doxygen }}" == "No" and "{{ cookiecutter.readthedocs }}" == "Yes",
+    "Read the Docs requires Doxygen in this template; set doxygen to Yes"
+)
+
+fail_if(
     "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "None",
     "Can't do PyPI release without building Python bindings"
 )

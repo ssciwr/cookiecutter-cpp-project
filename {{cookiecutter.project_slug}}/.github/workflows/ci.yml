@@ -108,7 +108,7 @@ jobs:
     - name: Run Python tests
       run: |
         python -m pytest --cov --cov-report=xml
-{% else %}
+{% endif %}
 
     - name: Configure cmake
       shell: bash
@@ -120,7 +120,6 @@ jobs:
     - name: Build
       shell: bash
       run: cmake --build --preset test
-{% endif %}
 
     - name: Run tests
       shell: bash
@@ -138,4 +137,3 @@ jobs:
         fail_ci_if_error: true
         files: ${{ "{{github.workspace}}" }}/coverage.info{% if cookiecutter.python_bindings != "None" %},coverage.xml{% endif %}
 {% endif %}
-

@@ -69,12 +69,16 @@
       "name": "release",
       "configurePreset": "release"
     },
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen == "Yes" %}
     {
       "name": "documentation",
       "configurePreset": "documentation",
       "targets": [
+{% if cookiecutter.readthedocs == "Yes" %}
         "{{ cookiecutter.project_slug }}-sphinx-doc"
+{% else %}
+        "{{ cookiecutter.project_slug }}-doxygen"
+{% endif %}
       ]
     },
 {% endif %}
@@ -90,6 +94,70 @@
       "output": {
         "outputOnFailure": true
       }
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "debug",
+      "displayName": "Configure and build in debug mode",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "debug"
+        },
+        {
+          "type": "build",
+          "name": "debug"
+        }
+      ]
+    },
+    {
+      "name": "release",
+      "displayName": "Configure and build in release mode",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "release"
+        },
+        {
+          "type": "build",
+          "name": "release"
+        }
+      ]
+    },
+{% if cookiecutter.doxygen == "Yes" %}
+    {
+      "name": "documentation",
+      "displayName": "Configure and build documentation",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "documentation"
+        },
+        {
+          "type": "build",
+          "name": "documentation"
+        }
+      ]
+    },
+{% endif %}
+    {
+      "name": "test",
+      "displayName": "Configure, build, and test",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "test"
+        },
+        {
+          "type": "build",
+          "name": "test"
+        },
+        {
+          "type": "test",
+          "name": "test"
+        }
+      ]
     }
   ]
 }
