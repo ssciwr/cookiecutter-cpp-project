@@ -9,12 +9,10 @@ import cookiecutter
 import sys
 
 
-# Ensure that the version of cookiecutter is >= 2.1. Unfortunately, we cannot
-# use the packaging library here, because we cannot install additional dependencies
-# and cookiecutter did not depend on it pre-v2
-parts = cookiecutter.__version__.split(".")
-if int(parts[0]) < 2 or (int(parts[0]) == 2  and int(parts[1]) < 1):
-    sys.stderr.write("This template requires cookiecutter >= 2.1")
+# Native booleans require 2.2; descriptive choice labels require 2.2.3.
+parts = tuple(int(part) for part in cookiecutter.__version__.split(".")[:3])
+if parts < (2, 2, 3):
+    sys.stderr.write("This template requires cookiecutter >= 2.2.3\n")
     sys.exit(1)
 
 
@@ -25,26 +23,26 @@ def fail_if(condition, message):
 
 
 fail_if(
-    "{{ cookiecutter.doxygen }}" == "No" and "{{ cookiecutter.readthedocs }}" == "Yes",
-    "Read the Docs requires Doxygen in this template; set doxygen to Yes"
+    not {{ cookiecutter.doxygen }} and {{ cookiecutter.readthedocs }},
+    "Read the Docs requires Doxygen in this template; set doxygen to true"
 )
 
 fail_if(
-    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.python_bindings }}" == "None",
+    {{ cookiecutter.pypi_release }} and "{{ cookiecutter.python_bindings }}" == "None",
     "Can't do PyPI release without building Python bindings"
 )
 
 fail_if(
-    "{{ cookiecutter.pypi_release }}" != "No" and "{{ cookiecutter.github_actions_ci }}" == "No",
+    {{ cookiecutter.pypi_release }} and not {{ cookiecutter.github_actions_ci }},
     "Automatic PyPI releases are currently only supported in combination with Github Actions CI"
 )
 
 fail_if(
-    "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.license }}" == "None",
+    {{ cookiecutter.codecovio }} and "{{ cookiecutter.license }}" == "None",
     "Coverage reports for codecov.io require an open source license for your project"
 )
 
 fail_if(
-    "{{ cookiecutter.codecovio }}" == "Yes" and "{{ cookiecutter.github_actions_ci }}" == "No",
+    {{ cookiecutter.codecovio }} and not {{ cookiecutter.github_actions_ci }},
     "Coverage reports for codecov.io are only supported for Github Actions CI"
 )

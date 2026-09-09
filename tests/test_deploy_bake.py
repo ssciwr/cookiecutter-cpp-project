@@ -16,13 +16,13 @@ def test_push_remote(cookies):
         extra_context={
             'project_name': 'My C++ Project',
             'remote_url': 'git@github.com:dokempf/test-gha-cookiecutter.git',
-            'github_actions_ci': 'Yes',
-            'gitlab_ci': 'Yes',
-            'readthedocs': 'Yes',
+            'github_actions_ci': True,
+            'gitlab_ci': True,
+            'readthedocs': True,
             'python_bindings': 'pybind11',
-            'pypi_release': 'Yes',
-            'use_submodules': 'No',
-            'codecovio': 'Yes',
+            'pypi_release': True,
+            'use_submodules': False,
+            'codecovio': True,
         }
     )
     with inside_bake(bake):

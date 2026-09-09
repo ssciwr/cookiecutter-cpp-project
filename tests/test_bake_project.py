@@ -44,8 +44,8 @@ def build_cmake(target=None, ctest=False, install=False, **cmake_args):
 
 
 @pytest.mark.local
-@pytest.mark.parametrize("submodules", ("Yes", "No"))
-@pytest.mark.parametrize("header_only", ("Yes", "No"))
+@pytest.mark.parametrize("submodules", (True, False))
+@pytest.mark.parametrize("header_only", (True, False))
 def test_ctest_run(cookies, submodules, header_only):
     bake = cookies.bake(
         extra_context={
@@ -60,12 +60,12 @@ def test_ctest_run(cookies, submodules, header_only):
 
 
 @pytest.mark.local
-@pytest.mark.parametrize("header_only", ("Yes", "No"))
+@pytest.mark.parametrize("header_only", (True, False))
 def test_cmake_installation(cookies, header_only):
     downstream_bake = cookies.bake(
         extra_context={
             'project_slug': 'downstream',
-            'header_only': 'No',
+            'header_only': False,
         }
     )
     upstream_bake = cookies.bake(
@@ -118,7 +118,7 @@ def test_with_remote(cookies):
 def test_readthedocs(cookies):
     bake = cookies.bake(
         extra_context={
-            'readthedocs': 'Yes',
+            'readthedocs': True,
         }
     )
     check_bake(bake)
@@ -132,7 +132,7 @@ def test_readthedocs(cookies):
 def test_doxygen(cookies):
     bake = cookies.bake(
         extra_context={
-            'doxygen': 'Yes',
+            'doxygen': True,
         }
     )
     check_bake(bake)
@@ -147,9 +147,9 @@ def test_github_actions_ci(cookies):
     bake = cookies.bake(
         extra_context={
             'remote_url': 'git@github.com:dokempf/test-gha-cookiecutter.git',
-            'github_actions_ci': 'Yes',
+            'github_actions_ci': True,
             'python_bindings': 'pybind11',
-            'pypi_release': 'Yes',
+            'pypi_release': True,
         }
     )
     check_bake(bake)
@@ -162,7 +162,7 @@ def test_github_actions_ci(cookies):
 def test_gitlabci(cookies):
     bake = cookies.bake(
         extra_context={
-            'gitlab_ci': 'Yes',
+            'gitlab_ci': True,
         }
     )
     check_bake(bake)
@@ -172,13 +172,13 @@ def test_gitlabci(cookies):
 
 @pytest.mark.local
 @pytest.mark.parametrize("python_bindings", ("pybind11", "nanobind"))
-@pytest.mark.parametrize("submodules", ("Yes", "No"))
+@pytest.mark.parametrize("submodules", (True, False))
 def test_python(cookies, virtualenv, python_bindings, submodules):
     bake = cookies.bake(
         extra_context={
             'project_slug': 'my-project',
             'python_bindings': python_bindings,
-            'submodules': submodules,
+            'use_submodules': submodules,
         }
     )
     check_bake(bake)
@@ -192,25 +192,25 @@ def test_python(cookies, virtualenv, python_bindings, submodules):
 
 @pytest.mark.local
 def test_pypi_without_python(cookies):
-    bake = cookies.bake(extra_context={'python_bindings': 'None', 'pypi_release': 'Yes'})
+    bake = cookies.bake(extra_context={'python_bindings': 'None', 'pypi_release': True})
     assert bake.exit_code != 0
 
 
 @pytest.mark.local
 def test_pypi_without_github(cookies):
-    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'pypi_release': 'Yes', 'python_bindings': 'pybind11'})
+    bake = cookies.bake(extra_context={'github_actions_ci': False, 'pypi_release': True, 'python_bindings': 'pybind11'})
     assert bake.exit_code != 0
 
 
 @pytest.mark.local
 def test_codecov_without_license(cookies):
-    bake = cookies.bake(extra_context={'license': 'None', 'codecovio': 'Yes'})
+    bake = cookies.bake(extra_context={'license': 'None', 'codecovio': True})
     assert bake.exit_code != 0
 
 
 @pytest.mark.local
 def test_codecov_without_github_actions(cookies):
-    bake = cookies.bake(extra_context={'github_actions_ci': 'No', 'codecovio': 'Yes'})
+    bake = cookies.bake(extra_context={'github_actions_ci': False, 'codecovio': True})
     assert bake.exit_code != 0
 
 
@@ -228,8 +228,8 @@ def test_codecov_without_github_actions(cookies):
 def test_remote_urls(cookies, remote_url):
     bake = cookies.bake(
         extra_context={
-            "github_actions_ci": "Yes",
-            "gitlab_ci": "Yes",
+            "github_actions_ci": True,
+            "gitlab_ci": True,
             "remote_url": remote_url,
         }
     )

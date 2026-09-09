@@ -1,5 +1,5 @@
 variables:
-{% if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules %}
   GIT_SUBMODULE_STRATEGY: recursive
 {% endif %}
 
@@ -12,7 +12,7 @@ variables:
 {% if cookiecutter.python_bindings != "None" %}
     - apt-get install -y python3-dev
 {% endif %}
-{% if cookiecutter.doxygen == "Yes" %}
+{% if cookiecutter.doxygen %}
     - apt-get install -y doxygen
 {% endif %}
     - cmake --version

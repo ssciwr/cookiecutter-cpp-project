@@ -63,7 +63,7 @@ build.verbose = true
 # The following is the configuration for the pytest test suite
 [tool.pytest.ini_options]
 testpaths = ["tests/python"]
-{% if cookiecutter.pypi_release == "Yes" %}
+{% if cookiecutter.pypi_release %}
 
 # The next section configures building wheels in Continuous Integration
 # The cibuildwheel documentation covers the available options in detail:

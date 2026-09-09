@@ -4,14 +4,14 @@ default_context:
     project_slug: "your-project"
     full_name: "Your Name"
     license: "MIT"
-    use_submodules: "No"
-    header_only: "No"
+    use_submodules: false
+    header_only: false
     external_dependency: "None"
-    github_actions_ci: "Yes"
-    gitlab_ci: "No"
-    readthedocs: "Yes"
-    doxygen: "Yes"
+    github_actions_ci: true
+    gitlab_ci: false
+    readthedocs: true
+    doxygen: true
     cxx_minimum_standard: "20"
     python_bindings: "None"
-    pypi_release: "No"
-    codecovio: "Yes"
+    pypi_release: false
+    codecovio: true
