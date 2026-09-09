@@ -39,7 +39,7 @@ repos:
       - id: check-yaml
       # Trim trailing whitespace of all sorts
       - id: trailing-whitespace
-{% if cookiecutter.github_actions_ci == "Yes" %}
+{% if cookiecutter.github_actions_ci %}
 
   # GitHub Actions Workflow linter
   - repo: https://github.com/rhysd/actionlint

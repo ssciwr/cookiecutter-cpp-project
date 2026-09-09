@@ -12,7 +12,7 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
         "{{ cookiecutter.project_slug }}_BUILD_DOCS": false,
 {% endif %}
 {% if cookiecutter.python_bindings != "None" %}
@@ -39,7 +39,7 @@
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
     {
       "name": "documentation",
       "displayName": "Release build with documentation",
@@ -69,12 +69,12 @@
       "name": "release",
       "configurePreset": "release"
     },
-{% if cookiecutter.doxygen == "Yes" %}
+{% if cookiecutter.doxygen %}
     {
       "name": "documentation",
       "configurePreset": "documentation",
       "targets": [
-{% if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs %}
         "{{ cookiecutter.project_slug }}-sphinx-doc"
 {% else %}
         "{{ cookiecutter.project_slug }}-doxygen"
@@ -125,7 +125,7 @@
         }
       ]
     },
-{% if cookiecutter.doxygen == "Yes" %}
+{% if cookiecutter.doxygen %}
     {
       "name": "documentation",
       "displayName": "Configure and build documentation",

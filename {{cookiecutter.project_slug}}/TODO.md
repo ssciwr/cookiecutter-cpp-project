@@ -11,7 +11,7 @@ The following tasks need to be done to get a fully working project:
 * Make sure that the following software is installed on your computer:
   * A C++-{{ cookiecutter.cxx_minimum_standard}}-compliant C++ compiler
   * CMake `>= 3.28`
-{%- if cookiecutter.use_submodules == "No" %}
+{%- if not cookiecutter.use_submodules %}
   * The testing framework [Catch2](https://github.com/catchorg/Catch2)
 {%- endif %}
 {%- if cookiecutter.external_dependency != "None" %}
@@ -25,17 +25,17 @@ The following tasks need to be done to get a fully working project:
     * Add version constraints to dependencies by adding `VERSION` to `find_package()`
     * Make a dependency a pure build time dependency by removing it from `cmake/{{ cookiecutter.project_slug }}Config.cmake.in`
 {%- endif %}
-{%- if cookiecutter.gitlab_ci == "Yes" %}
+{%- if cookiecutter.gitlab_ci %}
 * Make sure that CI/CD pipelines are enabled in your Gitlab project settings and that
   there is a suitable Runner available. If you are using the cloud-hosted gitlab.com,
   this should already be taken care of.
 {%- endif %}
-{%- if cookiecutter.readthedocs == "Yes" %}
+{%- if cookiecutter.readthedocs %}
 * Enable the integration of Readthedocs with your Git hoster. In the case of Github, this means
   that you need to login at [Read the Docs](https://readthedocs.org) and click the button
   *Import a Project*.
 {%- endif %}
-{%- if cookiecutter.doxygen == "Yes" %}
+{%- if cookiecutter.doxygen %}
 * Make sure that doxygen is installed on your system, e.g. by doing `sudo apt install doxygen`
   on Debian or Ubuntu.
 {%- endif %}
@@ -43,7 +43,7 @@ The following tasks need to be done to get a fully working project:
 * Edit the parameters of `pyproject.toml` file to contain the necessary information
   about your project, such as your email adress, PyPI classifiers and a short project description.
 {%- endif %}
-{%- if cookiecutter.pypi_release == "Yes" %}
+{%- if cookiecutter.pypi_release %}
 * Head to your user settings at `https://pypi.org` and `https://test.pypi.org/` to setup PyPI trusted publishing.
   In order to do so, you have to head to the "Publishing" tab, scroll to the bottom
   and add a "new pending publisher". The relevant information is:
@@ -53,7 +53,7 @@ The following tasks need to be done to get a fully working project:
   * Workflow name: `pypi.yml`
   * Environment name: pypi [testpypi]
 {%- endif %}
-{%- if cookiecutter.codecovio == "Yes" %}
+{%- if cookiecutter.codecovio %}
 * Enable the integration with `codecov.io` by heading to the [Codecov.io Website](https://codecov.io),
   log in (e.g. with your Github credentials) and enable integration for your repository. In order to do
   so, you need to select it from the list of repositories (potentially re-syncing with GitHub). Then, head

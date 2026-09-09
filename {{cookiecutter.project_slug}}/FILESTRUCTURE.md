@@ -3,7 +3,7 @@ This is an explanation of the repository's file structure:
 * C++ source files:
   * `include/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}.hpp` is the main
     C++ header that declares the interface of your library.
-{% if cookiecutter.header_only == "No" %}
+{% if not cookiecutter.header_only %}
   * `src/{{ cookiecutter.project_slug }}.cpp` is the main file that implements this library.
 {% endif %}
   * `app/{{ cookiecutter.project_slug }}_app.cpp` is an executable that uses the library.
@@ -32,17 +32,17 @@ This is an explanation of the repository's file structure:
     automatically search for `{{ cookiecutter.external_dependency }}`. The config file template implements
     exactly this logic.
 {% endif %}
-{% if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules %}
 * The `ext` directory contains any submodules that were added by the cookiecutter.
 {% endif %}
 * Documentation configuration files
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
   * The Doxygen documentation is configured directly from `doc/CMakeLists.txt`.
     To further configure the build, you can check the [Doxygen Configuration Manual](https://www.doxygen.nl/manual/config.html)
     for available options and add them with `set(DOXYGEN_<param> <value>)` before
     the call to `doxygen_add_docs`.
 {% endif %}
-{% if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs %}
   * `doc/index.rst` contains the actual text of the Sphinx documentation. It is written
     in *reStructuredText*, which is described in the [Sphinx documentation](https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html).
   * `doc/conf.py` configures the Sphinx documentation that is build for readthedocs.
@@ -59,22 +59,22 @@ This is an explanation of the repository's file structure:
   * `.pre-commit-config.yaml` contains a configuration for the [pre-commit](https://pre-commit.com/)
     tool. It was added because the `pre-commit` tool was found in your Python environment.
 {% endif %}
-{% if cookiecutter.github_actions_ci == "Yes" %}
+{% if cookiecutter.github_actions_ci %}
   * `.github/workflows/ci.yml` describes the Github Workflow for Continuous
     integration. For further reading on workflow files, we recommend the
     [introduction into Github Actions](https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/introduction-to-github-actions)
     and [the reference of available options](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions).
 {% endif %}
-{% if cookiecutter.gitlab_ci == "Yes" %}
+{% if cookiecutter.gitlab_ci %}
   * `.gitlab-ci.yml` describes the configuration for Gitlab CI. For further
     reading, we recommend [Gitlabs quick start guide](https://docs.gitlab.com/ee/ci/quick_start/)
     and the [Gitlab CI configuration reference](https://docs.gitlab.com/ce/ci/yaml/)
 {% endif %}
-{% if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs %}
   * `.readthedocs.yml` configures the documentation build process at [ReadTheDocs](https://readthedocs.org).
     To customize your build, you can have a look at the [available options](https://docs.readthedocs.io/en/stable/config-file/v2.html).
 {% endif %}
-{% if cookiecutter.codecovio == "Yes" %}
+{% if cookiecutter.codecovio %}
   * `codecov.yml` configures the coverage checking from [codecov.io](https://codecov.io). The
     provided file is the default configuration plus suitable exclusions. For more options, check
     their [configuration reference](https://docs.codecov.io/docs/codecov-yaml).
@@ -95,14 +95,14 @@ This is an explanation of the repository's file structure:
     repository if you do not need it.
 * Other files
   * `.gitignore` contains a default selection of files to omit from version control.
-{% if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules %}
   * `.gitmodules` tracks the state of added submodules
 {% endif %}
-{% if cookiecutter.python_bindings == "Yes" %}
+{% if cookiecutter.python_bindings != "None" %}
   * `pyproject.toml` provides information about the Python project and its toolchain.
     `pip` uses this file to control the entire build process. Additionally, it can be
     used to configure tools like `pytest`.
-{% if cookiecutter.pypi_release == "Yes" %}
+{% if cookiecutter.pypi_release %}
     Additionally, this file is needed for the automated release process to PyPI.
   * `.github/workflows/pypi.yml` defines the workflow that deploys to PyPI. The
     configuration of this workflow is done in `pyproject.toml`.

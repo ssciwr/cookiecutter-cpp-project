@@ -7,18 +7,33 @@
     "remote_url": "None",
     "project_slug": "{%- if cookiecutter.remote_url == 'None' -%}{{ cookiecutter.project_name|replace('+', 'p')|slugify }}{% else %}{{ cookiecutter.remote_url.split('/')[-1]|replace('.git', '')}}{%- endif -%}",
     "full_name": "Your Name",
-    "license": ["MIT", "BSD-2", "GPL-3.0", "LGPL-3.0", "None"],
-    "use_submodules": ["Yes", "No"],
-    "header_only": ["Yes", "No"],
+    "license": [
+        "MIT",
+        "BSD-2",
+        "GPL-3.0",
+        "LGPL-3.0",
+        "None"
+    ],
+    "use_submodules": true,
+    "header_only": true,
     "external_dependency": "None",
-    "github_actions_ci": ["Yes", "No"],
-    "gitlab_ci": ["Yes", "No"],
-    "readthedocs": ["Yes", "No"],
-    "doxygen": ["Yes", "No"],
-    "cxx_minimum_standard": ["14", "17", "20", "23"],
-    "python_bindings": ["None", "pybind11", "nanobind"],
-    "pypi_release": "{%- if cookiecutter.python_bindings == 'None' -%}No{%- else -%}Yes{%- endif -%}",
-    "codecovio": "{{ cookiecutter.github_actions_ci }}",
+    "github_actions_ci": true,
+    "gitlab_ci": true,
+    "readthedocs": true,
+    "doxygen": true,
+    "cxx_minimum_standard": [
+        "14",
+        "17",
+        "20",
+        "23"
+    ],
+    "python_bindings": [
+        "None",
+        "pybind11",
+        "nanobind"
+    ],
+    "pypi_release": false,
+    "codecovio": true,
     "_extensions": [
         "local_extensions.PrecommitExtension",
         "local_extensions.ShortcutExtension",
@@ -26,5 +41,35 @@
     ],
     "__python_module": "{{ cookiecutter|modname }}",
     "_catch_version": "3.16.0",
-    "_cibuildwheel_version": "4.2.1"
+    "_cibuildwheel_version": "4.2.1",
+    "__prompts__": {
+        "project_name": "Project name",
+        "remote_url": "Git remote URL (None to configure it later)",
+        "project_slug": "Project directory and CMake target name",
+        "full_name": "Author full name",
+        "license": {
+            "__prompt__": "Project license",
+            "MIT": "MIT",
+            "BSD-2": "BSD 2-Clause",
+            "GPL-3.0": "GNU GPL v3",
+            "LGPL-3.0": "GNU LGPL v3",
+            "None": "Do not add a license"
+        },
+        "use_submodules": "Manage dependencies using Git submodules? (Otherwise use CMake downloads)",
+        "header_only": "Create a header-only library?",
+        "external_dependency": "External CMake dependency (None if unused)",
+        "github_actions_ci": "Add GitHub Actions CI?",
+        "gitlab_ci": "Add GitLab CI?",
+        "readthedocs": "Add Sphinx/Read the Docs documentation? (Requires Doxygen)",
+        "doxygen": "Enable Doxygen documentation?",
+        "cxx_minimum_standard": "Minimum C++ standard",
+        "python_bindings": {
+            "__prompt__": "Python bindings",
+            "None": "No Python bindings",
+            "pybind11": "Use pybind11",
+            "nanobind": "Use nanobind"
+        },
+        "pypi_release": "Publish Python wheels to PyPI? (Requires Python bindings and GitHub Actions)",
+        "codecovio": "Add Codecov coverage reports? (Requires GitHub Actions and an open source license)"
+    }
 }

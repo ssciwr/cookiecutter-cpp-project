@@ -1,4 +1,4 @@
-{% if cookiecutter.use_submodules == "No" %}
+{% if not cookiecutter.use_submodules %}
 # Enable CMake's FetchContent module, which allows downloading dependencies like Catch2 automatically at configure time.
 include(FetchContent)
 

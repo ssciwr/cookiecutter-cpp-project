@@ -14,10 +14,10 @@
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 {% endif %}
 {% if cookiecutter.remote_url != "None" %}
-{% if cookiecutter.github_actions_ci == "Yes" and cookiecutter|is_github %}
+{% if cookiecutter.github_actions_ci and cookiecutter|is_github %}
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/ci.yml?branch=main)](https://github.com/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/actions/workflows/ci.yml)
 {% endif %}
-{% if cookiecutter.gitlab_ci == "Yes" and cookiecutter|is_gitlab %}
+{% if cookiecutter.gitlab_ci and cookiecutter|is_gitlab %}
 [![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/main
 {% if "gitlab.com" not in cookiecutter.remote_url %}
 ?gitlab_url={{ cookiecutter|gitlab_instance }}
@@ -25,13 +25,13 @@
 )]({{ cookiecutter|gitlab_instance }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/-/pipelines)
 {% endif %}
 {% endif %}
-{% if cookiecutter.pypi_release != "No" %}
+{% if cookiecutter.pypi_release %}
 [![PyPI Release](https://img.shields.io/pypi/v/{{ cookiecutter|modname }}.svg)](https://pypi.org/project/{{ cookiecutter|modname }})
 {% endif %}
-{% if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs %}
 [![Documentation Status](https://readthedocs.org/projects/{{ cookiecutter|remote_slug }}/badge/)](https://{{ cookiecutter|remote_slug }}.readthedocs.io/)
 {% endif %}
-{% if cookiecutter.codecovio == "Yes" %}
+{% if cookiecutter.codecovio %}
 [![codecov](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }}/branch/main/graph/badge.svg)](https://codecov.io/{{ cookiecutter|provider_acronym }}/{{ cookiecutter|username }}/{{ cookiecutter|remote_slug }})
 {% endif %}
 {{ "\n" -}}
@@ -44,10 +44,10 @@ Building {{ cookiecutter.project_name }} requires the following software install
 {% if cookiecutter.external_dependency != "None" %}
 * {{ cookiecutter.external_dependency }}
 {% endif %}
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
 * Doxygen (optional, documentation building is skipped if missing)
 {% endif %}
-{% if cookiecutter.use_submodules == "No" %}
+{% if not cookiecutter.use_submodules %}
 * The testing framework [Catch2](https://github.com/catchorg/Catch2) for building the test suite
 {% endif %}
 {% if cookiecutter.python_bindings != "None" %}
@@ -69,7 +69,7 @@ The build process can be customized with the following CMake variables,
 which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 
 * `{{ cookiecutter.project_slug }}_BUILD_TESTING`: Enable building of the test suite (default: `ON`)
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
 * `{{ cookiecutter.project_slug }}_BUILD_DOCS`: Enable building the documentation (default: `ON`)
 {% endif %}
 {% if cookiecutter.python_bindings != "None" %}
@@ -112,7 +112,7 @@ pytest
 {% endif %}
 
 # Documentation
-{% if cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.readthedocs %}
 {{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can be browsed [online at readthedocs.org](https://{{ cookiecutter.project_slug }}.readthedocs.io). To build it locally, first ensure the requirements are installed by running this command from the top-level source directory:
 
 ```
@@ -126,7 +126,7 @@ cmake --build build --target sphinx-doc
 ```
 
 The web documentation can then be browsed by opening `build/doc/sphinx/index.html` in your browser.
-{% elif cookiecutter.doxygen == "Yes" %}
+{% elif cookiecutter.doxygen %}
 {{ cookiecutter.project_name }} provides a Doxygen documentation. You can build the documentation locally by making sure that `Doxygen` is installed on your system and running this command from the top-level build directory:
 
 ```
