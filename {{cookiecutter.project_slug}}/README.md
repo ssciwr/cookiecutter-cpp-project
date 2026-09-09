@@ -76,10 +76,16 @@ which can be set by adding `-D<var>={ON, OFF}` to the `cmake` call:
 * `{{ cookiecutter.project_slug }}_BUILD_PYTHON`: Enable building the Python bindings (default: `ON`)
 {% endif %}
 
+Alternatively, the available CMake presets can be displayed via `cmake --list-presets=all`. For example, the test workflow preset can be invoked with
+
+```
+cmake --workflow --preset test
+```
+
+It configures the project in debug mode, builds the test executables, and runs the tests, all in one go.
+
 {% if cookiecutter.python_bindings != "None" %}
-If you wish to build and install the project as a Python project without
-having access to C++ build artifacts like libraries and executables, you
-can do so using `pip` from the root directory:
+If you wish to build and install the project as a Python project without having access to C++ build artifacts like libraries and executables, you can do so using `pip` from the root directory:
 
 ```
 python -m pip install .
@@ -97,8 +103,7 @@ cd build
 ctest
 ```
 {% if cookiecutter.python_bindings != "None" %}
-The Python test suite can be run by first `pip`-installing the Python package
-and then running `pytest` from the top-level directory:
+The Python test suite can be run by first `pip`-installing the Python package and then running `pytest` from the top-level directory:
 
 ```
 python -m pip install .
@@ -108,9 +113,7 @@ pytest
 
 # Documentation
 {% if cookiecutter.readthedocs == "Yes" %}
-{{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can
-be browsed [online at readthedocs.org](https://{{ cookiecutter.project_slug }}.readthedocs.io).
-To build it locally, first ensure the requirements are installed by running this command from the top-level source directory:
+{{ cookiecutter.project_name }} provides a Sphinx-based documentation, that can be browsed [online at readthedocs.org](https://{{ cookiecutter.project_slug }}.readthedocs.io). To build it locally, first ensure the requirements are installed by running this command from the top-level source directory:
 
 ```
 pip install -r doc/requirements.txt
@@ -124,9 +127,7 @@ cmake --build build --target sphinx-doc
 
 The web documentation can then be browsed by opening `build/doc/sphinx/index.html` in your browser.
 {% elif cookiecutter.doxygen == "Yes" %}
-{{ cookiecutter.project_name }} provides a Doxygen documentation. You can build
-the documentation locally by making sure that `Doxygen` is installed on your system
-and running this command from the top-level build directory:
+{{ cookiecutter.project_name }} provides a Doxygen documentation. You can build the documentation locally by making sure that `Doxygen` is installed on your system and running this command from the top-level build directory:
 
 ```
 cmake --build . --target doxygen

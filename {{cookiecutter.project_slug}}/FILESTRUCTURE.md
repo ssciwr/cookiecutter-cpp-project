@@ -24,6 +24,7 @@ This is an explanation of the repository's file structure:
     the `CMakeLists.txt` file from the directory `<dir>` is immediately executed. A comprehensive
     reference of CMake's capabilities can be found in the [official CMake docs](https://cmake.org/documentation/).
     A well-written, opinionated book for beginners and experts is [Modern CMake](https://cliutils.gitlab.io/modern-cmake/).
+  * `CMakePresets.json` defines convenient presets for the configuration, building, testing and workflow stages. Available presets can be queried with `cmake --list-presets=all`.
 {% if cookiecutter.external_dependency != "None" %}
   * `{{ cookiecutter.project_slug }}Config.cmake.in` provides a template for the configuration
     installed alongside your project. This is required to implement the transitivity of your dependency
