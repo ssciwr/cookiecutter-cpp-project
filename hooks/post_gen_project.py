@@ -62,22 +62,22 @@ def conditional_remove(condition, path):
 
 
 conditional_remove(True, "ext/.keep")
-conditional_remove("{{ cookiecutter.use_submodules }}" == "No", "ext")
+conditional_remove(not {{ cookiecutter.use_submodules }}, "ext")
 conditional_remove("{{ cookiecutter.license }}" == "None", "LICENSE.md")
-conditional_remove("{{ cookiecutter.header_only }}" == "Yes", "src")
-conditional_remove("{{ cookiecutter.gitlab_ci }}" == "No", ".gitlab-ci.yml")
-conditional_remove("{{ cookiecutter.readthedocs }}" == "No", ".readthedocs.yml")
-conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/conf.py")
-conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/index.rst")
-conditional_remove("{{ cookiecutter.readthedocs }}" == "No", "doc/requirements-rtd.txt")
-conditional_remove("{{ cookiecutter.doxygen }}" == "No" and "{{ cookiecutter.readthedocs }}" == "No", "doc")
+conditional_remove({{ cookiecutter.header_only }}, "src")
+conditional_remove(not {{ cookiecutter.gitlab_ci }}, ".gitlab-ci.yml")
+conditional_remove(not {{ cookiecutter.readthedocs }}, ".readthedocs.yml")
+conditional_remove(not {{ cookiecutter.readthedocs }}, "doc/conf.py")
+conditional_remove(not {{ cookiecutter.readthedocs }}, "doc/index.rst")
+conditional_remove(not {{ cookiecutter.readthedocs }}, "doc/requirements-rtd.txt")
+conditional_remove(not {{ cookiecutter.doxygen }} and not {{ cookiecutter.readthedocs }}, "doc")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "pyproject.toml")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "requirements-dev.txt")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "python")
 conditional_remove("{{ cookiecutter.python_bindings }}" == "None", "tests/python")
-conditional_remove("{{ cookiecutter.pypi_release }}" != "Yes", ".github/workflows/pypi.yml")
-conditional_remove("{{ cookiecutter.codecovio }}" == "No", "codecov.yml")
-conditional_remove("{{ cookiecutter.github_actions_ci }}" == "No", ".github")
+conditional_remove(not {{ cookiecutter.pypi_release }}, ".github/workflows/pypi.yml")
+conditional_remove(not {{ cookiecutter.codecovio }}, "codecov.yml")
+conditional_remove(not {{ cookiecutter.github_actions_ci }}, ".github")
 conditional_remove(os.stat("TODO.md").st_size == 0, "TODO.md")
 
 
@@ -86,7 +86,7 @@ with GitRepository() as repo:
 {% if cookiecutter.remote_url != 'None' %}
     repo.add_remote("origin", "{{ cookiecutter.remote_url }}")
 {% endif %}
-{% if cookiecutter.use_submodules == "Yes" %}
+{% if cookiecutter.use_submodules %}
     repo.add_submodule("https://github.com/catchorg/Catch2.git", "ext/Catch2", tag="v{{ cookiecutter._catch_version }}")
 {% else %}
     pass

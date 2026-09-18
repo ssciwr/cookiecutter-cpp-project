@@ -19,7 +19,7 @@ else()
   option({{ cookiecutter.project_slug }}_BUILD_PYTHON "Enable building of Python bindings" OFF)
 endif()
 {% endif %}
-{% if cookiecutter.doxygen == "Yes" or cookiecutter.readthedocs == "Yes" %}
+{% if cookiecutter.doxygen or cookiecutter.readthedocs %}
 
 if(PROJECT_IS_TOP_LEVEL)
   option({{ cookiecutter.project_slug }}_BUILD_DOCS "Enable building of documentation" ON)
@@ -32,7 +32,7 @@ endif()
 # Find external dependencies
 find_package({{ cookiecutter.external_dependency }})
 {% endif %}
-{% if cookiecutter.header_only == "No" %}
+{% if not cookiecutter.header_only %}
 
 # Compile the library
 add_subdirectory(src)
@@ -66,13 +66,13 @@ if(PROJECT_IS_TOP_LEVEL)
   # Compile the tests
   include(CTest)
   if({{ cookiecutter.project_slug }}_BUILD_TESTING)
-  {% if cookiecutter.use_submodules == "Yes" %}
+  {% if cookiecutter.use_submodules %}
     add_subdirectory(ext/Catch2)
   {% endif %}
     add_subdirectory(tests)
   endif()
 endif()
-{% if cookiecutter.doxygen == "Yes" %}
+{% if cookiecutter.doxygen %}
 
 # Add the documentation
 if(PROJECT_IS_TOP_LEVEL AND {{ cookiecutter.project_slug }}_BUILD_DOCS)

@@ -2,7 +2,7 @@
 
 namespace {{ cookiecutter.project_slug.replace("-", "") }} {
 
-{% if cookiecutter.doxygen == "Yes" -%}
+{% if cookiecutter.doxygen -%}
 /** @brief A very interesting function!
  *
  * This function is of course just a self-explanatory placeholder,
@@ -13,9 +13,9 @@ namespace {{ cookiecutter.project_slug.replace("-", "") }} {
  * @returns the successor of x
  */
 {% endif %}
-{{ "inline " if cookiecutter.header_only == "Yes" }}int
-add_one(int x){{ ";" if cookiecutter.header_only == "No" }}
-{% if cookiecutter.header_only == "Yes" %}
+{{ "inline " if cookiecutter.header_only }}int
+add_one(int x){{ ";" if not cookiecutter.header_only }}
+{% if cookiecutter.header_only %}
 {
   return x + 1;
 }
