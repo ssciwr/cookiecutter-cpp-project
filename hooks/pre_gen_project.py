@@ -5,14 +5,14 @@
 # An example of a pre-hook would be to validate the provided input for a
 # user configuration value and exit with an error upon failure.
 
-import cookiecutter
 import sys
+from importlib.metadata import version
 
 
-# Native booleans require 2.2; descriptive choice labels require 2.2.3.
-parts = tuple(int(part) for part in cookiecutter.__version__.split(".")[:3])
-if parts < (2, 2, 3):
-    sys.stderr.write("This template requires cookiecutter >= 2.2.3\n")
+# Cookiecutter 2.7 coerces command-line and configuration overrides to booleans.
+parts = tuple(int(part) for part in version("cookiecutter").split(".")[:3])
+if parts < (2, 7, 0):
+    sys.stderr.write("This template requires cookiecutter >= 2.7\n")
     sys.exit(1)
 
 

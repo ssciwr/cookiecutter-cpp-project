@@ -1,5 +1,5 @@
 breathe
-cookiecutter>=2.2.3
+cookiecutter>=2.7
 flaky
 jsonschema
 packaging

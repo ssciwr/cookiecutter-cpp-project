@@ -25,7 +25,7 @@ The core features of our C++ Cookiecutter in a nutshell:
 In order to use this C++ Project Cookiecutter you need the following software installed:
 
 * Python `>= 3.10`
-* [Cookiecutter](https://github.com/cookiecutter/cookiecutter) `>=2.2.3` e.g. by doing `pip install cookiecutter`.
+* [Cookiecutter](https://github.com/cookiecutter/cookiecutter) `>=2.7` e.g. by doing `pip install cookiecutter`.
 * Git `>= 1.8.2`
 
 In addition, the project that is generated from this cookiecutter will require the following software:
